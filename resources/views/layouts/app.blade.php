@@ -94,7 +94,7 @@
           </a>
         </li>
          <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti ti-building-store"></i></span><span class="pc-mtext"> Suku Cadang</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+              <a href="#!" class="pc-link"><span class="pc-micon"><i class="ti ti ti-building-store"></i></span><span class="pc-mtext"> Suku Cadang HAHA</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
           {{-- <a href="#!" class="pc-link">
             <span class="pc-micon"><i class="ti ti-building-store"></i></span>
             <span class="pc-mtext">Suku Cadang Gudang</span><span class="pc-arrow"></span>
