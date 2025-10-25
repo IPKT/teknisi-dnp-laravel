@@ -1,0 +1,113 @@
+<div class="modal fade" id="modalEditSparepart" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <form id="formEditSparepart" method="POST" enctype="multipart/form-data">
+          @csrf
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Sparepart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          {{-- <input type="hidden" name="id" id="sparepart-id"> --}}
+
+          <div class="row g-3">
+               <input type="hidden" name="id" id="edit-sparepart-id">
+              <div class="col-md-6">
+                <label for="jenis_barang" class="form-label">Jenis Barang<span class="text-danger">*</span></label>
+                <input type="text" name="jenis_barang" list="listJenisBarang" class="form-control" id="edit-sparepart-jenis-barang" required>
+                <datalist id="listJenisBarang">
+                @foreach($jenisBarangList as $jenis)
+                  <option value="{{ $jenis }}">
+                @endforeach
+              </datalist>
+              </div>
+              <div class="col-md-6">
+                <label for="jenis_peralatan" class="form-label">Jenis Peralatan<span class="text-danger">*</span></label>
+                {{-- <input type="text" name="jenis_peralatan" class="form-control" required> --}}
+                <select name="jenis_peralatan" class="form-select" id="edit-sparepart-jenis-peralatan" required>
+                  @foreach($jenis_peralatan as $jenis)
+                    <option value="{{ $jenis }}">{{ $jenis }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="sumber_pengadaan" class="form-label">Sumber Pengadaan<span class="text-danger">*</span></label>
+                <input type="text" name="sumber_pengadaan" id="edit-sparepart-sumber-pengadaan" list="sumberPengadaanList" class="form-control" required>
+                <datalist id="sumberPengadaanList">
+                @foreach($sumberPengadaanList as $s)
+                  <option value="{{ $s }}">
+                @endforeach
+                </datalist>
+
+              </div>
+              
+
+              <div class="col-md-6">
+                <label for="tahun_masuk" class="form-label">Tahun Masuk<span class="text-danger">*</span></label>
+                <input type="number" name="tahun_masuk" id="edit-sparepart-tahun-masuk" class="form-control" required maxlength="4" min="2000" max="2050">
+              </div>
+
+              <div class="col-md-6">
+                <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
+                <input type="date" name="tanggal_masuk" id="edit-sparepart-tanggal-masuk" class="form-control">
+              </div>
+
+              <div class="col-md-6">
+                <label for="merk" class="form-label">Merk<span class="text-danger">*</span></label>
+                <input type="text" name="merk" id="edit-sparepart-merk" class="form-control" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="tipe" class="form-label">Tipe<span class="text-danger">*</span></label>
+                <input type="text" name="tipe" id="edit-sparepart-tipe" class="form-control" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="serial_number" class="form-label">Serial Number</label>
+                <input type="text" name="serial_number" id="edit-sparepart-serial-number" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">File</label>
+                <input type="file" name="berkas" id="edit-sparepart-berkas" class="form-control" accept="application/pdf, .jpg, .jpeg, .png, .webp">
+                 <small class="text-muted">File sebelumnya: kosong<span id="edit-sparepart-file-preview"></span></small>
+              </div>
+              <div class="col-md-6">
+              <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
+              <select name="status" class="form-select" id="edit-sparepart-status">
+                <option  value="ready">Ready</option>
+                <option  value="terpasang">Terpasang</option>
+                <option  value="terkirim">Terkirim</option>
+              </select>
+              </div>
+               <div class="col-md-6" style="display: none;" id="divTanggalKeluarEdit">
+                <label for="tanggal_keluar" class="form-label">Tanggal Keluar<span class="text-danger">*</span></label>
+                <input type="date" name="tanggal_keluar" id="edit-sparepart-tanggal-keluar" class="form-control" >
+              </div>
+              <div class="col-md-6" id="divLokasiPemasanganEdit" style="display: none;">
+                <label for="lokasi_pemasangan" class="form-label">Lokasi Pemasangan<span class="text-danger">*</span></label>
+                <input type="text" name="lokasi_pemasangan" list="lokasiPemasanganList" id="edit-sparepart-lokasi-pemasangan" class="form-control" >
+                <datalist id="lokasiPemasanganList">
+                @foreach($lokasiPemasanganList as $lp)
+                  <option value="{{ $lp }}">
+                @endforeach
+                </datalist>
+              </div>
+              <div class="col-md-6" id="divLokasiPengirimanEdit" style="display: none;">
+                <label for="lokasi_pengiriman" class="form-label">Lokasi Pengiriman<span class="text-danger">*</span></label>
+                <input type="text" name="lokasi_pengiriman"  id="edit-sparepart-lokasi-pengiriman" class="form-control" >
+              </div>
+              <div class="col-md-12">
+                <label for="serial_number" class="form-label">Keterangan</label>
+                <input type="text" name="keterangan" id="edit-sparepart-keterangan" class="form-control">
+              </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Simpan</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
