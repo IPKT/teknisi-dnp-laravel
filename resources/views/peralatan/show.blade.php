@@ -73,13 +73,13 @@
 
         <hr class="my-4">
         {{-- HISTORY PEMELIHARAAN --}}
-        
+
         <div class="row my-3">
             <div class="col-md-12">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5>Data Pemeliharaan</h5>
                     <a href="{{ route('pemeliharaan.create') }}" class="btn btn-success">Tambah</a>
-                </div>               
+                </div>
               <div class="table-responsive">
                   <table class="table table-striped table-hover align-middle" id="tablePemeliharaan">
                     <thead class="table-dark">
@@ -104,15 +104,15 @@
                                     </a>
                                 </td>
                                 <td>{{ $p->tanggal ?? '-' }}</td>
-                                
+
                                 <td>
-                                <?php 
+                                <?php
                                 $pelaksana =str_replace("\r\n","<br>",$p->pelaksana);
                                 echo $pelaksana;
                                 ?>
                                 </td>
                                 <td>
-                                <?php 
+                                <?php
                                 $rekomendasi =str_replace("\r\n","<br>",$p->rekomendasi);
                                 echo $rekomendasi;
                                 ?>
@@ -154,7 +154,7 @@
 
                 </table>
               </div>
-               
+
             </div>
         </div>
 
@@ -165,7 +165,7 @@
                     <h5>Hardware</h5>
                     <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahHardware">Tambah
                     </a>
-                </div>    
+                </div>
                <div class="table-responsive">
                     <table class="table table-striped table-hover align-middle" id="tableHardware">
                         <thead class="table-dark">
@@ -229,7 +229,7 @@
                     <h5>Dokumen Penting</h5>
                     <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahDokumen">Tambah
                     </a>
-                </div> 
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped align-middle" id="tableDokumen">
                         <thead class="table-dark">
@@ -248,8 +248,8 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$d->tanggal_dokumen}}</td>
                                     <td>{{ $d->nama_dokumen }}</td>
-                                    <td>{{ $d->keterangan_dokumen }}</td>     
-                                    <td><a href="/storage/{{$d->file_dokumen}}" target="_blank">Lihat Dokumen</a></td>                      
+                                    <td>{{ $d->keterangan_dokumen }}</td>
+                                    <td><a href="/storage/{{$d->file_dokumen}}" target="_blank">Lihat Dokumen</a></td>
                                     <td>
                                         @if(in_array(auth()->user()->role, ['admin', 'teknisi']) || $d->author == auth()->user()->id)
                                         <button class="btn btn-sm btn-warning btn-edit-dokumen mb-2 mb-md-0" data-id="{{$d->id}}">
@@ -323,7 +323,7 @@
               <label>Tanggal Pemasangan</label>
               <input type="date" name="tanggal_pemasangan" class="form-control" required>
             </div>
-            
+
             <div class="col-md-6">
               <label>Status</label>
               <select name="status" class="form-select" id="selectStatusHardware">
@@ -381,7 +381,7 @@
               <label>Tanggal Pemasangan</label>
               <input type="date" name="tanggal_pemasangan" id="edit-hardware-tanggal" class="form-control" required>
             </div>
-            
+
             <div class="col-md-6">
               <label>Status</label>
               <select name="status" id="edit-hardware-status" class="form-select">
@@ -472,10 +472,10 @@
               <label>Keterangan</label>
               <input type="text" name="keterangan_dokumen" id='edit-dokumen-keterangan_dokumen' class="form-control" required>
             </div>
-            <div class="col-md-12">            
+            <div class="col-md-12">
                 <label>File Dokumen</label>
                 <input type="file" name="file_dokumen" id="edit-dokumen-file_dokumen" class="form-control">
-                <small class="text-muted">File sebelumnya: <span id="edit-dokumen-file-preview"></span></small>      
+                <small class="text-muted">File sebelumnya: <span id="edit-dokumen-file-preview"></span></small>
             </div>
           </div>
         </div>
@@ -811,6 +811,7 @@ document.getElementById('formEditDokumen').addEventListener('submit', function (
     e.preventDefault();
     const id = document.getElementById('edit-dokumen-id').value;
     const formData = new FormData(this);
+    formData.append('_method', 'PUT');
 
     fetch(`/dokumen/${id}`, {
         method: 'POST',

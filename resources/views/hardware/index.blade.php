@@ -5,8 +5,10 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Hardware</h4>
+        @if(in_array(auth()->user()->role, ['admin', 'teknisi']))
         <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
         </a>
+        @endif
     </div>
 
     @if (session('success'))
@@ -23,14 +25,17 @@
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>Jenis Barang</th>
+                            <th>Jenis Hardware</th>
                             <th>Merk</th>
                             <th>Tipe</th>
                             <th>SN</th>
                             <th>Jenis Peralatan</th>
                             <th>Sumber</th>
+                            <th>Tahun</th>
                             <th>Status</th>
+                            @if(in_array(auth()->user()->role, ['admin', 'teknisi']))
                             <th></th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody id="bodyHardwareTable">
@@ -43,7 +48,9 @@
                                 <td>{{ $s->serial_number }}</td>
                                 <td>{{ $s->jenis_peralatan }}</td>
                                 <td>{{ $s->sumber_pengadaan }}</td>
+                                <td>{{ $s->tahun_masuk }}</td>
                                 <td>{{ $s->status }}</td>
+                                 @if(in_array(auth()->user()->role, ['admin', 'teknisi']))
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown"
@@ -55,10 +62,12 @@
                                                     class="dropdown-item btn-edit-hardware small py-1"
                                                     data-id="{{ $s->id }}">Edit</a></li>
                                             <li><a href="#" class="dropdown-item btn-delete-hardware small py-1"
-                                                    data-id="{{ $s->id }}">Hapus</a></li>
+                                                    data-id="{{ $s->id }}"
+                                                    data-jenis_hardware="{{ $s->jenis_hardware }}">Hapus</a></li>
                                         </ul>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                         @empty
                             {{-- <tr><td colspan="6" class="text-center text-muted">Belum ada dokumen penting</td></tr> --}}
@@ -83,6 +92,25 @@
 @endsection
 @section('scripts')
     <script>
+        function tampilkanErrorValidasi(errors) {
+            // Bersihkan error sebelumnya
+            document.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+            document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+            for (const [field, messages] of Object.entries(errors)) {
+                const input = document.querySelector(`[name="${field}"]`);
+                if (input) {
+                    input.classList.add('is-invalid');
+
+                    const feedback = document.createElement('div');
+                    feedback.classList.add('invalid-feedback');
+                    feedback.innerText = messages.join(', ');
+
+                    input.parentNode.appendChild(feedback);
+                }
+            }
+        }
+
         function cekStatusHardware(statusValue) {
             const inputTanggalKeluar = document.getElementById('tanggalKeluar');
             const divTanggalKeluar = document.getElementById('divTanggalKeluar');
@@ -164,13 +192,20 @@
                 fetch("{{ route('hardware.store') }}", {
                         method: "POST",
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'Accept': 'application/json'
                         },
                         body: formData
                     })
                     .then(async response => {
                         const status = response.status;
                         const text = await response.text();
+
+                        if (status === 422) {
+                            const errorData = JSON.parse(text);
+                            tampilkanErrorValidasi(errorData.errors);
+                            return;
+                        }
 
                         if (!response.ok) {
                             console.error(`HTTP ${status} Error:\n`, text);
@@ -319,21 +354,63 @@
 
                         const form = e.target;
                         const formData = new FormData(form);
+                        formData.append('_method', 'PUT');
+
 
 
                         fetch(`/hardware/${id}`, {
                                 method: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': formData.get('_token'),
-                                    'X-HTTP-Method-Override': 'PUT'
+                                    // 'X-HTTP-Method-Override': 'PUT',
+                                    'Accept': 'application/json'
+
                                 },
                                 body: formData
                             })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    location.reload(); // atau update baris tabel secara dinamis
+                            .then(async response => {
+                                const status = response.status;
+                                const text = await response.text();
+
+                                if (status === 422) {
+                                    const errorData = JSON.parse(text);
+                                    tampilkanErrorValidasi(errorData.errors);
+                                    return;
                                 }
+
+                                if (!response.ok) {
+                                    console.error(`HTTP ${status} Error:\n`, text);
+                                    alert(`Gagal menyimpan data (HTTP ${status}):\n` +
+                                        text);
+                                    throw new Error(`HTTP ${status}`);
+                                }
+
+                                try {
+                                    const data = JSON.parse(text);
+                                    if (data.success) {
+                                        location.reload();
+
+                                        form.reset();
+                                        const modal = bootstrap.Modal.getInstance(document
+                                            .getElementById(
+                                                'modalHardware'));
+                                        modal.hide();
+                                    } else {
+                                        console.warn(
+                                            'Respon sukses tapi flag success = false:',
+                                            data);
+                                        alert('Gagal menyimpan data: ' + JSON.stringify(
+                                            data));
+                                    }
+                                } catch (err) {
+                                    console.error('Gagal parsing JSON:', err,
+                                        '\nRaw response:', text);
+                                    alert('Respon tidak bisa diproses:\n' + text);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Fetch error:', error);
+                                alert('Terjadi kesalahan saat menyimpan:\n' + error.message);
                             });
                     });
 
@@ -342,5 +419,28 @@
             });
         }
         tambahEventListenerBtnEdit();
+
+        // DELETE HARDWARE
+        document.querySelectorAll('.btn-delete-hardware').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const jenisHardware = this.dataset.jenis_hardware;
+                if (!confirm(`Yakin ingin menghapus Hardware ${jenisHardware} ?`))
+                    return;
+                fetch(`/hardware/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'X-HTTP-Method-Override': 'DELETE'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload(); // atau hapus baris dari DOM
+                        }
+                    });
+            });
+        });
     </script>
 @endsection

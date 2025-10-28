@@ -8,7 +8,7 @@
         {{-- DETAIL PERALATAN --}}
         <h4 class="mb-4">Detail Pemeliharaan {{$pemeliharaan->peralatan->kode}} tanggal {{ \Carbon\Carbon::parse($pemeliharaan->tanggal)->translatedFormat('d F Y') }}
 @if(in_array(auth()->user()->role, ['admin', 'teknisi']) || $pemeliharaan->author == auth()->user()->id)
-                                    <a href="{{ route('pemeliharaan.edit', $pemeliharaan->id) }}" class="btn btn-sm btn-warning mb-2 mb-md-0"><i class="bi bi-pencil-square"></i></a>@endif</h4> 
+                                    <a href="{{ route('pemeliharaan.edit', $pemeliharaan->id) }}" class="btn btn-sm btn-warning mb-2 mb-md-0"><i class="bi bi-pencil-square"></i></a>@endif</h4>
         <div class="row g-2">
             <div class="col-md-4">
                 {{-- 🗺️ Peta Lokasi --}}
@@ -18,7 +18,7 @@
                 @else
                 <img src="{{ asset('storage/uploads/gambar/dummy_PM.png') }}" alt="" class="img-fluid">
                 @endif
-                
+
             </div>
             <div class="col-md-8">
                 <table class="table table-striped table-hover">
@@ -41,7 +41,7 @@
                         <tr>
                             <td>Pelaksana</td>
                             <td>:</td>
-                            <td><?php 
+                            <td><?php
                                 $pelaksana =str_replace("\r\n","<br>",$pemeliharaan->pelaksana);
                                 echo $pelaksana;
                                 ?></td>
@@ -49,7 +49,7 @@
                         <tr>
                             <td>Rekomendasi</td>
                             <td>:</td>
-                            <td><?php 
+                            <td><?php
                                 $rekomendasi =str_replace("\r\n","<br>",$pemeliharaan->rekomendasi);
                                 echo $rekomendasi;
                                 ?></td>
@@ -74,7 +74,7 @@
                             <td>:</td>
                             <td>{{ $author }}</td>
                         </tr>
-                        
+
                     </tbody>
                 </table>
                 <div class="mt-2">
@@ -86,7 +86,7 @@
             </div>
             <hr>
         </div>
-         @if($pemeliharaan->laporan2)
+         @if($pemeliharaan->laporan)
         <div class="row my-2">
             <div class="col-md-12">
                 <h4>LAPORAN 1</h4>

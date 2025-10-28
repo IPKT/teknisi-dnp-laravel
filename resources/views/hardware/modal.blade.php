@@ -22,6 +22,7 @@
                                     <option value="{{ $jenis }}">
                                 @endforeach
                             </datalist>
+                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="jenis_peralatan" class="form-label">Jenis Peralatan<span
@@ -34,6 +35,7 @@
                                     <option value="{{ $jenis }}">{{ $jenis }}</option>
                                 @endforeach
                             </select>
+                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="sumber_pengadaan" class="form-label">Sumber Pengadaan<span
@@ -45,6 +47,7 @@
                                     <option value="{{ $s }}">
                                 @endforeach
                             </datalist>
+                             <div class="invalid-feedback"></div>
 
                         </div>
 
@@ -54,32 +57,38 @@
                                     class="text-danger">*</span></label>
                             <input type="number" id="tahunMasuk" name="tahun_masuk" class="form-control" required
                                 maxlength="4" min="2000" max="2050">
+                                 <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
                             <input type="date" id="tanggalMasuk" name="tanggal_masuk" class="form-control">
+                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="merk" class="form-label">Merk<span class="text-danger">*</span></label>
                             <input type="text" id="merk" name="merk" class="form-control" required>
+                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="tipe" class="form-label">Tipe<span class="text-danger">*</span></label>
                             <input type="text" id="tipe" name="tipe" class="form-control" required>
+                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="serial_number" class="form-label">Serial Number</label>
                             <input type="text" id="serialNumber" name="serial_number" class="form-control">
+                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Gambar</label>
                             <input type="file" id="gambar" name="gambar" class="form-control"
                                 accept=".jpg, .jpeg, .png, .webp">
+                                 <div class="invalid-feedback"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
@@ -113,10 +122,12 @@
                                     class="text-danger">*</span></label>
                             <input type="text" name="lokasi_pengiriman" id="lokasiPengiriman"
                                 class="form-control">
+                                 <div class="invalid-feedback"></div>
                         </div>
                         <div class="col-md-6" id="divInputNomorSurat" style="display: none;">
                             <label for="nomor_surat" class="form-label">Nomor Surat</label>
                             <input type="text" name="nomor_surat" id="nomorSurat" class="form-control">
+                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="col-md-6" id="divInputFileBerkas" style="display: none;">
                             <label class="form-label">Berkas Pemasangan</label>
