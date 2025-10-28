@@ -1,10 +1,10 @@
-<div class="modal fade" id="modalTambahHardware" tabindex="-1">
+<div class="modal fade" id="modalEditHardware" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <form id="formTambahHardware" method="POST" enctype="multipart/form-data">
+        <form id="formEditHardware" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Hardware</h5>
+                    <h5 class="modal-title">Edit Hardware</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -15,7 +15,7 @@
                             <label for="jenis_hardware" class="form-label">Jenis Barang<span
                                     class="text-danger">*</span></label>
                             <input type="text" name="jenis_hardware" list="listJenisHardware" class="form-control"
-                                required>
+                                id="editJenisHardware" required>
                             <datalist id="listJenisHardware">
                                 @foreach ($jenisHardwareList as $jenis)
                                     <option value="{{ $jenis }}">
@@ -26,7 +26,7 @@
                             <label for="jenis_peralatan" class="form-label">Jenis Peralatan<span
                                     class="text-danger">*</span></label>
                             {{-- <input type="text" name="jenis_peralatan" class="form-control" required> --}}
-                            <select name="jenis_peralatan" class="form-select" id="jenis_peralatan" required>
+                            <select name="jenis_peralatan" class="form-select" id="editJenisPeralatan" required>
                                 <option value="">-- Pilih Jenis Peralatan --</option>
                                 @foreach ($jenis_peralatan as $jenis)
                                     <option value="{{ $jenis }}">{{ $jenis }}</option>
@@ -36,8 +36,8 @@
                         <div class="col-md-6">
                             <label for="sumber_pengadaan" class="form-label">Sumber Pengadaan<span
                                     class="text-danger">*</span></label>
-                            <input type="text" name="sumber_pengadaan" list="sumberPengadaanList"
-                                class="form-control" required>
+                            <input type="text" id="editSumberPengadaan" name="sumber_pengadaan"
+                                list="sumberPengadaanList" class="form-control" required>
                             <datalist id="sumberPengadaanList">
                                 @foreach ($sumberPengadaanList as $s)
                                     <option value="{{ $s }}">
@@ -50,28 +50,28 @@
                         <div class="col-md-6">
                             <label for="tahun_masuk" class="form-label">Tahun Masuk<span
                                     class="text-danger">*</span></label>
-                            <input type="number" name="tahun_masuk" class="form-control" required maxlength="4"
-                                min="2000" max="2050">
+                            <input type="number" id="editTahunMasuk" name="tahun_masuk" class="form-control" required
+                                maxlength="4" min="2000" max="2050">
                         </div>
 
                         <div class="col-md-6">
                             <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
-                            <input type="date" name="tanggal_masuk" class="form-control">
+                            <input type="date" id="editTanggalMasuk" name="tanggal_masuk" class="form-control">
                         </div>
 
                         <div class="col-md-6">
                             <label for="merk" class="form-label">Merk<span class="text-danger">*</span></label>
-                            <input type="text" name="merk" class="form-control" required>
+                            <input type="text" id="editMerk" name="merk" class="form-control" required>
                         </div>
 
                         <div class="col-md-6">
                             <label for="tipe" class="form-label">Tipe<span class="text-danger">*</span></label>
-                            <input type="text" name="tipe" class="form-control" required>
+                            <input type="text" id="editTipe" name="tipe" class="form-control" required>
                         </div>
 
                         <div class="col-md-6">
                             <label for="serial_number" class="form-label">Serial Number</label>
-                            <input type="text" name="serial_number" class="form-control">
+                            <input type="text" id="editSerialNumber" name="serial_number" class="form-control">
                         </div>
 
                         <div class="col-md-6">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
-                            <select name="status" class="form-select" id="selectStatusHardware">
+                            <select name="status" class="form-select" id="editStatusHardware">
                                 <option selected value="ready">Ready</option>
                                 <option value="terpasang">Terpasang</option>
                                 <option value="terkirim">Terkirim</option>
@@ -90,32 +90,31 @@
                         <div class="col-md-6" style="display: none;" id="divTanggalKeluar">
                             <label for="tanggal_keluar" class="form-label">Tanggal Pemasangan / Pengiriman<span
                                     class="text-danger">*</span></label>
-                            <input type="date" name="tanggal_keluar" id="inputTanggalKeluar"
-                                class="form-control">
+                            <input type="date" name="tanggal_keluar" id="editTanggalKeluar" class="form-control">
                         </div>
                         <div class="col-md-6" style="display: none;" id="divTanggalDilepas">
                             <label for="tanggal_dilepas" class="form-label">Tanggal Dilepas<span
                                     class="text-danger">*</span></label>
-                            <input type="date" name="tanggal_dilepas" id="inputTanggalDipelas"
+                            <input type="date" name="tanggal_dilepas" id="editTanggalDipelas"
                                 class="form-control">
                         </div>
                         <div class="col-md-6" id="divLokasiPemasangan" style="display: none;">
                             <label for="lokasi_pemasangan" class="form-label">Lokasi Pemasangan<span
                                     class="text-danger">*</span></label>
                             {{-- <input type="text" name="lokasi_pemasangan" list="lokasiPemasanganList" id="inputLokasiPemasangan" class="form-control" > --}}
-                            <select name="lokasi_pemasangan" class="form-select" id="inputLokasiPemasangan">
+                            <select name="lokasi_pemasangan" class="form-select" id="editLokasiPemasangan">
                                 <option value="">-- Pilih Lokasi Pemasangan --</option>
                             </select>
                         </div>
                         <div class="col-md-6" id="divLokasiPengiriman" style="display: none;">
                             <label for="lokasi_pengiriman" class="form-label">Lokasi Pengiriman<span
                                     class="text-danger">*</span></label>
-                            <input type="text" name="lokasi_pengiriman" id="inputLokasiPengiriman"
+                            <input type="text" name="lokasi_pengiriman" id="editLokasiPengiriman"
                                 class="form-control">
                         </div>
                         <div class="col-md-6" id="divInputNomorSurat" style="display: none;">
                             <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                            <input type="text" name="nomor_surat" id="inputNomorSurat" class="form-control">
+                            <input type="text" name="nomor_surat" id="editNomorSurat" class="form-control">
                         </div>
                         <div class="col-md-6" id="divInputFileBerkas" style="display: none;">
                             <label class="form-label">File BAST</label>
@@ -124,8 +123,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="serial_number" class="form-label">Keterangan</label>
-                            <input type="text" name="keterangan" id="edit-sparepart-keterangan"
-                                class="form-control">
+                            <input type="text" name="keterangan" id="editKeterangan" class="form-control">
                         </div>
                     </div>
                 </div>

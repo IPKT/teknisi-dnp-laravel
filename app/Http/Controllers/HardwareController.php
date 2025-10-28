@@ -54,16 +54,39 @@ class HardwareController extends Controller
 
        
         $validated = $request->validate([
-            'id_peralatan' => 'required|exists:peralatans,id',
             'jenis_hardware' => 'required|string|max:100',
-            'merk' => 'required|string|max:100',
-            'tipe' => 'required|string|max:100',
-            'serial_number' => 'required|string|max:100',
-            'tanggal_pemasangan' => 'required|date',
-            'status' => 'required|string|max:100',
-            'tanggal_pelepasan' => 'nullable|date',
+            'jenis_peralatan' => 'required|string|max:50',
+            'tahun_masuk' => 'required|digits:4',
+            'tanggal_masuk' => 'nullable|date',
+            'merk' => 'required|string|max:50',
+            'tipe' => 'required|string|max:50',
+            'serial_number' => 'nullable|string|max:100',
+            'status'=> 'required|string|max:50',
+            'sumber_pengadaan' => 'required|string|max:100',
+            'tanggal_keluar' => 'nullable|date',
+            'tanggal_dilepas' => 'nullable|date',
+            'lokasi_pemasangan' => 'nullable|string|max:100',
+            'lokasi_pengiriman' => 'nullable|string|max:100',
+            'nomor_surat' => 'nullable|string|max:100',
+            'keterangan' => 'nullable|string|max:200',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'berkas' => 'nullable|file|mimes:pdf|max:2048',
+            
+            // 'tanggal_pelepasan' => 'nullable|date',
         ]);
-        $validated['author'] = $request->user()->id;
+        $time = time();
+        if ($validated['serial_number'] == null){
+            $validated['serial_number'] = $validated['jenis_peralatan'].'_'.$validated['jenis_hardware'].'_'.$time;
+        } 
+
+        
+        // $validated['author'] = $request->user()->id;
+        if ($request->hasFile('berkas')) {
+            //  $validated['file_dokumen'] = $request->file('file_dokumen')->store('uploads/dokumen', 'public');
+            
+            $filename = 'berkas' . '_' . $request['jenis_hardware'] .'_'.$time. '.' . $request->file('berkas')->getClientOriginalExtension();
+            $validated['berkas'] = $request->file('berkas')->storeAs('uploads/hardware', $filename, 'public');
+        }
         $hardware = Hardware::create($validated);
 
         return response()->json([
@@ -95,18 +118,56 @@ class HardwareController extends Controller
      */
     public function update(Request $request, string $id)
     {
-      $validated = $request->validate([
-        // 'id_peralatan' => 'required|exists:peralatans,id',
-        'jenis_hardware' => 'required|string|max:100',
-        'merk' => 'required|string|max:100',
-        'tipe' => 'required|string|max:100',
-        'serial_number' => 'required|string|max:100',
-        'tanggal_pemasangan' => 'required|date',
-        'status' => 'required|string|max:100',
-        'tanggal_pelepasan' => 'nullable|date',
-    ]);
 
     $hardware = Hardware::findOrFail($id);
+
+      $validated = $request->validate([
+            'jenis_hardware' => 'required|string|max:100',
+            'jenis_peralatan' => 'required|string|max:50',
+            'tahun_masuk' => 'required|digits:4',
+            'tanggal_masuk' => 'nullable|date',
+            'merk' => 'required|string|max:50',
+            'tipe' => 'required|string|max:50',
+            'serial_number' => 'nullable|string|max:100',
+            'status'=> 'required|string|max:50',
+            'sumber_pengadaan' => 'required|string|max:100',
+            'tanggal_keluar' => 'nullable|date',
+            'tanggal_dilepas' => 'nullable|date',
+            'lokasi_pemasangan' => 'nullable|string|max:100',
+            'lokasi_pengiriman' => 'nullable|string|max:100',
+            'nomor_surat' => 'nullable|string|max:100',
+            'keterangan' => 'nullable|string|max:200',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'berkas' => 'nullable|file|mimes:pdf|max:2048',
+    ]);
+    
+    
+    $time = time();
+    
+    if($validated['status'] == 'ready'){
+        $validated['tanggal_keluar'] = null;
+        $validated['tanggal_dilepas'] = null;
+        $validated['lokasi_pemasangan'] = null;
+        $validated['lokasi_pengiriman'] = null;
+        $validated['nomor_surat'] = null;
+        $validated['berkas'] = null;
+        if ($hardware->berkas && file_exists(storage_path('app/public/'.$hardware->berkas))) {
+            unlink(storage_path('app/public/'.$hardware->berkas));
+        }
+    } elseif ($validated['status'] == 'terpasang') {
+        $validated['tanggal_dilepas'] = null;
+        $validated['lokasi_pengiriman'] = null;
+    } elseif ($validated['status'] == 'dilepas') {
+        $validated['lokasi_pengiriman'] = null;
+    } 
+
+    if ($request->hasFile('berkas')) {
+            if ($hardware->berkas && file_exists(storage_path('app/public/'.$hardware->berkas))) {
+            unlink(storage_path('app/public/'.$hardware->berkas));
+            }
+            $filename = 'berkas' . '_' . $request['jenis_hardware'] .'_'.$time. '.' . $request->file('berkas')->getClientOriginalExtension();
+            $validated['berkas'] = $request->file('berkas')->storeAs('uploads/hardware', $filename, 'public');
+        }
     $hardware->update($validated);
 
     return response()->json([
