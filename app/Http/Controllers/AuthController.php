@@ -24,7 +24,7 @@ class AuthController extends Controller
         $credentials = $request->only($this->username(), 'password');
 
         if (Auth::attempt($credentials)) {
-            \Log::info('login berhasil:', ['user' => Auth::user()]);
+            // \Log::info('login berhasil:', ['user' => Auth::user()]);
             $request->session()->regenerate(); // penting!
             return redirect()->intended(route('home'));
         }
