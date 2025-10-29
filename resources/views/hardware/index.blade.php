@@ -4,10 +4,13 @@
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Data Hardware</h4>
-        @if(in_array(auth()->user()->role, ['admin', 'teknisi']))
-        <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
-        </a>
+        <h4>Data Hardware @isset($kode)
+                {{ $kode }}
+            @endisset
+        </h4>
+        @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+            <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
+            </a>
         @endif
     </div>
 
@@ -33,8 +36,8 @@
                             <th>Sumber</th>
                             <th>Tahun</th>
                             <th>Status</th>
-                            @if(in_array(auth()->user()->role, ['admin', 'teknisi']))
-                            <th></th>
+                            @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+                                <th></th>
                             @endif
                         </tr>
                     </thead>
@@ -42,7 +45,11 @@
                         @forelse($hardwares as $s)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $s->jenis_hardware }}</td>
+                                <td><a class="text-primary text-decoration-none" style="cursor:pointer;"
+                                        onclick="showHardwareDetail({{ $s->id }})">
+                                        {{ $s->jenis_hardware }}
+                                    </a>
+                                </td>
                                 <td>{{ $s->merk }}</td>
                                 <td>{{ $s->tipe }}</td>
                                 <td>{{ $s->serial_number }}</td>
@@ -50,23 +57,23 @@
                                 <td>{{ $s->sumber_pengadaan }}</td>
                                 <td>{{ $s->tahun_masuk }}</td>
                                 <td>{{ $s->status }}</td>
-                                 @if(in_array(auth()->user()->role, ['admin', 'teknisi']))
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li class=""><a href="#"
-                                                    class="dropdown-item btn-edit-hardware small py-1"
-                                                    data-id="{{ $s->id }}">Edit</a></li>
-                                            <li><a href="#" class="dropdown-item btn-delete-hardware small py-1"
-                                                    data-id="{{ $s->id }}"
-                                                    data-jenis_hardware="{{ $s->jenis_hardware }}">Hapus</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
+                                @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class=""><a href="#"
+                                                        class="dropdown-item btn-edit-hardware small py-1"
+                                                        data-id="{{ $s->id }}">Edit</a></li>
+                                                <li><a href="#" class="dropdown-item btn-delete-hardware small py-1"
+                                                        data-id="{{ $s->id }}"
+                                                        data-jenis_hardware="{{ $s->jenis_hardware }}">Hapus</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 @endif
                             </tr>
                         @empty
@@ -89,6 +96,7 @@
     {{-- @include('hardware.modal_tambah') --}}
     {{-- @include('hardware.modal_edit') --}}
     @include('hardware.modal')
+    @include('hardware.modal_show')
 @endsection
 @section('scripts')
     <script>
@@ -259,6 +267,7 @@
 
 
         function pilihanLokasiPemasangan(jenisPeralatan, nilaiYangDipilih = null) {
+            console.log('nilai yang dipilij', nilaiYangDipilih)
             const jenis = jenisPeralatan;
             const peralatanSelect = document.getElementById('lokasiPemasangan');
 
@@ -440,6 +449,16 @@
                             location.reload(); // atau hapus baris dari DOM
                         }
                     });
+            });
+        });
+    </script>
+    {{-- DATA TABLE --}}
+    <script>
+        $(document).ready(function() {
+            $('#hardware-table').DataTable({
+                info: false,
+                lengthChange: false,
+                pageLength: 15
             });
         });
     </script>

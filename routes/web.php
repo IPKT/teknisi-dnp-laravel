@@ -41,17 +41,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-peralatan-by-jenis', [PeralatanController::class, 'getByJenis']);
     // untuk enampilkan seluruh peralatan berdasarkan jenisnya
     Route::get('/peralatan/jenis/{jenis}', [PeralatanController::class, 'filterByJenis'])->name('peralatan.jenis');
-    
+
 
 
     Route::resource('pemeliharaan', PemeliharaanController::class);
     // Route::resource('hardware', HardwareController::class)->except(['destroy']);
-    
+
     Route::resource('hardware', HardwareController::class);
+    Route::get('/hardware/peralatan/{id}/{kode}', [HardwareController::class, 'hardwarePeralatan'])->name('hardware.peralatan');
     Route::resource('dokumen', DokumenController::class)->parameters(['dokumen' => 'dokumen']);
     Route::resource('sparepart', SparepartController::class);
     Route::get('sparepart/list', [SparepartController::class, 'list'])->name('sparepart.list');
-    Route::get('/sparepart/status/{status}', [SparepartController::class, 'filterByStatus'])->name('sparepart.status');
+    Route::get('/hardware/status/{status}', [HardwareController::class, 'filterByStatus'])->name('hardware.status');
 
 
 
@@ -71,4 +72,4 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('/test-user', fn() => auth()->user());
+// Route::get('/test-user', fn() => auth()->user());

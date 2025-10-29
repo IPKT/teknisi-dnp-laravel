@@ -78,7 +78,7 @@
             <div class="col-md-12">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5>Data Pemeliharaan</h5>
-                    <a href="{{ route('pemeliharaan.create') }}" class="btn btn-success">Tambah</a>
+                    <a href="{{ route('pemeliharaan.create') }}" class="btn btn-sm btn-success">Tambah</a>
                 </div>
               <div class="table-responsive">
                   <table class="table table-striped table-hover align-middle" id="tablePemeliharaan">
@@ -163,7 +163,7 @@
             <div class="col-md-12">
                  <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5>Hardware</h5>
-                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahHardware">Tambah
+                    <a href="{{route('hardware.peralatan', [$peralatan->id, $peralatan->kode])}}" class="btn btn-sm btn-success">Lihat Histori Hardware
                     </a>
                 </div>
                <div class="table-responsive">
@@ -177,35 +177,26 @@
                                 <th>Serial Number</th>
                                 <th>Tanggal Pemasangan</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="bodyHardwareTable">
                             @forelse($hardware as $h)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{ $h->jenis_hardware }}</td>
+                                    <td><a class="text-primary text-decoration-none" style="cursor:pointer;"
+                                        onclick="showHardwareDetail({{ $h->id }})">
+                                        {{ $h->jenis_hardware }}
+                                    </a></td>
                                     <td>{{ $h->merk }}</td>
                                     <td>{{ $h->tipe }}</td>
                                     <td>{{ $h->serial_number }}</td>
-                                    <td>{{ $h->tanggal_pemasangan }}</td>
+                                    <td>{{ $h->tanggal_keluar }}</td>
                                     <td>{{ $h->status }}</td>
-                                    <td>
-                                        @if(in_array(auth()->user()->role, ['admin', 'teknisi']) || $h->author == auth()->user()->id)
-                                        <button class="btn btn-sm btn-warning btn-edit-hardware mb-2 mb-md-0" data-id="{{ $h->id }} ">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-danger btn-delete-hardware" data-id="{{ $h->id }}" data-jenis="{{ $h->jenis_hardware }}">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                        @endif
-                                    </td>
                                 </tr>
                             @empty
                                 {{-- <tr><td colspan="8" class="text-center text-muted">Belum ada data pemeliharaan</td></tr> --}}
                                 <tr>
                                     <td>1</td>
-                                    <td>-</td>
                                     <td>-</td>
                                     <td>-</td>
                                     <td>-</td>
@@ -227,7 +218,7 @@
             <div class="col-md-12">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5>Dokumen Penting</h5>
-                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahDokumen">Tambah
+                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahDokumen">Tambah
                     </a>
                 </div>
                 <div class="table-responsive">
@@ -488,6 +479,8 @@
   </div>
 </div>
 {{-- END MODAN EDIT Dokumen --}}
+
+@include('hardware.modal_show')
 @endsection
 
 @section('scripts')
@@ -860,6 +853,5 @@ document.getElementById('formEditDokumen').addEventListener('submit', function (
     tambahEventListenerBtnDeleteDokumen();
 </script>
 {{-- END DELETE DOKUMEN --}}
-
 
 @endsection

@@ -7,6 +7,7 @@ use App\Models\Hardware;
 use App\Models\JenisHardware;
 use App\Models\Peralatan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class HardwareController extends Controller
 {
@@ -76,7 +77,7 @@ class HardwareController extends Controller
         ]);
         $time = time();
         if ($validated['serial_number'] == null) {
-            $validated['serial_number'] = $validated['jenis_peralatan'] . '_' . $validated['jenis_hardware'] . '_' . $time;
+            $validated['serial_number'] = $validated['tahun_masuk'] . '_' . uniqid();
         }
 
 
@@ -100,7 +101,21 @@ class HardwareController extends Controller
      */
     public function show(Hardware $hardware)
     {
-        return response()->json($hardware);
+        // return response()->json($hardware);
+        // return response()->json([
+        //     'hardware' => $hardware,
+        //     'peralatan' => $hardware->peralatan,
+        // ]);
+
+        $hardware->load('peralatan'); // pastikan relasi dimuat
+        $data = $hardware->toArray();
+        $data['kode_lokasi_pemasangan'] = $hardware->peralatan?->kode;
+        $data['lokasi_pemasangan_url'] = $hardware->peralatan
+            ? route('peralatan.show', $hardware->peralatan->id)
+            : null;
+
+
+        return response()->json($data);
     }
 
     /**
@@ -185,11 +200,43 @@ class HardwareController extends Controller
             return redirect()->route('hardware.index');
         }
         if ($hardware->berkas && file_exists(storage_path('app/public/' . $hardware->berkas))) {
-                unlink(storage_path('app/public/' . $hardware->berkas));
-            }
+            unlink(storage_path('app/public/' . $hardware->berkas));
+        }
         $hardware->delete();
         return response()->json([
             'success' => true
         ]);
+    }
+
+    public function hardwarePeralatan($id, $kode)
+    {
+        $peralatan_id = $id;
+        $hardwares = Hardware::where('lokasi_pemasangan', $id)
+            ->orderBy('status', 'desc')
+            ->get();
+        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+        $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
+        $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
+        $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
+        $peralatans  = Peralatan::all();
+        // dd($jenisPeralatan);
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans', 'kode', 'peralatan_id'));
+    }
+
+    public function filterByStatus($status)
+    {
+        if ($status === 'All') {
+            $hardwares = Hardware::all();
+        } else {
+            $hardwares = Hardware::where('status', $status)->get();
+        }
+
+        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+        $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
+        $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
+        $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
+        $peralatans  = Peralatan::all();
+        // dd($jenisPeralatan);
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans'));
     }
 }

@@ -100,29 +100,29 @@
                             <span class="pc-mtext">Pemeliharaan</span>
                         </a>
                     </li>
-                    <li class="pc-item">
+                    {{-- <li class="pc-item">
                         <a href="{{ route('hardware.index') }}" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-tool"></i></span>
                             <span class="pc-mtext">Hardware</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="pc-item pc-hasmenu">
                         <a href="#!" class="pc-link"><span class="pc-micon"><i
                                     class="ti ti ti-building-store"></i></span><span class="pc-mtext"> Suku Cadang
-                                HAHA</span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                                </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
                         {{-- <a href="#!" class="pc-link">
             <span class="pc-micon"><i class="ti ti-building-store"></i></span>
             <span class="pc-mtext">Suku Cadang Gudang</span><span class="pc-arrow"></span>
           </a> --}}
                         <ul class="pc-submenu">
-                            <li class="pc-item"><a class="pc-link" href="{{ route('sparepart.index') }}">ALL</a>
+                            <li class="pc-item"><a class="pc-link" href="{{ route('hardware.index') }}">ALL</a>
                             </li>
                             <li class="pc-item"><a class="pc-link"
-                                    href="{{ route('sparepart.status', 'ready') }}">Ready</a></li>
+                                    href="{{ route('hardware.status', 'ready') }}">Ready</a></li>
                             <li class="pc-item"><a class="pc-link"
-                                    href="{{ route('sparepart.status', 'terpasang') }}">Terpasang</a></li>
+                                    href="{{ route('hardware.status', 'terpasang') }}">Terpasang</a></li>
                             <li class="pc-item"><a class="pc-link"
-                                    href="{{ route('sparepart.status', 'terkirim') }}">Terkirim</a></li>
+                                    href="{{ route('hardware.status', 'terkirim') }}">Terkirim</a></li>
                         </ul>
                     </li>
 
