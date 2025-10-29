@@ -8,6 +8,7 @@ use App\Models\JenisHardware;
 use App\Models\Peralatan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class HardwareController extends Controller
 {
@@ -238,5 +239,71 @@ class HardwareController extends Controller
         $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
         return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans'));
+    }
+
+    public function rekapPengadaan($tahun){
+        $jenis_peralatan = Hardware::select('jenis_peralatan')->distinct()->pluck('jenis_peralatan');
+
+        $rekap_peralatan = [];
+
+        foreach ($jenis_peralatan as $jenis) {
+            $rekap = Hardware::select(
+                'jenis_hardware',
+                DB::raw("SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) as ready"),
+                DB::raw("SUM(CASE WHEN status = 'terpasang' THEN 1 ELSE 0 END) as terpasang"),
+                DB::raw("SUM(CASE WHEN status = 'terkirim' THEN 1 ELSE 0 END) as terkirim"),
+                DB::raw("SUM(CASE WHEN status = 'dilepas' THEN 1 ELSE 0 END) as dilepas"),
+                DB::raw("COUNT(*) as total")
+            )
+            ->when($tahun !== 'All', function ($query) use ($tahun) {
+                return $query->where('tahun_masuk', $tahun);
+            })
+            ->where('jenis_peralatan', $jenis)
+            ->where('sumber_pengadaan', 'Pengadaan DNP')
+            ->groupBy('jenis_hardware')
+            ->get();
+
+            if ($rekap->isEmpty()) {
+                continue;
+            }
+
+            $rekap_peralatan[$jenis] = $rekap;
+        }
+
+        return view('hardware.rekap_pengadaan', compact('rekap_peralatan', 'tahun'));
+    }
+
+    public function detailPengadaan($tahun)
+    {
+        $jenis_peralatan_yang_ada = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
+                return $query->where('tahun_masuk', $tahun);
+            })
+            ->select('jenis_peralatan')
+            ->distinct()
+            ->pluck('jenis_peralatan');
+        
+        foreach ($jenis_peralatan_yang_ada as $jenis) {
+            $data = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
+                return $query->where('tahun_masuk', $tahun);
+            })
+                ->where('jenis_peralatan', $jenis)
+                ->get();
+
+            if($data->isEmpty()){
+                continue;
+            }
+            $hardwares[$jenis] = $data;
+        }
+        
+        
+        // $hardwares = Hardware::where('tahun_masuk', $tahun)->get();
+        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+        $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
+        $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
+        $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
+        $peralatans  = Peralatan::all();
+        // dd($jenisPeralatan);
+        return view('hardware.detail_pengadaan', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans' , 'tahun'));
+        // return view('hardware.index', compact('hardwares'));
     }
 }

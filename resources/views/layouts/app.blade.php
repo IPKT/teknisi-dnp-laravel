@@ -109,7 +109,7 @@
                     <li class="pc-item pc-hasmenu">
                         <a href="#!" class="pc-link"><span class="pc-micon"><i
                                     class="ti ti ti-building-store"></i></span><span class="pc-mtext"> Suku Cadang
-                                </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                            </span><span class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
                         {{-- <a href="#!" class="pc-link">
             <span class="pc-micon"><i class="ti ti-building-store"></i></span>
             <span class="pc-mtext">Suku Cadang Gudang</span><span class="pc-arrow"></span>
@@ -123,6 +123,19 @@
                                     href="{{ route('hardware.status', 'terpasang') }}">Terpasang</a></li>
                             <li class="pc-item"><a class="pc-link"
                                     href="{{ route('hardware.status', 'terkirim') }}">Terkirim</a></li>
+                            <li class="pc-item pc-hasmenu"><a class="pc-link pc-hasmenu" href="#!">Rekap Pengadaan DNP</a>
+                                <ul class="pc-submenu">
+                                  <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan', 'All') }}">All</a></li>
+                                    <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan', '2023') }}">2023</a></li>
+                                    <li class="pc-item"><a class="pc-link"
+                                                href="{{ route('hardware.rekap_pengadaan', '2024') }}">2024</a></li>
+                                    <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan', '2025') }}">2025</a></li>
+                                </ul>
+                            </li>
+
                         </ul>
                     </li>
 

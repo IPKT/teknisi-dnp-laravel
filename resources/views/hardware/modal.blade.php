@@ -16,7 +16,7 @@
                             <label for="jenis_hardware" class="form-label">Jenis Barang<span
                                     class="text-danger">*</span></label>
                             <input type="text" id="jenisHardware" name="jenis_hardware" list="listJenisHardware"
-                                class="form-control" required>
+                                class="form-control" placeholder="jangan membuat nama baru" required>
                             <datalist id="listJenisHardware">
                                 @foreach ($jenisHardwareList as $jenis)
                                     <option value="{{ $jenis }}">

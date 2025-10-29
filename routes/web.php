@@ -53,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('sparepart', SparepartController::class);
     Route::get('sparepart/list', [SparepartController::class, 'list'])->name('sparepart.list');
     Route::get('/hardware/status/{status}', [HardwareController::class, 'filterByStatus'])->name('hardware.status');
+    Route::get('/hardware/rekap-pengadaan/{tahun}', [HardwareController::class, 'rekapPengadaan'])->name('hardware.rekap_pengadaan');
+    Route::get('/hardware/detail-pengadaan/{tahun}', [HardwareController::class, 'detailPengadaan'])->name('hardware.detail_pengadaan');
 
 
 
