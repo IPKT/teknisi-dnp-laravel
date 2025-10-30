@@ -19,7 +19,9 @@
 {{-- SHOW HARDWARE --}}
 <script>
     function showHardwareDetail(id) {
-        fetch(`/hardware/${id}`)
+        const baseUrl = "{{ route('hardware.show', 'REPLACE_ID') }}";
+        const url = baseUrl.replace('REPLACE_ID', id);
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 const fields = {
