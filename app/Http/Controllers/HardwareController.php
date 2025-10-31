@@ -286,7 +286,8 @@ class HardwareController extends Controller
             $data = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
                 return $query->where('tahun_masuk', $tahun);
             })
-                ->where('jenis_peralatan', $jenis)
+            ->where('sumber_pengadaan', 'Pengadaan DNP')
+            ->where('jenis_peralatan', $jenis)
                 ->get();
 
             if($data->isEmpty()){

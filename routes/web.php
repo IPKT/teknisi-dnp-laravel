@@ -38,7 +38,8 @@ Route::middleware(['auth'])->group(function () {
     // peralatan kecuali destroy
     Route::resource('peralatan', PeralatanController::class)->except(['destroy']);
     // untuk keperluan pilihan site di pemeliharaan
-    Route::get('/get-peralatan-by-jenis', [PeralatanController::class, 'getByJenis']);
+    // Route::get('/get-peralatan-by-jenis', [PeralatanController::class, 'getByJenis'])->name('peralatan.getByJenis');
+    Route::get('/peralatan/get-by-jenis/{jenis}', [PeralatanController::class, 'getByJenis'])->name('peralatan.getByJenis');
     // untuk enampilkan seluruh peralatan berdasarkan jenisnya
     Route::get('/peralatan/jenis/{jenis}', [PeralatanController::class, 'filterByJenis'])->name('peralatan.jenis');
 

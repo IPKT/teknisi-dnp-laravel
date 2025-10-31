@@ -275,7 +275,8 @@
             peralatanSelect.innerHTML = '<option value="">-- Pilih Lokasi Pemasangan --</option>';
 
             if (jenis) {
-                fetch(`/get-peralatan-by-jenis?jenis=${encodeURIComponent(jenis)}`)
+                const url = "{{ route('peralatan.getByJenis', ['jenis' => '__JENIS__']) }}".replace('__JENIS__', jenis);
+                fetch(url)
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(alat => {
@@ -309,7 +310,10 @@
             document.querySelectorAll('.btn-edit-hardware').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = this.dataset.id;
-                    fetch(`/hardware/${id}`)
+                    // fetch(`/hardware/${id}`)
+                    const baseUrl = "{{ route('hardware.show', 'REPLACE_ID') }}";
+                    const url = baseUrl.replace('REPLACE_ID', id);
+                    fetch(url)
                         .then(res => res.json())
                         .then(data => {
                             console.log("data", data);
@@ -366,8 +370,10 @@
                         formData.append('_method', 'PUT');
 
 
+                        const url = "{{ route('hardware.update', ['hardware' => '__ID__']) }}"
+                            .replace('__ID__', id);
 
-                        fetch(`/hardware/${id}`, {
+                        fetch(url, {
                                 method: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': formData.get('_token'),
@@ -436,7 +442,11 @@
                 const jenisHardware = this.dataset.jenis_hardware;
                 if (!confirm(`Yakin ingin menghapus Hardware ${jenisHardware} ?`))
                     return;
-                fetch(`/hardware/${id}`, {
+                const url = "{{ route('hardware.update', ['hardware' => '__ID__']) }}"
+                    .replace('__ID__', id);
+
+                // fetch(`/hardware/${id}`, {
+                fetch(url, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
