@@ -64,6 +64,9 @@ Route::middleware(['auth'])->group(function () {
     // Profile user
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/akun-setting', [ProfileController::class, 'akunSetting'])->name('profile.akun_setting');
+     Route::put('/update_password', [ProfileController::class, 'updatePassword'])->name('profile.update_password');
+
 
     // Hanya admin bisa akses halaman register user baru
     Route::middleware(['role:admin,teknisi'])->group(function () {

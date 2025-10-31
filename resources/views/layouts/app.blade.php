@@ -317,7 +317,7 @@
               <i class="ti ti-help"></i>
               <span>Support</span>
             </a> --}}
-                                        <a href="#!" class="dropdown-item">
+                                        <a href="{{route('profile.akun_setting')}}" class="dropdown-item">
                                             <i class="ti ti-user"></i>
                                             <span>Account Settings</span>
                                         </a>

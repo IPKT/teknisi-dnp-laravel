@@ -21,7 +21,7 @@
         </div>
            <div class="mb-3">
             <label>Role</label>
-            <input type="text" name="nama_lengkap" class="form-control" value="{{ old('role', $user->role) }}">
+            <input type="text" name="role" class="form-control" value="{{ old('role', $user->role) }}" disabled>
         </div>
 
         <div class="mb-3">

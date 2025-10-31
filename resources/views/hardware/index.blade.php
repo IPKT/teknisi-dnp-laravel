@@ -442,7 +442,7 @@
                 const jenisHardware = this.dataset.jenis_hardware;
                 if (!confirm(`Yakin ingin menghapus Hardware ${jenisHardware} ?`))
                     return;
-                const url = "{{ route('hardware.update', ['hardware' => '__ID__']) }}"
+                const url = "{{ route('hardware.destroy', ['hardware' => '__ID__']) }}"
                     .replace('__ID__', id);
 
                 // fetch(`/hardware/${id}`, {

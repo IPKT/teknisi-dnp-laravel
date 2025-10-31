@@ -58,7 +58,7 @@
                                 <td>{{ $alat->nama_pic }}</td>
                                 <td>{{ $alat->kontak_pic }}</td>
                                 @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
-                                    <td class="text-center">
+                                    {{-- <td class="text-center">
 
                                         <a href="{{ route('peralatan.edit', $alat->id) }}" class="btn btn-warning btn-sm">
                                             <i class="bi bi-pencil-square"></i>
@@ -74,6 +74,24 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
+                                    </td> --}}
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class=""><a href="{{ route('peralatan.edit', $alat->id) }}"
+                                                        class="dropdown-item btn-edit-peralatan small py-1"
+                                                        data-id="{{ $alat->id }}">Edit</a></li>
+                                                <li>
+                                                    <a href="#" class="dropdown-item btn-delete-peralatan small py-1"
+                                                        data-id="{{ $alat->id }}"
+                                                        data-kode_alat="{{ $alat->kode }}">Hapus</a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 @endif
 
@@ -149,6 +167,34 @@
         }).addTo(map);
     </script>
 
+    <script>
+        document.querySelectorAll('.btn-delete-peralatan').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const kode = this.dataset.kode_alat;
+                if (!confirm(`Yakin ingin menghapus Peralatan ${kode} ?`))
+                    return;
+                const url = "{{ route('peralatan.destroy', ['peralatan' => '__ID__']) }}"
+                    .replace('__ID__', id);
+
+                // fetch(`/hardware/${id}`, {
+                fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'X-HTTP-Method-Override': 'DELETE'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload(); // atau hapus baris dari DOM
+                        }
+                    });
+            });
+        });
+    </script>
+
     {{-- DATA TABLE --}}
     <script>
         $(document).ready(function() {
@@ -161,4 +207,6 @@
     </script>
 
     {{-- DATA TABLE --}}
+
+
 @endsection

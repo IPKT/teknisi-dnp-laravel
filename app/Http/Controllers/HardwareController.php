@@ -281,7 +281,7 @@ class HardwareController extends Controller
             ->select('jenis_peralatan')
             ->distinct()
             ->pluck('jenis_peralatan');
-        
+
         foreach ($jenis_peralatan_yang_ada as $jenis) {
             $data = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
                 return $query->where('tahun_masuk', $tahun);
@@ -295,8 +295,8 @@ class HardwareController extends Controller
             }
             $hardwares[$jenis] = $data;
         }
-        
-        
+
+
         // $hardwares = Hardware::where('tahun_masuk', $tahun)->get();
         $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
         $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
