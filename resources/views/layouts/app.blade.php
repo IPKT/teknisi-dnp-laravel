@@ -52,7 +52,7 @@
     </div>
     <!-- [ Pre-loader ] End -->
     <!-- [ Sidebar Menu ] start -->
-    <nav class="pc-sidebar">
+    <nav class="pc-sidebar @if (!Auth::check()) pc-sidebar-hide @endif">
         <div class="navbar-wrapper">
             <div class="m-header">
                 <div class="d-flex justify-content-between align-items-center my-3">
@@ -123,14 +123,15 @@
                                     href="{{ route('hardware.status', 'terpasang') }}">Terpasang</a></li>
                             <li class="pc-item"><a class="pc-link"
                                     href="{{ route('hardware.status', 'terkirim') }}">Terkirim</a></li>
-                            <li class="pc-item pc-hasmenu"><a class="pc-link pc-hasmenu" href="#!">Rekap Pengadaan DNP</a>
+                            <li class="pc-item pc-hasmenu"><a class="pc-link pc-hasmenu" href="#!">Rekap
+                                    Pengadaan DNP</a>
                                 <ul class="pc-submenu">
-                                  <li class="pc-item"><a class="pc-link"
+                                    <li class="pc-item"><a class="pc-link"
                                             href="{{ route('hardware.rekap_pengadaan', 'All') }}">All</a></li>
                                     <li class="pc-item"><a class="pc-link"
                                             href="{{ route('hardware.rekap_pengadaan', '2023') }}">2023</a></li>
                                     <li class="pc-item"><a class="pc-link"
-                                                href="{{ route('hardware.rekap_pengadaan', '2024') }}">2024</a></li>
+                                            href="{{ route('hardware.rekap_pengadaan', '2024') }}">2024</a></li>
                                     <li class="pc-item"><a class="pc-link"
                                             href="{{ route('hardware.rekap_pengadaan', '2025') }}">2025</a></li>
                                 </ul>
@@ -317,10 +318,16 @@
               <i class="ti ti-help"></i>
               <span>Support</span>
             </a> --}}
-                                        <a href="{{route('profile.akun_setting')}}" class="dropdown-item">
-                                            <i class="ti ti-user"></i>
+                                        <a href="{{ route('profile.akun_setting') }}" class="dropdown-item">
+                                            <i class="ti ti-settings"></i>
                                             <span>Account Settings</span>
                                         </a>
+                                        @if (auth()->user()->role == 'admin')
+                                            <a href="{{ route('manage.user') }}" class="dropdown-item">
+                                                <i class="ti ti-user"></i>
+                                                <span>Manage Users</span>
+                                            </a>
+                                        @endif
                                         {{-- <a href="#!" class="dropdown-item">
               <i class="ti ti-lock"></i>
               <span>Privacy Center</span>

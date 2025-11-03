@@ -9,6 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HardwareController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\SparepartController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,8 +66,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/akun-setting', [ProfileController::class, 'akunSetting'])->name('profile.akun_setting');
-     Route::put('/update_password', [ProfileController::class, 'updatePassword'])->name('profile.update_password');
+    Route::put('/update_password', [ProfileController::class, 'updatePassword'])->name('profile.update_password');
 
+    
 
     // Hanya admin bisa akses halaman register user baru
     Route::middleware(['role:admin,teknisi'])->group(function () {
@@ -75,6 +77,9 @@ Route::middleware(['auth'])->group(function () {
         // Route untuk delete peralatan
         Route::delete('/peralatan/{peralatan}', [PeralatanController::class, 'destroy'])->name('peralatan.destroy');
         // Route::delete('/hardware/{hardware}', [HardwareController::class, 'destroy'])->name('hardware.destroy');
+        // User manage
+        Route::get('/manage-user', [UserController::class, 'index'])->name('manage.user');
+        Route::put('/manage-user/{id}', [UserController::class, 'updateRole'])->name('manage.user.update');
     });
 });
 
