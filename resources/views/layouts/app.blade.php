@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     {{-- Leaflet CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{asset('assets')}}/css/mycostum_css.css">
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->

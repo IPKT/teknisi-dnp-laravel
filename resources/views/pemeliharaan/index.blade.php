@@ -80,7 +80,7 @@
                                                 aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
                                             </button>
-                                            <ul class="dropdown-menu">
+                                            <ul class="dropdown-menu" >
                                                 <li class=""><a href="{{ route('pemeliharaan.edit', $p->id) }}"
                                                         class="dropdown-item btn-edit-peralatan small py-1"
                                                         data-id="{{ $p->id }}">Edit</a></li>

@@ -3,38 +3,40 @@
 @section('title', 'Manage User')
 
 @section('content')
-    <div class="container mt-4">
-        <h3>Manage User</h3>
-        <hr>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nama Lengkap</th>
-                        <th>Username</th>
-                        <th>NIP</th>
-                        <th>Role</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="mb-3">Manage User</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
                         <tr>
-                            <td>{{ $user->nama_lengkap }}</td>
-                            <td>{{ $user->username }}</td>
-                            <td>{{ $user->nip }}</td>
-                            <td>{{ $user->role }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editRoleModal"
-                                    data-id="{{ $user->id }}" data-role="{{ $user->role }}">Edit Role</button>
-                            </td>
+                            <th>Nama Lengkap</th>
+                            <th>Username</th>
+                            <th>NIP</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->nama_lengkap }}</td>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->nip }}</td>
+                                <td>{{ $user->role }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#editRoleModal" data-id="{{ $user->id }}"
+                                        data-role="{{ $user->role }}">Edit Role</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
 
         </div>
-
     </div>
     <!-- Modal -->
     <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
