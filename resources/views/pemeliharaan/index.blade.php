@@ -16,17 +16,18 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover align-middle" id="tablePemeliharaan">
+                <table class="table table-hover align-middle" id="tablePemeliharaan" style="width: 100%;">
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
                             <th>Peralatan</th>
-                            <th>Tanggal</th>
-                            <th>Pelaksana</th>
-                            <th>Rekomendasi</th>
-                            <th>Catatan</th>
+                            <th class="th-sm" style="width: 10%">Tanggal</th>
+                            {{-- <th>Pelaksana</th> --}}
+                            <th class="th-lg" style="width: 20%">Rekomendasi</th>
+                            <th class="th-lg" style="width: 25%">Text WA</th>
+                            <th style="width: 20%">Catatan</th>
                             {{-- <th>Gambar</th> --}}
-                            <th>Laporan</th>
+                            <th style="width: 10%">Laporan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -41,17 +42,20 @@
                                 </td>
                                 <td>{{ $p->tanggal ?? '-' }}</td>
 
-                                <td>
+                                {{-- <td>
                                     <?php
-                                    $pelaksana = str_replace("\r\n", '<br>', $p->pelaksana);
-                                    echo $pelaksana;
+                                    //$pelaksana = str_replace("\r\n", '<br>', $p->pelaksana);
+                                    //echo $pelaksana;
                                     ?>
-                                </td>
+                                </td> --}}
                                 <td>
                                     <?php
                                     $rekomendasi = str_replace("\r\n", '<br>', $p->rekomendasi);
                                     echo $rekomendasi;
                                     ?>
+                                </td>
+                                <td>
+                                    <textarea class="form-control textAreaMultiline" name="text_wa" rows="5" placeholder="" disabled><?= $p->text_wa ?></textarea>
                                 </td>
                                 <td>{{ $p->catatan_pemeliharaan }}</td>
                                 {{-- <td>
@@ -80,7 +84,7 @@
                                                 aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
                                             </button>
-                                            <ul class="dropdown-menu" >
+                                            <ul class="dropdown-menu">
                                                 <li class=""><a href="{{ route('pemeliharaan.edit', $p->id) }}"
                                                         class="dropdown-item btn-edit-peralatan small py-1"
                                                         data-id="{{ $p->id }}">Edit</a></li>

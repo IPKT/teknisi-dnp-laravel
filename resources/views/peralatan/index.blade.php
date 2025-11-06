@@ -30,7 +30,8 @@
                             <th>Kode</th>
                             <th>Kondisi</th>
                             <th>Jenis</th>
-                            <th>Koordinat</th>
+                            {{-- <th>Koordinat</th> --}}
+                            <th>Kunjungan Terbaru</th>
                             <th>Lokasi</th>
                             <th>Nama PIC</th>
                             <th>Kontak</th>
@@ -53,7 +54,9 @@
                                     </span>
                                 </td>
                                 <td>{{ $alat->jenis }}</td>
-                                <td>{{ $alat->koordinat }}</td>
+                                {{-- <td>{{ $alat->koordinat }}</td> --}}
+                                <td>{{ optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->tanggal }}
+                                </td>
                                 <td>{{ $alat->lokasi }}</td>
                                 <td>{{ $alat->nama_pic }}</td>
                                 <td>{{ $alat->kontak_pic }}</td>
@@ -207,6 +210,4 @@
     </script>
 
     {{-- DATA TABLE --}}
-
-
 @endsection
