@@ -18,7 +18,8 @@
                     {{-- 🗺️ Peta Lokasi --}}
                     {{-- <div id="map" style="height: 350px;"></div> --}}
                     @if ($pemeliharaan->gambar)
-                        <img src="{{ asset('storage/' . $pemeliharaan->gambar) }}" alt="" class="img-fluid">
+                        <img src="{{ asset('storage/uploads/gambar_pemeliharaan/' . $pemeliharaan->gambar) }}" alt=""
+                            class="img-fluid">
                     @else
                         <img src="{{ asset('assets/images/dummy_pm.png') }}" alt="" class="img-fluid">
                     @endif
@@ -93,8 +94,8 @@
                 <div class="row my-2">
                     <div class="col-md-12">
                         <h4>LAPORAN 1</h4>
-                        <iframe src="{{ asset('storage/' . $pemeliharaan->laporan) }}" height="500px" width="100%"
-                            title="Iframe Example"></iframe>
+                        <iframe src="{{ asset('storage/uploads/laporan_pemeliharaan/' . $pemeliharaan->laporan) }}"
+                            height="500px" width="100%" title="Iframe Example"></iframe>
                     </div>
                 </div>
             @endif
@@ -102,8 +103,8 @@
                 <div class="row my-2">
                     <div class="col-md-12">
                         <h4>LAPORAN 2</h4>
-                        <iframe src="{{ asset('storage/' . $pemeliharaan->laporan2) }}" height="500px" width="100%"
-                            title="Iframe Example"></iframe>
+                        <iframe src="{{ asset('storage/uploads/laporan_pemeliharaan/' . $pemeliharaan->laporan2) }}"
+                            height="500px" width="100%" title="Iframe Example"></iframe>
                     </div>
                 </div>
             @endif

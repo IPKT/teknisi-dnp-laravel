@@ -62,20 +62,22 @@ class PemeliharaanController extends Controller
         if ($request->hasFile('gambar')) {
             // $file = $request->file('gambar');
             $filename = $kode . '_' . $request['tanggal'] .'_'.$time. '.' . $request->file('gambar')->getClientOriginalExtension();
-            $data['gambar'] = $request->file('gambar')->storeAs('uploads/gambar', $filename, 'public');
-
+            $request->file('gambar')->storeAs('uploads/gambar_pemeliharaan', $filename, 'public');
+            $data['gambar'] = $filename;
             // $data['gambar'] = $request->file('gambar')->store('uploads/gambar', 'public');
         }
 
         if ($request->hasFile('laporan')) {
             $filename = $kode . '_' . $request['tanggal'].'_'.$time . '.' . $request->file('laporan')->getClientOriginalExtension();
-            $data['laporan'] = $request->file('laporan')->storeAs('uploads/laporan', $filename, 'public');
+            $request->file('laporan')->storeAs('uploads/laporan_pemeliharaan', $filename, 'public');
+            $data['laporan'] = $filename;
         }
 
         if ($request->hasFile('laporan2')) {
             $filename = $kode . '_' . $request['tanggal'] .'_'.$time .'_laporan2'. '.' . $request->file('laporan2')->getClientOriginalExtension();
-            $data['laporan2'] = $request->file('laporan2')->storeAs('uploads/laporan', $filename, 'public');
+            $request->file('laporan2')->storeAs('uploads/laporan_pemeliharaan', $filename, 'public');
             // $data['laporan2'] = $request->file('laporan2')->store('uploads/laporan', 'public');
+             $data['laporan2'] = $filename;
         }
 
         Pemeliharaan::create($data);
@@ -107,30 +109,33 @@ class PemeliharaanController extends Controller
         $time = time();
         // Upload baru jika ada file baru
         if ($request->hasFile('gambar')) {
-            if ($pemeliharaan->gambar && file_exists(storage_path('app/public/'.$pemeliharaan->gambar))) {
-                unlink(storage_path('app/public/'.$pemeliharaan->gambar));
+            if ($pemeliharaan->gambar && file_exists(storage_path('app/public/uploads/gambar_pemeliharaan/'.$pemeliharaan->gambar))) {
+                unlink(storage_path('app/public/uploads/gambar_pemeliharaan/'.$pemeliharaan->gambar));
             }
             // $data['gambar'] = $request->file('gambar')->store('uploads/gambar', 'public');
             $filename = $kode . '_' . $request['tanggal'] .'_'.$time.'.' . $request->file('gambar')->getClientOriginalExtension();
-            $data['gambar'] = $request->file('gambar')->storeAs('uploads/gambar', $filename, 'public');
+            $request->file('gambar')->storeAs('uploads/gambar_pemeliharaan/', $filename, 'public');
+            $data['gambar'] = $filename;
         }
 
         if ($request->hasFile('laporan')) {
-            if ($pemeliharaan->laporan && file_exists(storage_path('app/public/'.$pemeliharaan->laporan))) {
-                unlink(storage_path('app/public/'.$pemeliharaan->laporan));
+            if ($pemeliharaan->laporan && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan'.$pemeliharaan->laporan))) {
+                unlink(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan));
             }
             // $data['laporan'] = $request->file('laporan')->store('uploads/laporan', 'public');
             $filename = $kode . '_' . $request['tanggal'].'_'.$time . '.' . $request->file('laporan')->getClientOriginalExtension();
-            $data['laporan'] = $request->file('laporan')->storeAs('uploads/laporan', $filename, 'public');
+            $request->file('laporan')->storeAs('uploads/laporan_pemeliharaan/', $filename, 'public');
+            $data['laporan'] = $filename;    
         }
 
         if ($request->hasFile('laporan2')) {
-            if ($pemeliharaan->laporan2 && file_exists(storage_path('app/public/'.$pemeliharaan->laporan2))) {
-                unlink(storage_path('app/public/'.$pemeliharaan->laporan2));
+            if ($pemeliharaan->laporan2 && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan2))) {
+                unlink(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan2));
             }
             // $data['laporan2'] = $request->file('laporan2')->store('uploads/laporan', 'public');
             $filename = $kode . '_' . $request['tanggal'].'_'.$time .'_laporan2'. '.' . $request->file('laporan2')->getClientOriginalExtension();
-            $data['laporan2'] = $request->file('laporan2')->storeAs('uploads/laporan', $filename, 'public');
+            $request->file('laporan2')->storeAs('uploads/laporan_pemeliharaan/', $filename, 'public');
+            $data['laporan2'] = $filename;
         }
 
         $pemeliharaan->update($data);
@@ -139,14 +144,14 @@ class PemeliharaanController extends Controller
 
     public function destroy(Pemeliharaan $pemeliharaan)
     {
-        if ($pemeliharaan->gambar && file_exists(storage_path('app/public/'.$pemeliharaan->gambar))) {
-            unlink(storage_path('app/public/'.$pemeliharaan->gambar));
+        if ($pemeliharaan->gambar && file_exists(storage_path('app/public/uploads/gambar_pemeliharaan/'.$pemeliharaan->gambar))) {
+            unlink(storage_path('app/public/uploads/gambar_pemeliharaan/'.$pemeliharaan->gambar));
         }
-        if ($pemeliharaan->laporan && file_exists(storage_path('app/public/'.$pemeliharaan->laporan))) {
-                unlink(storage_path('app/public/'.$pemeliharaan->laporan));
+        if ($pemeliharaan->laporan && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan))) {
+                unlink(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan));
             }
-        if ($pemeliharaan->laporan2 && file_exists(storage_path('app/public/'.$pemeliharaan->laporan2))) {
-                unlink(storage_path('app/public/'.$pemeliharaan->laporan2));
+        if ($pemeliharaan->laporan2 && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan2))) {
+                unlink(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan2));
             }
         
         $kode = $pemeliharaan->peralatan->kode;
