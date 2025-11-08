@@ -29,9 +29,12 @@
                         <tr>
                             <th>#</th>
                             <th>Jenis Hardware</th>
+                            <th>Tgl Pasang/Kirim</th>
+                            <th>Tgl Dilepas</th>
                             <th>Merk</th>
                             <th>Tipe</th>
                             <th>SN</th>
+                            
                             <th>Jenis Peralatan</th>
                             <th>Sumber</th>
                             <th>Tahun</th>
@@ -50,6 +53,8 @@
                                         {{ $s->jenis_hardware }}
                                     </a>
                                 </td>
+                                <td>{{$s->tanggal_keluar}}</td>
+                                <td>{{$s->tanggal_dilepas}}</td>
                                 <td>{{ $s->merk }}</td>
                                 <td>{{ $s->tipe }}</td>
                                 <td>{{ $s->serial_number }}</td>

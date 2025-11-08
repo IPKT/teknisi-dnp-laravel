@@ -85,8 +85,8 @@
                             <li class="pc-item"><a class="pc-link"
                                     href="{{ route('peralatan.jenis', 'Accelero Non Colocated') }}">Accelero Non
                                     Colocated</a></li>
-                            <li class="pc-item"><a class="pc-link" href="#!">Intensitymeter Reis</a></li>
-                            <li class="pc-item"><a class="pc-link" href="#!">WRS</a></li>
+                            <li class="pc-item"><a class="pc-link"  href="{{ route('peralatan.jenis', 'Intensitymeter Reis') }}">Intensitymeter Reis</a></li>
+                            <li class="pc-item"><a class="pc-link"  href="{{ route('peralatan.jenis', 'WRS') }}">WRS</a></li>
                         </ul>
                     </li>
                     {{-- <li class="pc-item">

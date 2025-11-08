@@ -110,7 +110,7 @@ class PeralatanController extends Controller
     public function show(Peralatan $peralatan)
     {
 
-        $pemeliharaan = $peralatan->pemeliharaans;
+        $pemeliharaan = $peralatan->pemeliharaans->sortByDesc('tanggal');
         $hardware = $peralatan->hardwares->where('status', 'terpasang');
         $dokumen = $peralatan->dokumens;
         $jenis_hardware = JenisHardware::all();

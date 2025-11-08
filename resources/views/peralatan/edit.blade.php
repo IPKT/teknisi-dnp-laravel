@@ -18,9 +18,11 @@
                 <div class="col-md-4">
                     <label class="form-label">Jenis<span class="text-danger">*</span></label>
                     <select name="jenis" class="form-select">
-                        <option {{ $peralatan->kondisi_terkini=='Intensitymeter Realshake'?'selected':'' }}>Intensitymeter Realshake</option>
-                        <option {{ $peralatan->kondisi_terkini=='Seismometer'?'selected':'' }}>Seismometer</option>
-                        <option {{ $peralatan->kondisi_terkini=='Accelero Non Colocated'?'selected':'' }}>Accelero Non Colocated</option>
+                        <option {{ $peralatan->jenis=='Intensitymeter Realshake'?'selected':'' }}>Intensitymeter Realshake</option>
+                        <option {{ $peralatan->jenis=='Seismometer'?'selected':'' }}>Seismometer</option>
+                        <option {{ $peralatan->jenis=='Accelero Non Colocated'?'selected':'' }}>Accelero Non Colocated</option>
+                        <option {{ $peralatan->jenis=='WRS'?'selected':'' }}>WRS</option>
+                        <option {{ $peralatan->jenis=='Intensitymeter Reis'?'selected':'' }}>Intensitymeter Reis</option>
                     </select>
                 </div>
                 <div class="col-md-4">

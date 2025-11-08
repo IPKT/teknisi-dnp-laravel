@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($peralatans as $alat)
+                        @forelse ($peralatans->sortBy([['jenis', 'asc'],['kode', 'asc'],]) as $alat)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td><a href="{{ route('peralatan.show', $alat->id) }}" class="">
@@ -138,6 +138,7 @@
         }).addTo(map);
 
         const data = @json($peralatans);
+        // console.log("haha", data);
 
         const layers = {}; // LayerGroup per jenis
 

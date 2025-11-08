@@ -13,8 +13,20 @@ class PemeliharaanController extends Controller
 {
     public function index()
     {
-        $pemeliharaans = Pemeliharaan::with('peralatan')->latest()->get();
-        return view('pemeliharaan.index', compact('pemeliharaans'));
+        // $pemeliharaans = Pemeliharaan::with('peralatan')->latest()->get()->sortByDesc('tanggal');
+        // return view('pemeliharaan.index', compact('pemeliharaans'));
+        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+
+        foreach ($jenis_peralatan as $jenis) {
+            $pemeliharaansByJenis[$jenis] = Pemeliharaan::whereHas('peralatan', function ($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            })->with('peralatan')->latest()->get()->sortByDesc('tanggal');
+        }
+
+        // dd($pemeliharaansByJenis);
+
+        return view('pemeliharaan.index', compact( 'pemeliharaansByJenis'));
+        
     }
 
     public function create()

@@ -81,29 +81,33 @@
                         <a href="{{ route('pemeliharaan.create') }}" class="btn btn-sm btn-success">Tambah</a>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover align-middle" id="tablePemeliharaan">
+                        <table class="table table-striped table-hover align-middle" id="tablePemeliharaan"
+                            style="width: 100%;">
                             <thead class="table-dark">
                                 <tr>
                                     <th>No</th>
-                                    <th>Peralatan</th>
-                                    <th>Tanggal</th>
+                                    {{-- <th>Peralatan</th> --}}
+                                    <th style="width: 10%">Tanggal</th>
                                     <th>Pelaksana</th>
-                                    <th>Rekomendasi</th>
+                                    <th style="width: 25%;">Rekomendasi</th>
+                                    <th class="th-lg" style="width: 25%">Text WA</th>
                                     <th>Catatan</th>
                                     <th>Laporan</th>
-                                    <th>Aksi</th>
+                                    <th>#</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($pemeliharaan as $p)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <a href="{{ route('pemeliharaan.show', $p->id) }}" class="">
                                                 {{ $p->peralatan->kode }}
                                             </a>
-                                        </td>
-                                        <td>{{ $p->tanggal ?? '-' }}</td>
+                                        </td> --}}
+                                        <td><a href="{{ route('pemeliharaan.show', $p->id) }}" class="">
+                                                {{ $p->tanggal }}
+                                            </a></td>
 
                                         <td>
                                             <?php
@@ -116,6 +120,9 @@
                                             $rekomendasi = str_replace("\r\n", '<br>', $p->rekomendasi);
                                             echo $rekomendasi;
                                             ?>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control textAreaMultiline" name="text_wa" rows="5" placeholder="" disabled><?= $p->text_wa ?></textarea>
                                         </td>
                                         <td>{{ $p->catatan_pemeliharaan }}</td>
                                         <td>
@@ -183,6 +190,7 @@
 
                 </div>
             </div>
+            <hr>
 
             {{-- HARDWARE --}}
             <div class="row my-3">
@@ -238,6 +246,7 @@
                     </div>
                 </div>
             </div>
+            <hr>
 
             {{-- DOKUMEN --}}
             <div class="row my-3">
@@ -267,7 +276,8 @@
                                         <td>{{ $d->tanggal_dokumen }}</td>
                                         <td>{{ $d->nama_dokumen }}</td>
                                         <td>{{ $d->keterangan_dokumen }}</td>
-                                        <td><a href="{{asset('storage')}}/{{ $d->file_dokumen }}" target="_blank">Lihat Dokumen</a>
+                                        <td><a href="{{ asset('storage') }}/{{ $d->file_dokumen }}" target="_blank">Lihat
+                                                Dokumen</a>
                                         </td>
                                         {{-- <td>
                                             @if (in_array(auth()->user()->role, ['admin', 'teknisi']) || $d->author == auth()->user()->id)
@@ -290,8 +300,7 @@
                                                         <i class="bi bi-three-dots-vertical"></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li class=""><a
-                                                                href="#"
+                                                        <li class=""><a href="#"
                                                                 class="dropdown-item btn-edit-dokumen small py-1"
                                                                 data-id="{{ $d->id }}">Edit</a></li>
                                                         <li>
@@ -471,13 +480,11 @@
                         <div class="row g-3">
                             <input type="hidden" name="id_peralatan" value="{{ $peralatan->id }}">
                             <div class="col-md-12">
-                                <label>Nama Dokumen<span
-                                    class="text-danger">*</span></label>
+                                <label>Nama Dokumen<span class="text-danger">*</span></label>
                                 <input type="text" name="nama_dokumen" class="form-control" required>
                             </div>
                             <div class="col-md-12">
-                                <label>Tanggal Dokumen<span
-                                    class="text-danger">*</span></label>
+                                <label>Tanggal Dokumen<span class="text-danger">*</span></label>
                                 <input type="date" name="tanggal_dokumen" class="form-control" required>
                             </div>
                             <div class="col-md-12">
@@ -485,8 +492,7 @@
                                 <input type="text" name="keterangan_dokumen" class="form-control">
                             </div>
                             <div class="col-md-12">
-                                <label>File<span
-                                    class="text-danger">*</span></label>
+                                <label>File<span class="text-danger">*</span></label>
                                 <input type="file" name="file_dokumen" class="form-control" accept="application/pdf">
                             </div>
                         </div>
@@ -517,14 +523,12 @@
                         <div class="row g-3">
                             <input type="hidden" name="id" id="edit-dokumen-id">
                             <div class="col-md-12">
-                                <label>Nama Dokumen<span
-                                    class="text-danger">*</span></label>
+                                <label>Nama Dokumen<span class="text-danger">*</span></label>
                                 <input type="text" name="nama_dokumen" id="edit-dokumen-nama_dokumen"
                                     class="form-control" required>
                             </div>
                             <div class="col-md-12">
-                                <label>Tanggal Dokumen<span
-                                    class="text-danger">*</span></label>
+                                <label>Tanggal Dokumen<span class="text-danger">*</span></label>
                                 <input type="date" name="tanggal_dokumen" id="edit-dokumen-tanggal_dokumen"
                                     class="form-control" required>
                             </div>
@@ -534,8 +538,7 @@
                                     class="form-control" required>
                             </div>
                             <div class="col-md-12">
-                                <label>File Dokumen<span
-                                    class="text-danger">*</span></label>
+                                <label>File Dokumen<span class="text-danger">*</span></label>
                                 <input type="file" name="file_dokumen" id="edit-dokumen-file_dokumen"
                                     class="form-control">
                                 <small class="text-muted">File sebelumnya: <span
@@ -585,7 +588,7 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-        const iconType = "{{ $peralatan->status_terkini }}" == "ON" ? greenIcon : blackIcon;
+        const iconType = "{{ $peralatan->kondisi_terkini }}" == "ON" ? greenIcon : blackIcon;
         L.marker([lat, lng], {
                 icon: iconType
             }).addTo(map)
@@ -606,7 +609,7 @@
             $('#tablePemeliharaan').DataTable({
                 info: false,
                 lengthChange: false,
-                pageLength: 15
+                pageLength: 5
             });
         });
 
