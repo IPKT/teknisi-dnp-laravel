@@ -9,6 +9,9 @@ use App\Models\Peralatan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Imports\HardwareImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\HardwareExport;
 
 class HardwareController extends Controller
 {
@@ -83,11 +86,19 @@ class HardwareController extends Controller
 
 
         // $validated['author'] = $request->user()->id;
+        if ($request->hasFile('gambar')) {
+            //  $validated['file_dokumen'] = $request->file('file_dokumen')->store('uploads/dokumen', 'public');
+
+            $filename = $request['jenis_hardware'] . '_' . $time . '.' . $request->file('gambar')->getClientOriginalExtension();
+            $request->file('gambar')->storeAs('uploads/gambar_hardware', $filename, 'public');
+            $validated['gambar'] = $filename;
+        }
         if ($request->hasFile('berkas')) {
             //  $validated['file_dokumen'] = $request->file('file_dokumen')->store('uploads/dokumen', 'public');
 
-            $filename = 'berkas' . '_' . $request['jenis_hardware'] . '_' . $time . '.' . $request->file('berkas')->getClientOriginalExtension();
-            $validated['berkas'] = $request->file('berkas')->storeAs('uploads/hardware', $filename, 'public');
+            $filename = $request['jenis_hardware'] . '_' . $time . '.' . $request->file('berkas')->getClientOriginalExtension();
+            $request->file('berkas')->storeAs('uploads/berkas_hardware', $filename, 'public');
+            $validated['berkas'] = $filename;
         }
         $hardware = Hardware::create($validated);
 
@@ -176,11 +187,22 @@ class HardwareController extends Controller
         }
 
         if ($request->hasFile('berkas')) {
-            if ($hardware->berkas && file_exists(storage_path('app/public/' . $hardware->berkas))) {
-                unlink(storage_path('app/public/' . $hardware->berkas));
+            if ($hardware->berkas && file_exists(storage_path('app/public/uploads/berkas_hardware/' . $hardware->berkas))) {
+                unlink(storage_path('app/public/uploads/berkas_hardware/' . $hardware->berkas));
             }
             $filename = 'berkas' . '_' . $request['jenis_hardware'] . '_' . $time . '.' . $request->file('berkas')->getClientOriginalExtension();
-            $validated['berkas'] = $request->file('berkas')->storeAs('uploads/hardware', $filename, 'public');
+            $request->file('berkas')->storeAs('uploads/berkas_hardware', $filename, 'public');
+            $validated['berkas'] = $filename;
+        
+        }
+
+           if ($request->hasFile('gambar')) {
+            if ($hardware->gambar && file_exists(storage_path('app/public/uploads/gambar_hardware/' . $hardware->gambar))) {
+                unlink(storage_path('app/public/uploads/gambar_hardware/' . $hardware->gambar));
+            }
+            $filename = 'gambar' . '_' . $request['jenis_hardware'] . '_' . $time . '.' . $request->file('gambar')->getClientOriginalExtension();
+            $request->file('gambar')->storeAs('uploads/gambar_hardware', $filename, 'public');
+            $validated['gambar'] = $filename;
         }
         $hardware->update($validated);
 
@@ -306,5 +328,32 @@ class HardwareController extends Controller
         // dd($jenisPeralatan);
         return view('hardware.detail_pengadaan', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans' , 'tahun'));
         // return view('hardware.index', compact('hardwares'));
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'excel_file' => 'required|mimes:xlsx,xls,csv|max:2048',
+        ]);
+        try {
+            Excel::import(new HardwareImport, $request->file('excel_file'));
+            return redirect()->back()->with('success', 'Data hardware berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat import: ' . $e->getMessage());
+        }
+    }
+
+    
+    public function download($peralatanId)
+    {
+        $peralatan = Peralatan::find($peralatanId);
+
+        if (!$peralatan) {
+            return redirect()->back()->with('error', 'Peralatan tidak ditemukan!');
+        }
+
+        $fileName = 'hardware_' . $peralatan->kode . '.xlsx';
+
+        return Excel::download(new HardwareExport($peralatanId), $fileName);
     }
 }

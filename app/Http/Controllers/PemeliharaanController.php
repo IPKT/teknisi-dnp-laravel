@@ -119,7 +119,7 @@ class PemeliharaanController extends Controller
         }
 
         if ($request->hasFile('laporan')) {
-            if ($pemeliharaan->laporan && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan'.$pemeliharaan->laporan))) {
+            if ($pemeliharaan->laporan && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan))) {
                 unlink(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan));
             }
             // $data['laporan'] = $request->file('laporan')->store('uploads/laporan', 'public');
@@ -156,7 +156,8 @@ class PemeliharaanController extends Controller
         
         $kode = $pemeliharaan->peralatan->kode;
         $pemeliharaan->delete();
-        return redirect()->route('pemeliharaan.index')->with('success', "Data pemeliharaan $kode berhasil dihapus.");
+        return response()->json(['success' => true, 'message' => "Data pemeliharaan $kode berhasil dihapus."]);
+        // return redirect()->route('pemeliharaan.index')->with('success', "Data pemeliharaan $kode berhasil dihapus.");
     }
 
     public function show(Pemeliharaan $pemeliharaan){

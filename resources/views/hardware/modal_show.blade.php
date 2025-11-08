@@ -52,10 +52,10 @@
                         let value = data[key];
 
                         if (key === 'berkas') {
-                            value = `<a href="{{ asset('storage') }}/${value}" target="_blank">Download</a>`;
+                            value = `<a href="{{ asset('storage/uploads/berkas_hardware') }}/${value}" target="_blank">Download</a>`;
                         } else if (key === 'gambar') {
                             value =
-                                `<img src="{{ asset('storage') }}/${value}" class="img-fluid" style="max-height:200px;">`;
+                                `<img src="{{ asset('storage/uploads/gambar_hardware') }}/${value}" class="img-fluid" style="max-height:200px;">`;
                         } else if (key === 'kode_lokasi_pemasangan') {
                             value = `<a href="${data.lokasi_pemasangan_url}">${value}</a>`;
                         }

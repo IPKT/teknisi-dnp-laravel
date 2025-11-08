@@ -9,14 +9,27 @@
             @endisset
         </h4>
         @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+        <div>
             <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
             </a>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">Import
+            </a>
+            <a href="{{ route('hardware.download', $peralatan_id) }}" class="btn btn-success">
+                Download Excel Hardware
+            </a>
+        </div>  
         @endif
     </div>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+     @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
@@ -102,6 +115,7 @@
     {{-- @include('hardware.modal_edit') --}}
     @include('hardware.modal')
     @include('hardware.modal_show')
+    @include('hardware.modal_import')
 @endsection
 @section('scripts')
     <script>
@@ -353,7 +367,12 @@
                             // document.getElementById('edit-hardware-keterangan').value = data.keterangan;
                             if (data.berkas != null) {
                                 document.getElementById('edit-hardware-file-preview').innerHTML = `
-                        <a href="/storage/${data.berkas}" target="_blank">Lihat Dokumen Lama</a>
+                        <a href="/storage/uploads/berkas_hardware/${data.berkas}" target="_blank">Lihat Dokumen Lama</a>
+                        `;
+                            }
+                            if (data.gambar != null) {
+                                document.getElementById('edit-gambar-file-preview').innerHTML = `
+                        <a href="/storage/uploads/gambar_hardware/${data.gambar}" target="_blank">Lihat Gambar Lama</a>
                         `;
                             }
 

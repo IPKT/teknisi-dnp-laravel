@@ -102,7 +102,7 @@ class PeralatanController extends Controller
     {
         $jenis = $request->jenis;
 
-        $peralatans = Peralatan::where('jenis', $jenis)->get();
+        $peralatans = Peralatan::where('jenis', $jenis)->orderBy('kode', 'asc')->get();
 
         return response()->json($peralatans);
     }

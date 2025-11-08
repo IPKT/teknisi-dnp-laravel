@@ -89,6 +89,8 @@
                             <input type="file" id="gambar" name="gambar" class="form-control"
                                 accept=".jpg, .jpeg, .png, .webp">
                                  <div class="invalid-feedback"></div>
+                                 <small class="text-muted">File sebelumnya: <span
+                                    id="edit-gambar-file-preview"></span></small>
                         </div>
                         <div class="col-md-6">
                             <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
