@@ -8,17 +8,19 @@
                 {{ $kode }}
             @endisset
         </h4>
-        @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
         <div>
-            <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
-            </a>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">Import
-            </a>
-            <a href="{{ route('hardware.download', $peralatan_id) }}" class="btn btn-success">
-                Download Excel Hardware
-            </a>
-        </div>  
-        @endif
+            @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+                <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
+                </a>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">Import
+                </a>
+            @endif
+            @isset($peralatan_id)
+                <a href="{{ route('hardware.download', $peralatan_id) }}" class="btn btn-success">
+                    Download Excel Hardware
+                </a>
+            @endisset
+        </div>
     </div>
 
     @if (session('success'))
@@ -27,7 +29,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
-     @if (session('error'))
+    @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -47,7 +49,7 @@
                             <th>Merk</th>
                             <th>Tipe</th>
                             <th>SN</th>
-                            
+
                             <th>Jenis Peralatan</th>
                             <th>Sumber</th>
                             <th>Tahun</th>
@@ -66,8 +68,8 @@
                                         {{ $s->jenis_hardware }}
                                     </a>
                                 </td>
-                                <td>{{$s->tanggal_keluar}}</td>
-                                <td>{{$s->tanggal_dilepas}}</td>
+                                <td>{{ $s->tanggal_keluar }}</td>
+                                <td>{{ $s->tanggal_dilepas }}</td>
                                 <td>{{ $s->merk }}</td>
                                 <td>{{ $s->tipe }}</td>
                                 <td>{{ $s->serial_number }}</td>

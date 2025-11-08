@@ -20,9 +20,9 @@ class HardwareImport implements ToCollection, WithHeadingRow
         });
 
         // dd($row->all());
-        // dd($row);    
+        // dd($row);
         // Cari id peralatan berdasarkan kode_peralatan dari Excel
-            $peralatan = Peralatan::where('kode', $row['kode_peralatan'])->first();
+            $peralatan = Peralatan::where('kode', $row['lokasi_pemasangan'])->first();
 
             // Tentukan serial_number
             $serialNumber = $row['serial_number'] ?? $row['tahun_masuk'] . '_' . uniqid();
@@ -34,6 +34,7 @@ class HardwareImport implements ToCollection, WithHeadingRow
                 continue;
             }
 
+            // dd($row);
             Hardware::updateOrCreate(
                 ['serial_number' => $serialNumber],
                 [
@@ -45,7 +46,7 @@ class HardwareImport implements ToCollection, WithHeadingRow
                     'tipe' => $row['tipe'] ?? null,
                     'status' => $row['status'] ?? null,
                     'sumber_pengadaan' => $row['sumber_pengadaan'] ?? null,
-                    'tanggal_keluar' => $row['tanggal_pemasangan'] ?? null,
+                    'tanggal_keluar' => $row['tanggal_pasang_kirim'] ?? null,
                     'tanggal_dilepas' => $row['tanggal_dilepas'] ?? null,
                     'lokasi_pemasangan' => $peralatan ? $peralatan->id : null,
                     'lokasi_pengiriman' => $row['lokasi_pengiriman'] ?? null,
