@@ -7,6 +7,7 @@ use App\Models\Peralatan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class PemeliharaanController extends Controller
@@ -17,15 +18,21 @@ class PemeliharaanController extends Controller
         // return view('pemeliharaan.index', compact('pemeliharaans'));
         $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
 
+        // $tahun_sekarang = Carbon::now()->startOfYear()->format('Y-m-d');
+        $tahun_kemarin = Carbon::now()->subYear()->startOfYear()->format('Y-m-d');
+
         foreach ($jenis_peralatan as $jenis) {
             $pemeliharaansByJenis[$jenis] = Pemeliharaan::whereHas('peralatan', function ($query) use ($jenis) {
                 $query->where('jenis', $jenis);
-            })->with('peralatan')->latest()->get()->sortByDesc('tanggal');
+            })->with('peralatan')->where('tanggal', '>=', $tahun_kemarin)->latest()->get()->sortByDesc('tanggal');
         }
+
+        $date = Carbon::createFromFormat('Y-m-d', $tahun_kemarin);
+        $tahun_awal_data = $date->format('Y');
 
         // dd($pemeliharaansByJenis);
 
-        return view('pemeliharaan.index', compact( 'pemeliharaansByJenis'));
+        return view('pemeliharaan.index', compact( 'pemeliharaansByJenis', 'tahun_awal_data'));
         
     }
 

@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Data Pemeliharaan</h4>
+        <h4>Data Pemeliharaan Tahun {{ $tahun_awal_data }} -
+            {{ \Carbon\Carbon::now()->startOfYear()->format('Y') }}</h4>
         <a href="{{ route('pemeliharaan.create') }}" class="btn btn-success"> Tambah</a>
     </div>
 
@@ -39,7 +40,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        {{ $p->peralatan->jenis }} <br>
+                                        {{-- {{ $p->peralatan->jenis }} <br> --}}
                                         <a href="{{ route('peralatan.show', $p->peralatan->id) }}" class="">
                                             {{ $p->peralatan->kode }}
                                         </a>
