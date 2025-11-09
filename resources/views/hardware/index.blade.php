@@ -17,7 +17,7 @@
             @endif
             @isset($peralatan_id)
                 <a href="{{ route('hardware.download', $peralatan_id) }}" class="btn btn-success">
-                    Download Excel Hardware
+                    Download
                 </a>
             @endisset
         </div>
