@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pemeliharaan', PemeliharaanController::class);
     // Route::resource('hardware', HardwareController::class)->except(['destroy']);
 
+    Route::get('/hardware/download', [HardwareController::class, 'download'])->name('hardware.download');
+    Route::get('/hardware/test-download', fn() => 'Route OK');
     Route::resource('hardware', HardwareController::class);
     Route::get('/hardware/peralatan/{id}/{kode}', [HardwareController::class, 'hardwarePeralatan'])->name('hardware.peralatan');
     Route::resource('dokumen', DokumenController::class)->parameters(['dokumen' => 'dokumen']);
@@ -60,8 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/hardware/import', [HardwareController::class, 'import'])->name('hardware.import');
     // Route::get('hardware/download/{peralatanId}', [HardwareController::class, 'download'])->name('hardware.download');
     // Route::get('/hardware/download/{key}/{value}', [HardwareController::class, 'download'])->name('hardware.download');
-    Route::get('/hardware/download', [HardwareController::class, 'download'])->name('hardware.download');
-    Route::get('/hardware/test-download', fn() => 'Route OK');
+
 
 
 

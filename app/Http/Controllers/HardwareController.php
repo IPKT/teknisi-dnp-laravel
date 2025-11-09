@@ -372,17 +372,26 @@ class HardwareController extends Controller
 
     public function download(Request $request)
 {
-     dd('Route works!', $request->all());
+    //  dd('Route works!', $request->all());
 
     
-    $where_query = $request->only([
+   $where_query = collect($request->only([
         'lokasi_pemasangan',
         'sumber_pengadaan',
         'tahun_masuk',
         'status',
-        // tambahkan key lain jika perlu
-    ]);
+    ]))->filter(function ($value) {
+        return !is_null($value) && $value !== '';
+    })->toArray();
 
+    if(isset($where_query['lokasi_pemasangan'])){
+        $peralatan = Peralatan::where('kode',$where_query['lokasi_pemasangan'])->first();
+        if(empty($peralatan)){
+            return redirect()->back()->with('error', 'Peralatan Tidak ditemukan!');
+        }
+        $where_query['lokasi_pemasangan'] = $peralatan->id;
+    }
+    
     // Optional: validasi minimal 1 filter
     if (empty($where_query)) {
         return redirect()->back()->with('error', 'Minimal satu filter harus diisi!');
