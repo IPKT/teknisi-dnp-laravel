@@ -26,9 +26,9 @@ class HardwareController extends Controller
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
         $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
-        $peralatans  = Peralatan::all();
+        // $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans','statusHardwareList'));
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList','statusHardwareList'));
         // return view('hardware.index', compact('hardwares'));
     }
 
@@ -244,9 +244,9 @@ class HardwareController extends Controller
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
         $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
         // dd($lokasiPemasanganList);
-        $peralatans  = Peralatan::all();
+        // $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans', 'kode', 'peralatan_id', 'statusHardwareList'));
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'kode', 'peralatan_id', 'statusHardwareList'));
     }
 
     public function filterByStatus($status)
@@ -262,9 +262,9 @@ class HardwareController extends Controller
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
         $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
-        $peralatans  = Peralatan::all();
+        // $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans' , 'statusHardwareList'));
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList' , 'statusHardwareList'));
     }
 
     public function rekapPengadaan($tahun){
@@ -328,9 +328,10 @@ class HardwareController extends Controller
         $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
-        $peralatans  = Peralatan::all();
+        $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
+        // $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.detail_pengadaan', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans' , 'tahun'));
+        return view('hardware.detail_pengadaan', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'tahun', 'statusHardwareList'));
         // return view('hardware.index', compact('hardwares'));
     }
 
@@ -380,6 +381,7 @@ class HardwareController extends Controller
 
 
    $where_query = collect($request->only([
+        'jenis_peralatan',
         'lokasi_pemasangan',
         'sumber_pengadaan',
         'tahun_masuk',

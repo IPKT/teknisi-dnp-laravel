@@ -9,6 +9,15 @@
                 </div>
 
                 <div class="modal-body">
+                     <div class="mb-3">
+                        <label for="download_jenis_peralatan" class="form-label">Jenis Peralatan</label>
+                        <select name="jenis_peralatan" id="download_jenis_peralatan" class="form-select">
+                            <option value="">-- Pilih Jenis Peralatan --</option>
+                            @foreach ($jenis_peralatan as $jp)
+                                <option value="{{ $jp }}">{{ $jp }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="download_lokasi_pemasangan" class="form-label">Lokasi Pemasangan</label>
                         <input type="text" name="lokasi_pemasangan" id="download_lokasi_pemasangan" class="form-control"
