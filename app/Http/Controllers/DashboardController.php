@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Peralatan;
+use App\Models\Pemeliharaan;
+  use Carbon\Carbon;
+
+class DashboardController extends Controller
+{
+    public function index(){
+        $seluruh_peralatan['jumlah'] = Peralatan::count();
+        $seluruh_peralatan['on'] = Peralatan::where('kondisi_terkini', 'ON')->count();
+        $seluruh_peralatan['off'] = Peralatan::where('kondisi_terkini', 'OFF')->count();
+        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+        foreach ($jenis_peralatan as $jp){
+            $data['jumlah'] = Peralatan::where('jenis', $jp)->count();
+            $data['on'] = Peralatan::where('jenis', $jp)->where('kondisi_terkini' , 'ON')->count();
+            $data['off'] = Peralatan::where('jenis', $jp)->where('kondisi_terkini' , 'OFF')->count();
+            $peralatan[$jp] = $data;
+        }
+
+
+        $tahunIni = Carbon::now()->year;
+
+        $belumDikunjungiTahunIni = Peralatan::whereDoesntHave('pemeliharaans', function ($query) use ($tahunIni) {
+            $query->whereYear('tanggal', $tahunIni);
+        })->count();
+
+        //Pemeliharaan
+        $pemeliharaan['total'] = Pemeliharaan::whereYear('tanggal', Carbon::now()->year)->count();
+        $pemeliharaan['site_dikunjungi'] = Pemeliharaan::whereYear('tanggal', Carbon::now()->year)->distinct('id_peralatan')->count();
+        $pemeliharaan['persen'] =  round(($pemeliharaan['site_dikunjungi'] / $seluruh_peralatan['jumlah'] ) * 100,1);
+        $pemeliharaan['bulan_ini'] = Pemeliharaan::whereMonth('tanggal', Carbon::now()->month)->whereYear('tanggal', Carbon::now()->year)->count();
+        $pemeliharaan['bulan_lalu'] = Pemeliharaan::whereMonth('tanggal', Carbon::now()->subMonth())->whereYear('tanggal', Carbon::now()->year)->count();
+        // dd($seluruh_peralatan);
+        return view('dashboard.index', compact('seluruh_peralatan', 'peralatan', 'belumDikunjungiTahunIni', 'pemeliharaan'));
+    }
+}

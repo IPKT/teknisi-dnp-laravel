@@ -11,6 +11,8 @@ use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\SparepartController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\DashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | ROUTES UNTUK TAMU (BELUM LOGIN)
@@ -30,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard default → langsung redirect ke halaman peralatan
     // Route::get('/', fn() => redirect()->route('peralatan.index'))->name('home');
-    Route::get('/',  [PeralatanController::class, 'index'])->name('home');
+    Route::get('/',  [DashboardController::class, 'index'])->name('home');
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -64,6 +66,9 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/hardware/download/{key}/{value}', [HardwareController::class, 'download'])->name('hardware.download');
 
 
+    // DASHBOARD
+    Route::get('/dashboard' , [DashboardController::class, 'index'])->name('dashboard');
+
 
 
 
@@ -76,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/akun-setting', [ProfileController::class, 'akunSetting'])->name('profile.akun_setting');
     Route::put('/update_password', [ProfileController::class, 'updatePassword'])->name('profile.update_password');
 
-    
+
 
     // Hanya admin bisa akses halaman register user baru
     Route::middleware(['role:admin,teknisi'])->group(function () {
