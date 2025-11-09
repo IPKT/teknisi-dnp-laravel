@@ -8,7 +8,32 @@
                 {{ $kode }}
             @endisset
         </h4>
-        <div>
+        <div class="dropdown">
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Action
+            </a>
+
+            <ul class="dropdown-menu">
+                @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+                    <li><a href="#" class="dropdown-item" id="btnTambahHardware">Tambah
+                        </a></li>
+                    <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">Import
+                        </a></li>
+                @endif
+                @isset($peralatan_id)
+                    <li><a href="{{ route('hardware.download', $peralatan_id) }}" class="dropdown-item">
+                            Download
+                        </a></li>
+                @endisset
+                @empty($peralatan_id)
+                    <li><a href="{{ asset('assets/template_hardware.xlsx') }}" class="dropdown-item">
+                            Download Template
+                        </a></li>
+                @endempty
+            </ul>
+        </div>
+        {{-- <div>
             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                 <a href="#" class="btn btn-success" id="btnTambahHardware">Tambah
                 </a>
@@ -20,7 +45,7 @@
                     Download
                 </a>
             @endisset
-        </div>
+        </div> --}}
     </div>
 
     @if (session('success'))
