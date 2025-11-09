@@ -15,44 +15,30 @@ use Illuminate\Support\Collection;
 
 class HardwareExport implements FromCollection, WithHeadings , WithStyles, WithColumnFormatting
 {
-    protected $peralatanId;
+    // protected $peralatanId;
+    protected $where_query;
 
     // Terima parameter peralatan_id
-    public function __construct($peralatanId)
+    public function __construct($where_query)
     {
-        $this->peralatanId = $peralatanId;
+        // $this->peralatanId = $peralatanId;
+        $this->where_query = $where_query;
     }
 
     // Ambil data dari database
     public function collection()
     {        
-        $peralatan = Peralatan::find($this->peralatanId);
-        $peralatanKode = optional($peralatan)->kode;
-
-        $data = Hardware::where('lokasi_pemasangan', $this->peralatanId)
-            ->select(
-                'jenis_hardware',
-                'jenis_peralatan',
-                'tahun_masuk',
-                'tanggal_masuk',
-                'merk',
-                'tipe',
-                'serial_number',
-                'sumber_pengadaan',
-                'tanggal_keluar',
-                'tanggal_dilepas',
-                'status',
-                'nomor_surat',
-                'keterangan'
-            )
-            ->get();
+        // $peralatan = Peralatan::find($this->peralatanId);
+        // $peralatanKode = optional($peralatan)->kode;
+        // $data = Hardware::where($this->where_query)->get();
+        $data = Hardware::where($this->where_query)->get();
 
         // Tambah kolom 'no' dan 'lokasi_pemasangan'
         $numbered = new Collection();
         foreach ($data as $index => $item) {
             $numbered->push([
                 'no' => $index + 1,
-                'lokasi_pemasangan' => $peralatanKode,
+                'lokasi_pemasangan' => $item->peralatan ? $item->peralatan->kode : '',
                 'jenis_hardware' => $item->jenis_hardware,
                 'jenis_peralatan' => $item->jenis_peralatan,
                 'tahun_masuk' => $item->tahun_masuk,

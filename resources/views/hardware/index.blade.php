@@ -22,7 +22,8 @@
                         </a></li>
                 @endif
                 @isset($peralatan_id)
-                    <li><a href="{{ route('hardware.download', $peralatan_id) }}" class="dropdown-item">
+                    <li><a href="#"
+                            class="dropdown-item" data-bs-toggle="modal" data-bs-target="#downloadModal">
                             Download
                         </a></li>
                 @endisset
@@ -143,6 +144,7 @@
     @include('hardware.modal')
     @include('hardware.modal_show')
     @include('hardware.modal_import')
+    @include('hardware.modal_download')
 @endsection
 @section('scripts')
     <script>

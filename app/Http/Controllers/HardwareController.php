@@ -344,16 +344,56 @@ class HardwareController extends Controller
     }
 
     
-    public function download($peralatanId)
-    {
-        $peralatan = Peralatan::find($peralatanId);
+    // public function download($peralatanId)
+    // {
+    //     $peralatan = Peralatan::find($peralatanId);
 
-        if (!$peralatan) {
-            return redirect()->back()->with('error', 'Peralatan tidak ditemukan!');
-        }
+    //     if (!$peralatan) {
+    //         return redirect()->back()->with('error', 'Peralatan tidak ditemukan!');
+    //     }
 
-        $fileName = 'hardware_' . $peralatan->kode . '.xlsx';
+    //     $fileName = 'hardware_' . $peralatan->kode . '.xlsx';
 
-        return Excel::download(new HardwareExport($peralatanId), $fileName);
+    //     return Excel::download(new HardwareExport($peralatanId), $fileName);
+    // }
+    // public function download($key, $value)
+    // {
+    //     // $peralatan = Peralatan::find($value);
+
+    //     // if (!$peralatan) {
+    //     //     return redirect()->back()->with('error', 'Peralatan tidak ditemukan!');
+    //     // }
+
+    //     $fileName = 'hardware_' . $key . '_' . $value . '.xlsx';
+    //     $where_query = [$key => $value];
+
+    //     return Excel::download(new HardwareExport($where_query), $fileName);
+    // }
+
+    public function download(Request $request)
+{
+     dd('Route works!', $request->all());
+
+    
+    $where_query = $request->only([
+        'lokasi_pemasangan',
+        'sumber_pengadaan',
+        'tahun_masuk',
+        'status',
+        // tambahkan key lain jika perlu
+    ]);
+
+    // Optional: validasi minimal 1 filter
+    if (empty($where_query)) {
+        return redirect()->back()->with('error', 'Minimal satu filter harus diisi!');
     }
+
+    // Ambil salah satu untuk nama file
+    // $peralatan = Peralatan::find($request->lokasi_pemasangan);
+    // $kode = $peralatan ? $peralatan->kode : 'filtered';
+
+    $fileName = 'hardware_' . uniqid() . '.xlsx';
+
+    return Excel::download(new HardwareExport($where_query), $fileName);
+}
 }

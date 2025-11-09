@@ -58,7 +58,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/hardware/rekap-pengadaan/{tahun}', [HardwareController::class, 'rekapPengadaan'])->name('hardware.rekap_pengadaan');
     Route::get('/hardware/detail-pengadaan/{tahun}', [HardwareController::class, 'detailPengadaan'])->name('hardware.detail_pengadaan');
     Route::post('/hardware/import', [HardwareController::class, 'import'])->name('hardware.import');
-    Route::get('hardware/download/{peralatanId}', [HardwareController::class, 'download'])->name('hardware.download');
+    // Route::get('hardware/download/{peralatanId}', [HardwareController::class, 'download'])->name('hardware.download');
+    // Route::get('/hardware/download/{key}/{value}', [HardwareController::class, 'download'])->name('hardware.download');
+    Route::get('/hardware/download', [HardwareController::class, 'download'])->name('hardware.download');
+    Route::get('/hardware/test-download', fn() => 'Route OK');
 
 
 
