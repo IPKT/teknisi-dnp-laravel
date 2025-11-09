@@ -10,26 +10,42 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="lokasi_pemasangan" class="form-label">Lokasi Pemasangan</label>
-                        <input type="text" name="lokasi_pemasangan" id="lokasi_pemasangan" class="form-control"
-                            placeholder="Lokasi Pemasangan">
+                        <label for="download_lokasi_pemasangan" class="form-label">Lokasi Pemasangan</label>
+                        <input type="text" name="lokasi_pemasangan" id="download_lokasi_pemasangan" class="form-control"
+                            placeholder="Lokasi Pemasangan" list="lokasiPemasanganList">
+                        <datalist id="lokasiPemasanganList">
+                            @foreach ($lokasiPemasanganList as $lp)
+                                <option value="{{ $lp }}">
+                            @endforeach
+                        </datalist>
                     </div>
                     <div class="mb-3">
-                        <label for="sumber_pengadaan" class="form-label">Sumber Pengadaan</label>
-                        <select name="sumber_pengadaan" id="sumber_pengadaan" class="form-select">
+                        <label for="download_sumber_pengadaan" class="form-label">Sumber Pengadaan</label>
+                        <select name="sumber_pengadaan" id="download_sumber_pengadaan" class="form-select">
                             <option value="">-- Pilih Sumber --</option>
-                            <option value="Pengadaan DNP">Pengadaan DNP</option>
-                            <option value="Pengadaan Internal">Pengadaan Internal</option>
+                            @foreach ($sumberPengadaanList as $s)
+                                <option value="{{ $s }}">{{ $s }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="tahun_masuk" class="form-label">Tahun Masuk</label>
-                        <select name="tahun_masuk" id="tahun_masuk" class="form-select">
+                        <label for="download_tahun_masuk" class="form-label">Tahun Masuk</label>
+                        <select name="tahun_masuk" id="download_tahun_masuk" class="form-select">
                             <option value="">-- Tahun Masuk --</option>
                             @for ($y = now()->year; $y >= 2015; $y--)
                                 <option value="{{ $y }}">{{ $y }}</option>
                             @endfor
+                        </select>
+                    </div>
+
+                     <div class="mb-3">
+                        <label for="download_status" class="form-label">Status</label>
+                        <select name="status" id="download_status" class="form-select">
+                            <option value="">-- Pilih Status --</option>
+                            @foreach ($statusHardwareList as $s)
+                                <option value="{{ $s }}">{{ $s }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

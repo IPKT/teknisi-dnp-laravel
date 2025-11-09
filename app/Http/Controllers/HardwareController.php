@@ -25,9 +25,10 @@ class HardwareController extends Controller
         $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
+        $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
         $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans'));
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans','statusHardwareList'));
         // return view('hardware.index', compact('hardwares'));
     }
 
@@ -193,7 +194,7 @@ class HardwareController extends Controller
             $filename = 'berkas' . '_' . $request['jenis_hardware'] . '_' . $time . '.' . $request->file('berkas')->getClientOriginalExtension();
             $request->file('berkas')->storeAs('uploads/berkas_hardware', $filename, 'public');
             $validated['berkas'] = $filename;
-        
+
         }
 
            if ($request->hasFile('gambar')) {
@@ -241,9 +242,11 @@ class HardwareController extends Controller
         $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
+        $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
+        // dd($lokasiPemasanganList);
         $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans', 'kode', 'peralatan_id'));
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans', 'kode', 'peralatan_id', 'statusHardwareList'));
     }
 
     public function filterByStatus($status)
@@ -258,9 +261,10 @@ class HardwareController extends Controller
         $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
+        $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
         $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans'));
+        return view('hardware.index', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'peralatans' , 'statusHardwareList'));
     }
 
     public function rekapPengadaan($tahun){
@@ -343,7 +347,7 @@ class HardwareController extends Controller
         }
     }
 
-    
+
     // public function download($peralatanId)
     // {
     //     $peralatan = Peralatan::find($peralatanId);
@@ -374,7 +378,7 @@ class HardwareController extends Controller
 {
     //  dd('Route works!', $request->all());
 
-    
+
    $where_query = collect($request->only([
         'lokasi_pemasangan',
         'sumber_pengadaan',
@@ -391,7 +395,7 @@ class HardwareController extends Controller
         }
         $where_query['lokasi_pemasangan'] = $peralatan->id;
     }
-    
+
     // Optional: validasi minimal 1 filter
     if (empty($where_query)) {
         return redirect()->back()->with('error', 'Minimal satu filter harus diisi!');

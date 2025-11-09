@@ -21,12 +21,12 @@
                     <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">Import
                         </a></li>
                 @endif
-                @isset($peralatan_id)
+                {{-- @isset($peralatan_id) --}}
                     <li><a href="#"
                             class="dropdown-item" data-bs-toggle="modal" data-bs-target="#downloadModal">
                             Download
                         </a></li>
-                @endisset
+                {{-- @endisset --}}
                 @empty($peralatan_id)
                     <li><a href="{{ asset('assets/template_hardware.xlsx') }}" class="dropdown-item">
                             Download Template
