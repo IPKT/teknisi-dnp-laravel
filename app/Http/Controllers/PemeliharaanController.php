@@ -38,8 +38,9 @@ class PemeliharaanController extends Controller
 
     public function create()
     {
-        $peralatans = Peralatan::all();
-        return view('pemeliharaan.create', compact('peralatans'));
+        // $peralatans = Peralatan::all();
+        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+        return view('pemeliharaan.create', compact('jenis_peralatan'));
     }
 
  public function store(Request $request)

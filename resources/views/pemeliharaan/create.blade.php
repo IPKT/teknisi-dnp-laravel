@@ -30,9 +30,9 @@
                             <label>Pilih Jenis Peralatan<span class="text-danger">*</span></label>
                             <select name="jenis" id="jenis" class="form-select">
                                 <option value="">-- Pilih Jenis --</option>
-                                <option value="Intensitymeter Realshake">Intensitymeter Realshake</option>
-                                <option value="Seismometer">Seismometer</option>
-                                <option value="Accelero Non Colocated">Accelero Non Colocated</option>
+                           @foreach ($jenis_peralatan as $jp)
+                                    <option value="{{ $jp }}">{{ $jp }}</option>
+                           @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">

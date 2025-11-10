@@ -34,7 +34,26 @@ class DashboardController extends Controller
         $pemeliharaan['persen'] =  round(($pemeliharaan['site_dikunjungi'] / $seluruh_peralatan['jumlah'] ) * 100,1);
         $pemeliharaan['bulan_ini'] = Pemeliharaan::whereMonth('tanggal', Carbon::now()->month)->whereYear('tanggal', Carbon::now()->year)->count();
         $pemeliharaan['bulan_lalu'] = Pemeliharaan::whereMonth('tanggal', Carbon::now()->subMonth())->whereYear('tanggal', Carbon::now()->year)->count();
+        // $grafikBulan = Pemeliharaan::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')->groupBy('bulan')->get();
+        $tahunIni = Carbon::now()->year;
+
+        $grafikBulanRaw = Pemeliharaan::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
+            ->whereYear('tanggal', $tahunIni)
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
+
+        $grafikBulan = collect(range(1, 12))->map(function ($bulan) use ($grafikBulanRaw) {
+            $data = $grafikBulanRaw->firstWhere('bulan', $bulan);
+            return [
+                'label' => Carbon::create()->month($bulan)->isoFormat('MMM'),
+                'total' => $data ? $data->total : 0,
+            ];
+        });
+
+        
+        // dd($grafikBulan);
         // dd($seluruh_peralatan);
-        return view('dashboard.index', compact('seluruh_peralatan', 'peralatan', 'belumDikunjungiTahunIni', 'pemeliharaan'));
+        return view('dashboard.index', compact('seluruh_peralatan', 'peralatan', 'belumDikunjungiTahunIni', 'pemeliharaan', 'grafikBulan'));
     }
 }
