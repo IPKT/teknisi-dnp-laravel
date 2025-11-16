@@ -40,6 +40,7 @@ class PeralatanController extends Controller
             'koordinat' => 'required|max:50',
             'lokasi' => 'required|max:50',
             'kondisi_terkini' => 'required',
+            'kelompok' => 'required',
             'jenis' => 'required|max:100',
         ]);
 

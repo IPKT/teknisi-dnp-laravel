@@ -5,7 +5,7 @@
 @section('content')
     <div class="card shadow-sm">
         <div class="card-body">
-            <h4>Peralatan</h4>
+            <h4>Peralatan ALOPTAMA</h4>
             <div class="row g-3">
                 <div class="col-md-3">
                     <div class="card text-bg-primary">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <hr>
-            <h4>Pemeliharaan {{ Carbon\Carbon::now()->year }}</h4>
+            <h4>Pemeliharaan ALOPTAMA {{ Carbon\Carbon::now()->year }}</h4>
             <div class="row g-3">
                 <!-- Grafik di kiri -->
                 <div class="col-md-6">

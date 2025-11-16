@@ -31,7 +31,7 @@
                             <th>Kondisi</th>
                             <th>Jenis</th>
                             {{-- <th>Koordinat</th> --}}
-                            <th>Kunjungan Terbaru</th>
+                            <th>Pemeliharaan Terbaru</th>
                             <th>Lokasi</th>
                             <th>Nama PIC</th>
                             <th>Kontak</th>

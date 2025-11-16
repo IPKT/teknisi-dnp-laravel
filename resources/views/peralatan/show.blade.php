@@ -6,7 +6,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
             {{-- DETAIL PERALATAN --}}
-            <h4 class="mb-4">Detail Peralatan {{ $peralatan->jenis }} {{ $peralatan->kode }}</h4>
+            <h4 class="mb-4">Detail Peralatan {{ $peralatan->jenis }} - {{ $peralatan->kode }}</h4>
             <div class="row g-2">
                 <div class="col-md-6">
                     {{-- 🗺️ Peta Lokasi --}}
@@ -127,13 +127,13 @@
                                         <td>{{ $p->catatan_pemeliharaan }}</td>
                                         <td>
                                             @if ($p->laporan)
-                                                <a href="{{ asset('storage/' . $p->laporan) }}" target="_blank"
-                                                    class="btn btn-sm btn-outline-primary mb-2 mb-md-0"><i
+                                                <a href="{{ asset('storage/uploads/laporan_pemeliharaan/' . $p->laporan) }}"
+                                                    target="_blank" class="btn btn-sm btn-outline-primary mb-2 mb-md-0"><i
                                                         class="bi bi-file-earmark-pdf"></i></a>
                                             @endif
                                             @if ($p->laporan2)
-                                                <a href="{{ asset('storage/' . $p->laporan2) }}" target="_blank"
-                                                    class="btn btn-sm btn-outline-primary"><i
+                                                <a href="{{ asset('storage/uploads/laporan_pemeliharaan/' . $p->laporan2) }}"
+                                                    target="_blank" class="btn btn-sm btn-outline-primary"><i
                                                         class="bi bi-file-earmark-pdf"></i> 2</a>
                                             @endif
                                         </td>

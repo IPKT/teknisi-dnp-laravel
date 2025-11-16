@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('lokasi', 50);
             $table->string('detail_lokasi', 200)->nullable();
             $table->string('jenis', 100);
+            $table->string('kelompok', 50)->default('aloptama');
             $table->string('nama_pic', 100)->nullable();
             $table->string('jabatan_pic', 100)->nullable();
             $table->string('kontak_pic', 20)->nullable();

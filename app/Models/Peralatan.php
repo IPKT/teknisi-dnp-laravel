@@ -29,6 +29,7 @@ class Peralatan extends Model
         'kode',
         'kondisi_terkini',
         'jenis',
+        'kelompok',
         'koordinat',
         'lokasi',
         'detail_lokasi',

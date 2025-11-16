@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     {{-- Leaflet CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="{{asset('assets')}}/css/mycostum_css.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/mycostum_css.css">
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
@@ -71,7 +71,7 @@
                             <span class="pc-mtext">HOME</span>
                         </a>
                     </li>
-                    <li class="pc-item pc-hasmenu">
+                    {{-- <li class="pc-item pc-hasmenu">
                         <a href="#!" class="pc-link"><span class="pc-micon"><i
                                     class="ti ti-wave-saw-tool"></i></span><span class="pc-mtext"> Peralatan</span><span
                                 class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
@@ -87,6 +87,36 @@
                                     Colocated</a></li>
                             <li class="pc-item"><a class="pc-link"  href="{{ route('peralatan.jenis', 'Intensitymeter Reis') }}">Intensitymeter Reis</a></li>
                             <li class="pc-item"><a class="pc-link"  href="{{ route('peralatan.jenis', 'WRS') }}">WRS</a></li>
+                        </ul>
+                    </li> --}}
+                    <li class="pc-item pc-hasmenu">
+                        <a href="#!" class="pc-link"><span class="pc-micon"><i
+                                    class="ti ti-wave-saw-tool"></i></span><span class="pc-mtext"> Peralatan</span><span
+                                class="pc-arrow"><i data-feather="chevron-right"></i></span></a>
+                        <ul class="pc-submenu">
+                            <li class="pc-item">
+                                <a class="pc-link" href="{{ route('peralatan.index') }}">ALL</a>
+                            </li>
+                            @foreach ($jenisAloptamaMenu as $item)
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('peralatan.jenis', $item->jenis) }}">
+                                        {{ $item->jenis }}
+                                    </a>
+                                </li>
+                            @endforeach
+                            <li class="pc-item pc-hasmenu">
+                                <a href="#!" class="pc-link">Non Aloptama<span class="pc-arrow"><i
+                                            data-feather="chevron-right"></i></span></a>
+                                <ul class="pc-submenu">
+                                    @foreach ($jenisNonAloptamaMenu as $item)
+                                        <li class="pc-item">
+                                            <a class="pc-link" href="{{ route('peralatan.jenis', $item->jenis) }}">
+                                                {{ $item->jenis }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     {{-- <li class="pc-item">
