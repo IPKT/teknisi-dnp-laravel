@@ -2,6 +2,22 @@
 
 {{-- @section('title', 'Data Peralatan') --}}
 
+<style>
+    .custom-triangle-icon {
+        text-align: center;
+    }
+
+    .legend h4 {
+        margin: 0 0 5px;
+        font-size: 14px;
+    }
+
+    .legend p {
+        margin: 2px 0;
+        font-size: 13px;
+    }
+</style>
+
 @section('content')
     <div id="map" style="height: 350px;" class="mb-4"></div>
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -114,7 +130,7 @@
 
 @section('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
+    {{-- <script>
         var greenIcon = new L.Icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -169,6 +185,109 @@
         L.control.layers(null, layers, {
             collapsed: true
         }).addTo(map);
+    </script> --}}
+
+    <script>
+        // Custom triangle SVG icon
+        function createTriangleIcon(color) {
+            return L.divIcon({
+                className: 'custom-triangle-icon',
+                html: `<svg width="12" height="12" viewBox="0 0 12 12">
+                    <polygon points="6,0 12,12 0,12" fill="${color}" />
+                   </svg>`,
+                iconSize: [12, 12],
+                iconAnchor: [6, 12],
+                popupAnchor: [0, -12]
+            });
+        }
+
+        const greenIcon = createTriangleIcon('green');
+        const blackIcon = createTriangleIcon('black');
+
+        const map = L.map('map').setView([-8.4095, 115.1889], 9); // Center Bali
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const data = @json($peralatans);
+        const layers = {};
+        let total = 0,
+            onCount = 0,
+            offCount = 0;
+
+        data.forEach(item => {
+            const iconColor = item.kondisi_terkini === 'ON' ? greenIcon : blackIcon;
+            const permanentOrNot = item.kondisi_terkini === 'ON' ? false : true;
+            const [lat, lng] = item.koordinat.split(',').map(Number);
+            const baseUrl = "{{ route('peralatan.show', ':id') }}";
+            const url = baseUrl.replace(':id', item.id);
+
+            const marker = L.marker([lat, lng], {
+                icon: iconColor
+            }).bindTooltip(`<strong>${item.kode}</strong>`, {
+                permanent: permanentOrNot
+            }).on('click', function() {
+                window.location.href = url;
+            });
+
+            if (!layers[item.jenis]) {
+                layers[item.jenis] = L.layerGroup().addTo(map);
+            }
+
+            marker.addTo(layers[item.jenis]);
+
+            // Count for legend
+            total++;
+            if (item.kondisi_terkini === 'ON') onCount++;
+            else offCount++;
+        });
+
+        // Layer control
+        L.control.layers(null, layers, {
+            collapsed: true
+        }).addTo(map);
+
+        // Legend control
+        const legend = L.control({
+            position: 'bottomleft'
+        });
+        legend.onAdd = function() {
+            const div = L.DomUtil.create('div', 'info legend');
+            div.style.background = 'white';
+            div.style.padding = '10px';
+            div.style.border = '1px solid #ccc';
+            div.innerHTML = `
+            
+            <h4></h4>
+                <table class=""> 
+                    <tr class="">
+                        <td colspan="3" class="pb-2">{{ isset($jenis) && $jenis !== 'All' ? $jenis : '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td>&nbsp:</td>
+                        <td>${total}</td>
+                    </tr>
+                    <tr>
+                        <td><svg width="15" height="15" viewBox="0 0 15 15">
+                    <polygon points="7.5,0 15,15 0,15" fill="green" />
+                   </svg>&nbspON</td>
+                        <td>&nbsp:</td>
+                        <td>${onCount}</td>
+                    </tr>
+                    <tr>
+                        <td><svg width="15" height="15" viewBox="0 0 15 15">
+                    <polygon points="7.5,0 15,15 0,15" fill="black" />
+                   </svg>&nbspOFF</td>
+                        <td>&nbsp:</td>
+                        <td>${offCount}</td>
+                    </tr>
+                </table>
+        `;
+            return div;
+        };
+        legend.addTo(map);
     </script>
 
     <script>

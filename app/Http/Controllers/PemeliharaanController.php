@@ -16,14 +16,17 @@ class PemeliharaanController extends Controller
     {
         // $pemeliharaans = Pemeliharaan::with('peralatan')->latest()->get()->sortByDesc('tanggal');
         // return view('pemeliharaan.index', compact('pemeliharaans'));
-        $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+        $jenis_peralatan = Peralatan::where('kelompok', 'aloptama')->select('jenis')->distinct()->pluck('jenis');
 
         // $tahun_sekarang = Carbon::now()->startOfYear()->format('Y-m-d');
         $tahun_kemarin = Carbon::now()->subYear()->startOfYear()->format('Y-m-d');
 
         foreach ($jenis_peralatan as $jenis) {
             $pemeliharaansByJenis[$jenis] = Pemeliharaan::whereHas('peralatan', function ($query) use ($jenis) {
-                $query->where('jenis', $jenis);
+                $query->where([
+                    'jenis'    => $jenis,
+                    'kelompok' => 'aloptama',
+                ]);
             })->with('peralatan')->where('tanggal', '>=', $tahun_kemarin)->latest()->get()->sortByDesc('tanggal');
         }
 

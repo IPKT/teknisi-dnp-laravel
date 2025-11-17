@@ -128,7 +128,7 @@
                     <li class="pc-item">
                         <a href="{{ route('pemeliharaan.index') }}" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-tool"></i></span>
-                            <span class="pc-mtext">Pemeliharaan</span>
+                            <span class="pc-mtext">Pemeliharaan Aloptama</span>
                         </a>
                     </li>
                     {{-- <li class="pc-item">
