@@ -30,9 +30,9 @@
                             <label>Pilih Jenis Peralatan<span class="text-danger">*</span></label>
                             <select name="jenis" id="jenis" class="form-select">
                                 <option value="">-- Pilih Jenis --</option>
-                           @foreach ($jenis_peralatan as $jp)
+                                @foreach ($jenis_peralatan as $jp)
                                     <option value="{{ $jp }}">{{ $jp }}</option>
-                           @endforeach
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -62,18 +62,18 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Pelaksana<span class="text-danger">*</span></label>
                             {{-- <input type="text" name="pelaksana" class="form-control"> --}}
                             <textarea class="form-control textAreaMultiline my-text-area" name="pelaksana" rows="3"
                                 placeholder="1. Nama \n2. Nama" required></textarea>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Rekomendasi<span class="text-danger">*</span></label>
-                            <textarea class="form-control textAreaMultiline my-text-area" name="rekomendasi" rows="3"
+                            <textarea class="form-control textAreaMultiline my-text-area" name="rekomendasi" rows="5"
                                 placeholder="1. Perlu.. \n2. Perlu.." required></textarea>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Kerusakan</label>
                             <input type="text" name="kerusakan" class="form-control"
                                 placeholder="UPS, Sensor, Digitizer">
@@ -83,20 +83,20 @@
                             <textarea class="form-control textAreaMultiline" name="text_wa" rows="3" placeholder="copy laporan di WA Grup"></textarea>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label>Catatan Penting Pemeliharaan</label>
                             <textarea name="catatan_pemeliharaan" rows="3" class="form-control"
                                 placeholder="Masukan kegiatan atau kondisi yang dianggap penting"></textarea>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Gambar (jpg/png)</label>
                             <input type="file" name="gambar" class="form-control" accept="image/*">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Laporan (PDF)</label>
                             <input type="file" name="laporan" class="form-control" accept="application/pdf">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Laporan 2 (PDF)</label>
                             <input type="file" name="laporan2" class="form-control" accept="application/pdf">
                         </div>
