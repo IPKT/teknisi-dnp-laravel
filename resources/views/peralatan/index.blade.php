@@ -19,7 +19,9 @@
 </style>
 
 @section('content')
-    <div id="map" style="height: 350px;" class="mb-4"></div>
+    <div class="card shadow p-0 mb-4">
+        <div id="map" style="height: 350px;" class="" class="border border-dark"></div>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Peralatan {{ isset($jenis) && $jenis !== 'All' ? $jenis : '' }}</h4>
         @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
@@ -206,9 +208,33 @@
 
         const map = L.map('map').setView([-8.4095, 115.1889], 9); // Center Bali
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     attribution: '© OpenStreetMap contributors'
+        // }).addTo(map);
+
+        // L.tileLayer('https://{s}.satellite-provider.com/{z}/{x}/{y}.png', {
+        //     attribution: '© Satellite Provider'
+        // }).addTo(map);
+
+
+        // Base layers
+        const baseLayers = {
+            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }),
+
+            "CartoDB Positron (Light)": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
+            }),
+
+            "Esri World Gray": L.tileLayer(
+                'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+                })
+        };
+
+        // Set default base layer
+        baseLayers["CartoDB Positron (Light)"].addTo(map);
 
         const data = @json($peralatans);
         const layers = {};
@@ -244,7 +270,7 @@
         });
 
         // Layer control
-        L.control.layers(null, layers, {
+        L.control.layers(baseLayers, layers, {
             collapsed: true
         }).addTo(map);
 
