@@ -19,7 +19,7 @@
 </style>
 
 @section('content')
-    <div class="card shadow p-0 mb-4">
+    <div class="card shadow p-0 mb-4" style="display: none" id="divMap">
         <div id="map" style="height: 350px;" class="" class="border border-dark"></div>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -132,158 +132,103 @@
 
 @section('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    {{-- <script>
-        var greenIcon = new L.Icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [20, 30],
-            iconAnchor: [10, 30],
-            popupAnchor: [1, -34],
-            shadowSize: [30, 30]
-        });
-        var blackIcon = new L.Icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-        const map = L.map('map').setView([-8.4095, 115.1889], 9); // Center Bali
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        const data = @json($peralatans);
-        // console.log("haha", data);
-
-        const layers = {}; // LayerGroup per jenis
-
-        data.forEach(item => {
-            const iconColor = item.kondisi_terkini == 'ON' ? greenIcon : blackIcon;
-            const permanentOrNot = item.kondisi_terkini == 'ON' ? false : true
-            const [lat, lng] = item.koordinat.split(',').map(Number);
-            const baseUrl = "{{ route('peralatan.show', ':id') }}"; // placeholder :id
-            const url = baseUrl.replace(':id', item.id);
-
-            const marker = L.marker([lat, lng], {
-                // radius: 8,
-                icon: iconColor
-            }).bindTooltip(`<strong>${item.kode} </strong>`, {
-                permanent: permanentOrNot
-            }).on('click', function() {
-                window.location.href = url;
-            });
-
-            if (!layers[item.jenis]) {
-                layers[item.jenis] = L.layerGroup().addTo(map);
-            }
-
-            marker.addTo(layers[item.jenis]);
-        });
-
-        // Layer control
-        L.control.layers(null, layers, {
-            collapsed: true
-        }).addTo(map);
-    </script> --}}
-
-    <script>
-        // Custom triangle SVG icon
-        function createTriangleIcon(color) {
-            return L.divIcon({
-                className: 'custom-triangle-icon',
-                html: `<svg width="12" height="12" viewBox="0 0 12 12">
+    @if ($kelompok == 'aloptama')
+        <script>
+            document.getElementById("divMap").style.display = 'block';
+            // Custom triangle SVG icon
+            function createTriangleIcon(color) {
+                return L.divIcon({
+                    className: 'custom-triangle-icon',
+                    html: `<svg width="12" height="12" viewBox="0 0 12 12">
                     <polygon points="6,0 12,12 0,12" fill="${color}" />
                    </svg>`,
-                iconSize: [12, 12],
-                iconAnchor: [6, 12],
-                popupAnchor: [0, -12]
-            });
-        }
-
-        const greenIcon = createTriangleIcon('green');
-        const blackIcon = createTriangleIcon('black');
-
-        const map = L.map('map').setView([-8.4095, 115.1889], 9); // Center Bali
-
-        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     attribution: '© OpenStreetMap contributors'
-        // }).addTo(map);
-
-        // L.tileLayer('https://{s}.satellite-provider.com/{z}/{x}/{y}.png', {
-        //     attribution: '© Satellite Provider'
-        // }).addTo(map);
-
-
-        // Base layers
-        const baseLayers = {
-            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }),
-
-            "CartoDB Positron (Light)": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
-            }),
-
-            "Esri World Gray": L.tileLayer(
-                'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-                })
-        };
-
-        // Set default base layer
-        baseLayers["CartoDB Positron (Light)"].addTo(map);
-
-        const data = @json($peralatans);
-        const layers = {};
-        let total = 0,
-            onCount = 0,
-            offCount = 0;
-
-        data.forEach(item => {
-            const iconColor = item.kondisi_terkini === 'ON' ? greenIcon : blackIcon;
-            const permanentOrNot = item.kondisi_terkini === 'ON' ? false : true;
-            const [lat, lng] = item.koordinat.split(',').map(Number);
-            const baseUrl = "{{ route('peralatan.show', ':id') }}";
-            const url = baseUrl.replace(':id', item.id);
-
-            const marker = L.marker([lat, lng], {
-                icon: iconColor
-            }).bindTooltip(`<strong>${item.kode}</strong>`, {
-                permanent: permanentOrNot
-            }).on('click', function() {
-                window.location.href = url;
-            });
-
-            if (!layers[item.jenis]) {
-                layers[item.jenis] = L.layerGroup().addTo(map);
+                    iconSize: [12, 12],
+                    iconAnchor: [6, 12],
+                    popupAnchor: [0, -12]
+                });
             }
 
-            marker.addTo(layers[item.jenis]);
+            const greenIcon = createTriangleIcon('green');
+            const blackIcon = createTriangleIcon('black');
 
-            // Count for legend
-            total++;
-            if (item.kondisi_terkini === 'ON') onCount++;
-            else offCount++;
-        });
+            const map = L.map('map').setView([-8.4095, 115.1889], 9); // Center Bali
 
-        // Layer control
-        L.control.layers(baseLayers, layers, {
-            collapsed: true
-        }).addTo(map);
+            // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            //     attribution: '© OpenStreetMap contributors'
+            // }).addTo(map);
 
-        // Legend control
-        const legend = L.control({
-            position: 'bottomleft'
-        });
-        legend.onAdd = function() {
-            const div = L.DomUtil.create('div', 'info legend');
-            div.style.background = 'white';
-            div.style.padding = '10px';
-            div.style.border = '1px solid #ccc';
-            div.innerHTML = `
+            // L.tileLayer('https://{s}.satellite-provider.com/{z}/{x}/{y}.png', {
+            //     attribution: '© Satellite Provider'
+            // }).addTo(map);
+
+
+            // Base layers
+            const baseLayers = {
+                "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }),
+
+                "CartoDB Positron (Light)": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://carto.com/">CartoDB</a>'
+                }),
+
+                "Esri World Gray": L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+                    })
+            };
+
+            // Set default base layer
+            baseLayers["CartoDB Positron (Light)"].addTo(map);
+
+            const data = @json($peralatans);
+            const layers = {};
+            let total = 0,
+                onCount = 0,
+                offCount = 0;
+
+            data.forEach(item => {
+                const iconColor = item.kondisi_terkini === 'ON' ? greenIcon : blackIcon;
+                const permanentOrNot = item.kondisi_terkini === 'ON' ? false : true;
+                const [lat, lng] = item.koordinat.split(',').map(Number);
+                const baseUrl = "{{ route('peralatan.show', ':id') }}";
+                const url = baseUrl.replace(':id', item.id);
+
+                const marker = L.marker([lat, lng], {
+                    icon: iconColor
+                }).bindTooltip(`<strong>${item.kode}</strong>`, {
+                    permanent: permanentOrNot
+                }).on('click', function() {
+                    window.location.href = url;
+                });
+
+                if (!layers[item.jenis]) {
+                    layers[item.jenis] = L.layerGroup().addTo(map);
+                }
+
+                marker.addTo(layers[item.jenis]);
+
+                // Count for legend
+                total++;
+                if (item.kondisi_terkini === 'ON') onCount++;
+                else offCount++;
+            });
+
+            // Layer control
+            L.control.layers(baseLayers, layers, {
+                collapsed: true
+            }).addTo(map);
+
+            // Legend control
+            const legend = L.control({
+                position: 'bottomleft'
+            });
+            legend.onAdd = function() {
+                const div = L.DomUtil.create('div', 'info legend');
+                div.style.background = 'white';
+                div.style.padding = '10px';
+                div.style.border = '1px solid #ccc';
+                div.innerHTML = `
             
             <h4></h4>
                 <table class=""> 
@@ -311,10 +256,11 @@
                     </tr>
                 </table>
         `;
-            return div;
-        };
-        legend.addTo(map);
-    </script>
+                return div;
+            };
+            legend.addTo(map);
+        </script>
+    @endif
 
     <script>
         document.querySelectorAll('.btn-delete-peralatan').forEach(btn => {

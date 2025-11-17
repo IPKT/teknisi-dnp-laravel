@@ -44,8 +44,9 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/get-peralatan-by-jenis', [PeralatanController::class, 'getByJenis'])->name('peralatan.getByJenis');
     Route::get('/peralatan/get-by-jenis/{jenis}', [PeralatanController::class, 'getByJenis'])->name('peralatan.getByJenis');
     // untuk enampilkan seluruh peralatan berdasarkan jenisnya
-    Route::get('/peralatan/jenis/{jenis}', [PeralatanController::class, 'filterByJenis'])->name('peralatan.jenis');
-
+    // Route::get('/peralatan/jenis/{jenis}', [PeralatanController::class, 'filterByJenis'])->name('peralatan.jenis');
+    Route::get('/peralatan/aloptama/{jenis}', [PeralatanController::class, 'aloptama'])->name('peralatan.aloptama');
+    Route::get('/peralatan/non-aloptama/{jenis}', [PeralatanController::class, 'non_aloptama'])->name('peralatan.non_aloptama');
 
 
     Route::resource('pemeliharaan', PemeliharaanController::class);

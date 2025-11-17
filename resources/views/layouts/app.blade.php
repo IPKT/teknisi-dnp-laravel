@@ -99,7 +99,7 @@
                             </li>
                             @foreach ($jenisAloptamaMenu as $item)
                                 <li class="pc-item">
-                                    <a class="pc-link" href="{{ route('peralatan.jenis', $item->jenis) }}">
+                                    <a class="pc-link" href="{{ route('peralatan.aloptama', $item->jenis) }}">
                                         {{ $item->jenis }}
                                     </a>
                                 </li>
@@ -110,7 +110,8 @@
                                 <ul class="pc-submenu">
                                     @foreach ($jenisNonAloptamaMenu as $item)
                                         <li class="pc-item">
-                                            <a class="pc-link" href="{{ route('peralatan.jenis', $item->jenis) }}">
+                                            <a class="pc-link"
+                                                href="{{ route('peralatan.non_aloptama', $item->jenis) }}">
                                                 {{ $item->jenis }}
                                             </a>
                                         </li>

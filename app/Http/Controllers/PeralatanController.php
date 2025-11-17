@@ -15,15 +15,28 @@ class PeralatanController extends Controller
         return view('peralatan.index', compact('peralatans'));
     }
 
-    public function filterByJenis($jenis)
+    public function aloptama($jenis)
     {
         if ($jenis === 'All') {
             $peralatans = Peralatan::all();
         } else {
             $peralatans = Peralatan::where('jenis', $jenis)->get();
         }
+        
+        $kelompok = 'aloptama';
+        return view('peralatan.index', compact('peralatans', 'jenis', 'kelompok'));
+    }
 
-        return view('peralatan.index', compact('peralatans', 'jenis'));
+        public function non_aloptama($jenis)
+    {
+        if ($jenis === 'All') {
+            $peralatans = Peralatan::all();
+        } else {
+            $peralatans = Peralatan::where('jenis', $jenis)->get();
+        }
+        
+        $kelompok = 'non-aloptama';
+        return view('peralatan.index', compact('peralatans', 'jenis', 'kelompok'));
     }
 
 
