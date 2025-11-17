@@ -12,7 +12,8 @@ class PeralatanController extends Controller
     public function index()
     {
         $peralatans = Peralatan::where('kelompok', 'aloptama')->get();
-        return view('peralatan.index', compact('peralatans'));
+        $kelompok = 'aloptama';
+        return view('peralatan.index', compact('peralatans', 'kelompok'));
     }
 
     public function aloptama($jenis)
