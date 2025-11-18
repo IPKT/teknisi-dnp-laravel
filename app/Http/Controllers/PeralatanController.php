@@ -70,7 +70,9 @@ class PeralatanController extends Controller
         if (Auth::user()->role != 'teknisi' and Auth::user()->role != 'admin') {
             return redirect()->route('peralatan.index');
         }
-        return view('peralatan.edit', compact('peralatan'));
+
+           $jenisPeralatan = Peralatan::select('jenis')->distinct()->orderBy('jenis')->get();
+        return view('peralatan.edit', compact('peralatan', 'jenisPeralatan'));
     }
 
     public function update(Request $request, Peralatan $peralatan)
