@@ -457,6 +457,35 @@
 
 
     @yield('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select ALL table elements on the page
+            const allTables = document.querySelectorAll('table');
+
+            // Define the media query for small screens (less than 768px - typically mobile)
+            const mediaQuery = window.matchMedia('(max-width: 767.98px)');
+
+            function toggleTableClass(mediaQuery) {
+                if (mediaQuery.matches) {
+                    // Screen is small: Add your custom "small" class
+                    allTables.forEach(table => {
+                        table.classList.add('small');
+                    });
+                    // ...
+                } else {
+                    // Screen is larger: Remove your custom "small" class
+                    allTables.forEach(table => {
+                        table.classList.remove('small');
+                    });
+                    // ...
+                }
+            }
+            // Run the check initially and whenever the screen size changes
+            toggleTableClass(mediaQuery);
+            mediaQuery.addListener(toggleTableClass);
+        });
+    </script>
 </body>
 <!-- [Body] end -->
 
