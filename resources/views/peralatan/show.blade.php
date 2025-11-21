@@ -3,6 +3,12 @@
 @section('title', 'Detail Peralatan')
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
     <div class="card shadow-sm">
         <div class="card-body">
             {{-- DETAIL PERALATAN --}}
@@ -68,6 +74,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#metadataModal">
+                        Metadata
+                    </button>
+                    @include('peralatan.metadata_modal')
+
                 </div>
             </div>
 

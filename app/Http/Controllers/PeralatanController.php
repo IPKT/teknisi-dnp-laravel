@@ -23,7 +23,7 @@ class PeralatanController extends Controller
         } else {
             $peralatans = Peralatan::where('jenis', $jenis)->get();
         }
-        
+
         $kelompok = 'aloptama';
         return view('peralatan.index', compact('peralatans', 'jenis', 'kelompok'));
     }
@@ -35,7 +35,7 @@ class PeralatanController extends Controller
         } else {
             $peralatans = Peralatan::where('jenis', $jenis)->get();
         }
-        
+
         $kelompok = 'non-aloptama';
         return view('peralatan.index', compact('peralatans', 'jenis', 'kelompok'));
     }
@@ -135,4 +135,23 @@ class PeralatanController extends Controller
         $terbaru = $peralatan->pemeliharaans()->orderByDesc('tanggal')->first();
         return view('peralatan.show', compact('peralatan', 'pemeliharaan', 'jumlahPemeliharaan', 'terbaru', 'hardware', 'dokumen', 'jenis_hardware'));
     }
+
+    public function updateMetadata(Request $request, Peralatan $peralatan)
+{
+    $metadata = [];
+
+    if ($request->has('metadata_keys')) {
+        foreach ($request->metadata_keys as $i => $key) {
+            if ($key) {
+                $metadata[$key] = $request->metadata_values[$i] ?? null;
+            }
+        }
+    }
+
+    $peralatan->metadata = $metadata;
+    $peralatan->save();
+
+    return back()->with('success', 'Metadata berhasil diupdate.');
+}
+
 }

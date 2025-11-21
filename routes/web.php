@@ -94,6 +94,9 @@ Route::middleware(['auth'])->group(function () {
         // User manage
         Route::get('/manage-user', [UserController::class, 'index'])->name('manage.user');
         Route::put('/manage-user/{id}', [UserController::class, 'updateRole'])->name('manage.user.update');
+
+        // update metadata peralatan
+        Route::put('/peralatan/{peralatan}/metadata', [PeralatanController::class, 'updateMetadata'])->name('peralatan.updateMetadata');
     });
 });
 

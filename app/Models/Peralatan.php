@@ -37,6 +37,11 @@ class Peralatan extends Model
         'nama_pic',
         'jabatan_pic',
         'kontak_pic',
-        'catatan'
+        'catatan',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
     ];
 }
