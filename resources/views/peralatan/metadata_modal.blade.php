@@ -28,8 +28,8 @@
                                     </div>
                                     @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger w-100"
-                                                onclick="this.closest('.meta-row').remove()">x</button>
+                                            <button type="button" class="btn btn-close bg-danger p-2"
+                                                onclick="confirm('anda yakin menghapus metadata') ? this.closest('.meta-row').remove() : null ">x</button>
                                         </div>
                                     @endif
                                 </div>
