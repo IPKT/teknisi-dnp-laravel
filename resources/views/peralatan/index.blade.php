@@ -49,11 +49,11 @@
                             <th>Kondisi</th>
                             <th @if(isset($jenis) && $jenis !== 'All') style="display:none" @endif>Jenis</th>
                             {{-- <th>Koordinat</th> --}}
+                            <th>Lokasi</th>
                             <th>Pemeliharaan Terbaru</th>
                             <th>2025</th>
                             <th>Rekomendasi</th>
                             <th>Kerusakan</th>
-                            <th>Lokasi</th>
                             <th>PIC</th>
                             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                                 <th class="text-center">Aksi</th>
@@ -75,6 +75,7 @@
                                 </td>
                                 <td @if(isset($jenis) && $jenis !== 'All') style="display:none" @endif>{{ $alat->jenis }}</td>
                                 {{-- <td>{{ $alat->koordinat }}</td> --}}
+                                <td>{{ $alat->lokasi }}</td>
                                 <td>{{ optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->tanggal }}
                                 </td>
                                 <td>{{ $alat->pemeliharaans()->where('tanggal','>=', '2025-01-01')->count() }}</td>
@@ -82,7 +83,6 @@
                                 </td>
                                   <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}
                                 </td>
-                                <td>{{ $alat->lokasi }}</td>
                                 <td>{{ $alat->nama_pic }} <br>{{ $alat->kontak_pic }}</td>
                                 {{-- <td>{{ $alat->kontak_pic }}</td> --}}
                                 @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
@@ -236,9 +236,9 @@
                 div.style.padding = '10px';
                 div.style.border = '1px solid #ccc';
                 div.innerHTML = `
-            
+
             <h4></h4>
-                <table class=""> 
+                <table class="">
                     <tr class="">
                         <td colspan="3" class="pb-2">{{ isset($jenis) && $jenis !== 'All' ? $jenis : '' }}</td>
                     </tr>
