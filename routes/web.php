@@ -50,10 +50,10 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::resource('pemeliharaan', PemeliharaanController::class);
+    Route::get('/pemeliharaan/jenis/{jenis}', [PemeliharaanController::class, 'showByJenis'])->name('pemeliharaan.jenis_alat');
     // Route::resource('hardware', HardwareController::class)->except(['destroy']);
 
     Route::get('/hardware/download', [HardwareController::class, 'download'])->name('hardware.download');
-    Route::get('/hardware/test-download', fn() => 'Route OK');
     Route::resource('hardware', HardwareController::class);
     Route::get('/hardware/peralatan/{id}/{kode}', [HardwareController::class, 'hardwarePeralatan'])->name('hardware.peralatan');
     Route::resource('dokumen', DokumenController::class)->parameters(['dokumen' => 'dokumen']);

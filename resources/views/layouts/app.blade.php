@@ -126,11 +126,38 @@
             <span class="pc-mtext">Peralatan</span>
           </a>
         </li> --}}
-                    <li class="pc-item">
-                        <a href="{{ route('pemeliharaan.index') }}" class="pc-link">
+                    <li class="pc-item pc-hasmenu">
+                        <a href="#!" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-tool"></i></span>
-                            <span class="pc-mtext">Pemeliharaan Aloptama</span>
+                            <span class="pc-mtext">Pemeliharaan</span><span class="pc-arrow"><i
+                                    data-feather="chevron-right"></i></span>
                         </a>
+                        <ul class="pc-submenu">
+                            <li class="pc-item">
+                                <a class="pc-link" href="{{ route('pemeliharaan.index') }}">ALL Aloptama</a>
+                            </li>
+                            @foreach ($jenisAloptamaMenu as $item)
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('pemeliharaan.jenis_alat', $item->jenis) }}">
+                                        {{ $item->jenis }}
+                                    </a>
+                                </li>
+                            @endforeach
+                            <li class="pc-item pc-hasmenu">
+                                <a href="#!" class="pc-link">Non Aloptama<span class="pc-arrow"><i
+                                            data-feather="chevron-right"></i></span></a>
+                                <ul class="pc-submenu">
+                                    @foreach ($jenisNonAloptamaMenu as $item)
+                                        <li class="pc-item">
+                                            <a class="pc-link"
+                                                href="{{ route('pemeliharaan.jenis_alat', $item->jenis) }}">
+                                                {{ $item->jenis }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                     {{-- <li class="pc-item">
                         <a href="{{ route('hardware.index') }}" class="pc-link">

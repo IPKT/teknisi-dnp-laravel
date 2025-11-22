@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class PemeliharaanController extends Controller
 {
-    public function index()
+    public function index_lama()
     {
         // $pemeliharaans = Pemeliharaan::with('peralatan')->latest()->get()->sortByDesc('tanggal');
         // return view('pemeliharaan.index', compact('pemeliharaans'));
@@ -36,7 +36,34 @@ class PemeliharaanController extends Controller
         // dd($pemeliharaansByJenis);
 
         return view('pemeliharaan.index', compact( 'pemeliharaansByJenis', 'tahun_awal_data'));
-        
+
+    }
+
+    public function index(){
+
+
+        $jenis = 'Seluruh Peralatan';
+        $tahun_kemarin = Carbon::now()->subYear()->startOfYear()->format('Y-m-d');
+        $date = Carbon::createFromFormat('Y-m-d', $tahun_kemarin);
+        $tahun_awal_data = $date->format('Y');
+        $pemeliharaan = Pemeliharaan::where('tanggal', '>=', $tahun_kemarin)->latest()->get()->sortByDesc('tanggal');
+
+        return view('pemeliharaan.index', compact( 'pemeliharaan', 'tahun_awal_data', 'jenis'));
+    }
+
+    public function showByJenis($jenis){
+        $jenis = $jenis;
+        $tahun_kemarin = Carbon::now()->subYear()->startOfYear()->format('Y-m-d');
+        $date = Carbon::createFromFormat('Y-m-d', $tahun_kemarin);
+        $tahun_awal_data = $date->format('Y');
+        $pemeliharaan = Pemeliharaan::where('tanggal', '>=', $tahun_kemarin)->whereHas('peralatan', function ($query) use ($jenis) {
+                $query->where([
+                    'jenis'    => $jenis,
+                    // 'kelompok' => 'aloptama',
+                ]);
+            })->latest()->get()->sortByDesc('tanggal');
+
+        return view('pemeliharaan.index', compact( 'pemeliharaan', 'tahun_awal_data', 'jenis'));
     }
 
     public function create()
@@ -129,7 +156,7 @@ class PemeliharaanController extends Controller
             // $data['laporan'] = $request->file('laporan')->store('uploads/laporan', 'public');
             $filename = $kode . '_' . $request['tanggal'].'_'.$time . '.' . $request->file('laporan')->getClientOriginalExtension();
             $request->file('laporan')->storeAs('uploads/laporan_pemeliharaan/', $filename, 'public');
-            $data['laporan'] = $filename;    
+            $data['laporan'] = $filename;
         }
 
         if ($request->hasFile('laporan2')) {
@@ -157,7 +184,7 @@ class PemeliharaanController extends Controller
         if ($pemeliharaan->laporan2 && file_exists(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan2))) {
                 unlink(storage_path('app/public/uploads/laporan_pemeliharaan/'.$pemeliharaan->laporan2));
             }
-        
+
         $kode = $pemeliharaan->peralatan->kode;
         $pemeliharaan->delete();
         return response()->json(['success' => true, 'message' => "Data pemeliharaan $kode berhasil dihapus."]);
