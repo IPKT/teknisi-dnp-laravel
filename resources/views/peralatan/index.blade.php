@@ -54,8 +54,7 @@
                             <th>Rekomendasi</th>
                             <th>Kerusakan</th>
                             <th>Lokasi</th>
-                            <th>Nama PIC</th>
-                            <th>Kontak</th>
+                            <th>PIC</th>
                             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                                 <th class="text-center">Aksi</th>
                             @endif
@@ -84,8 +83,8 @@
                                   <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}
                                 </td>
                                 <td>{{ $alat->lokasi }}</td>
-                                <td>{{ $alat->nama_pic }}</td>
-                                <td>{{ $alat->kontak_pic }}</td>
+                                <td>{{ $alat->nama_pic }} <br>{{ $alat->kontak_pic }}</td>
+                                {{-- <td>{{ $alat->kontak_pic }}</td> --}}
                                 @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                                     {{-- <td class="text-center">
 
@@ -303,7 +302,7 @@
         $(document).ready(function() {
             $('#tablePeralatan').DataTable({
                 info: false,
-                lengthChange: false,
+                lengthChange: true,
                 pageLength: 15
             });
         });
