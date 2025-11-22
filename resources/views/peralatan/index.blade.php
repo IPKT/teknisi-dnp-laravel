@@ -24,11 +24,18 @@
     </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Data Peralatan {{ isset($jenis) && $jenis !== 'All' ? $jenis : '' }}</h4>
-        @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
-            <a href="{{ route('peralatan.create') }}" class="btn btn-success">
-                Tambah
+        <div>
+            @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+                <a href="{{ route('peralatan.create') }}" class="btn btn-success">
+                    Tambah
+                </a>
+            @endif
+
+            <a href="{{ route('peralatan.download', $jenis ?? 'aloptama') }}" class="btn btn-primary">
+                Download
             </a>
-        @endif
+        </div>
+
     </div>
 
     @if (session('success'))
@@ -47,7 +54,7 @@
                             <th>#</th>
                             <th>Kode</th>
                             <th>Kondisi</th>
-                            <th @if(isset($jenis) && $jenis !== 'All') style="display:none" @endif>Jenis</th>
+                            <th @if (isset($jenis) && $jenis !== 'All') style="display:none" @endif>Jenis</th>
                             {{-- <th>Koordinat</th> --}}
                             <th>Lokasi</th>
                             <th>Pemeliharaan Terbaru</th>
@@ -73,15 +80,15 @@
                                         {{ $alat->kondisi_terkini }}
                                     </span>
                                 </td>
-                                <td @if(isset($jenis) && $jenis !== 'All') style="display:none" @endif>{{ $alat->jenis }}</td>
+                                <td @if (isset($jenis) && $jenis !== 'All') style="display:none" @endif>{{ $alat->jenis }}</td>
                                 {{-- <td>{{ $alat->koordinat }}</td> --}}
                                 <td>{{ $alat->lokasi }}</td>
                                 <td>{{ optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->tanggal }}
                                 </td>
-                                <td>{{ $alat->pemeliharaans()->where('tanggal','>=', '2025-01-01')->count() }}</td>
+                                <td>{{ $alat->pemeliharaans()->where('tanggal', '>=', '2025-01-01')->count() }}</td>
                                 <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->rekomendasi) !!}
                                 </td>
-                                  <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}
+                                <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}
                                 </td>
                                 <td>{{ $alat->nama_pic }} <br>{{ $alat->kontak_pic }}</td>
                                 {{-- <td>{{ $alat->kontak_pic }}</td> --}}

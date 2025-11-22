@@ -6,7 +6,9 @@ use App\Models\Peralatan;
 use Illuminate\Http\Request;
 use App\Models\JenisHardware;
 use Illuminate\Support\Facades\Auth;
-
+use App\Exports\PeralatanExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 class PeralatanController extends Controller
 {
     public function index()
@@ -153,5 +155,15 @@ class PeralatanController extends Controller
 
     return back()->with('success', 'Metadata berhasil diupdate.');
 }
+
+    public function download($jenis)
+{
+
+    $tanggal_sekarang = Carbon::now()->format('Y-m-d');
+    $fileName = $jenis .'_'. $tanggal_sekarang .'_'. uniqid(). '.xlsx';
+
+    return Excel::download(new PeralatanExport($jenis), $fileName);
+}
+
 
 }

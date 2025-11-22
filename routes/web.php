@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/peralatan/jenis/{jenis}', [PeralatanController::class, 'filterByJenis'])->name('peralatan.jenis');
     Route::get('/peralatan/aloptama/{jenis}', [PeralatanController::class, 'aloptama'])->name('peralatan.aloptama');
     Route::get('/peralatan/non-aloptama/{jenis}', [PeralatanController::class, 'non_aloptama'])->name('peralatan.non_aloptama');
+    Route::get('/peralatan/download/{jenis}', [PeralatanController::class, 'download'])->name('peralatan.download');
 
 
     Route::resource('pemeliharaan', PemeliharaanController::class);
