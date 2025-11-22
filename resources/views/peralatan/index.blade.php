@@ -47,9 +47,12 @@
                             <th>#</th>
                             <th>Kode</th>
                             <th>Kondisi</th>
-                            <th>Jenis</th>
+                            <th @if(isset($jenis) && $jenis !== 'All') style="display:none" @endif>Jenis</th>
                             {{-- <th>Koordinat</th> --}}
                             <th>Pemeliharaan Terbaru</th>
+                            <th>2025</th>
+                            <th>Rekomendasi</th>
+                            <th>Kerusakan</th>
                             <th>Lokasi</th>
                             <th>Nama PIC</th>
                             <th>Kontak</th>
@@ -71,9 +74,14 @@
                                         {{ $alat->kondisi_terkini }}
                                     </span>
                                 </td>
-                                <td>{{ $alat->jenis }}</td>
+                                <td @if(isset($jenis) && $jenis !== 'All') style="display:none" @endif>{{ $alat->jenis }}</td>
                                 {{-- <td>{{ $alat->koordinat }}</td> --}}
                                 <td>{{ optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->tanggal }}
+                                </td>
+                                <td>{{ $alat->pemeliharaans()->where('tanggal','>=', '2025-01-01')->count() }}</td>
+                                <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->rekomendasi) !!}
+                                </td>
+                                  <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}
                                 </td>
                                 <td>{{ $alat->lokasi }}</td>
                                 <td>{{ $alat->nama_pic }}</td>
