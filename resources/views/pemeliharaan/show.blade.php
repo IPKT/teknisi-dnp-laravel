@@ -72,7 +72,10 @@
                             <tr>
                                 <td>Catatan</td>
                                 <td>:</td>
-                                <td>{{ $pemeliharaan->catatan_pemeliharaan }}</td>
+                                <td><?php
+                                $catatan = str_replace("\r\n", '<br>', $pemeliharaan->catatan_pemeliharaan);
+                                echo $catatan;
+                                ?></td>
                             </tr>
                             <tr>
                                 <td>Author</td>

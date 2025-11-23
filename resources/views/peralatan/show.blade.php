@@ -96,14 +96,22 @@
                             style="width: 100%;">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>No</th>
-                                    {{-- <th>Peralatan</th> --}}
+                                    {{-- <th>No</th>
                                     <th style="width: 10%">Tanggal</th>
                                     <th>Pelaksana</th>
                                     <th style="width: 25%;">Rekomendasi</th>
                                     <th class="th-lg" style="width: 25%">Text WA</th>
                                     <th>Catatan</th>
                                     <th>Laporan</th>
+                                    <th>#</th> --}}
+                                    <th>No</th>
+                                    {{-- <th>Peralatan</th> --}}
+                                    <th class="w-10">Tanggal</th>
+                                    <th>Pelaksana</th>
+                                    <th class="rekomendasi-col w-25" style="width: 25%">Rekomendasi</th>
+                                    <th class="text-wa w-25" style="width: 25%">Text WA</th>
+                                    <th class="catatan-col w-15" style="width: 15%">Catatan</th>
+                                    <th class="w-10">Laporan</th>
                                     <th>#</th>
                                 </tr>
                             </thead>
@@ -116,11 +124,11 @@
                                                 {{ $p->peralatan->kode }}
                                             </a>
                                         </td> --}}
-                                        <td><a href="{{ route('pemeliharaan.show', $p->id) }}" class="">
+                                        <td class="text-nowrap"><a href="{{ route('pemeliharaan.show', $p->id) }}" class="">
                                                 {{ $p->tanggal }}
                                             </a></td>
 
-                                        <td>
+                                        <td class="text-nowrap">
                                             <?php
                                             $pelaksana = str_replace("\r\n", '<br>', $p->pelaksana);
                                             echo $pelaksana;
@@ -133,9 +141,12 @@
                                             ?>
                                         </td>
                                         <td>
-                                            <textarea class="form-control textAreaMultiline" name="text_wa" rows="5" placeholder="" disabled><?= $p->text_wa ?></textarea>
+                                            <textarea class="form-control textAreaMultiline text-wa" name="text_wa" rows="5" placeholder="" disabled><?= $p->text_wa ?></textarea>
                                         </td>
-                                        <td>{{ $p->catatan_pemeliharaan }}</td>
+                                        <td><?php
+                                            $catatan = str_replace("\r\n", '<br>', $p->catatan_pemeliharaan);
+                                            echo $catatan;
+                                            ?></td>
                                         <td>
                                             @if ($p->laporan)
                                                 <a href="{{ asset('storage/uploads/laporan_pemeliharaan/' . $p->laporan) }}"

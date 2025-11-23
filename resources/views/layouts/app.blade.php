@@ -40,6 +40,30 @@
     {{-- Leaflet CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/mycostum_css.css">
+    <style>
+        @media (max-width: 768px) {
+            th.text-wa,
+            td.text-wa {
+                min-width: 200px;
+                /* or 200px if needed */
+                /* white-space: nowrap; */
+
+            }
+
+            th.catatan-col,
+            td.catatan-col {
+                min-width: 150px;
+            }
+
+            th.rekomendasi-col {
+                min-width: 250px;
+            }
+
+            textarea.text-wa {
+                font-size: 10px;
+            }
+        }
+    </style>
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->

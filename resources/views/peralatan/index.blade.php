@@ -26,12 +26,12 @@
         <h4>Data Peralatan {{ isset($jenis) && $jenis !== 'All' ? $jenis : '' }}</h4>
         <div>
             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
-                <a href="{{ route('peralatan.create') }}" class="btn btn-success">
+                <a href="{{ route('peralatan.create') }}" class="btn btn-success my-1">
                     Tambah
                 </a>
             @endif
 
-            <a href="{{ route('peralatan.download', $jenis ?? 'aloptama') }}" class="btn btn-primary">
+            <a href="{{ route('peralatan.download', $jenis ?? 'aloptama') }}" class="btn btn-primary my-1">
                 Download
             </a>
         </div>
@@ -59,7 +59,7 @@
                             <th>Lokasi</th>
                             <th>Pemeliharaan Terbaru</th>
                             <th>2025</th>
-                            <th>Rekomendasi</th>
+                            <th class="rekomendasi-col" style="width: 30%">Rekomendasi</th>
                             <th>Kerusakan</th>
                             <th>PIC</th>
                             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
