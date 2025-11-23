@@ -12,6 +12,7 @@ use App\Http\Controllers\SparepartController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Api\ApiPeralatanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,3 +103,24 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Route::get('/test-user', fn() => auth()->user());
+
+
+// API
+Route::middleware('api_token')->group(function () {
+    Route::prefix('api')->group(function () {
+
+        Route::get('/ping', function () {
+            return 'pong';
+        });
+
+        Route::get('/peralatan', [ApiPeralatanController::class, 'index']);
+        Route::get('/peralatan/get-by-kode/{kode}', [ApiPeralatanController::class, 'getByKode']);
+        Route::get('/peralatan/{id}', [ApiPeralatanController::class, 'show']);
+        Route::post('/peralatan', [ApiPeralatanController::class, 'store']);
+        Route::put('/peralatan/{id}', [ApiPeralatanController::class, 'update']);
+        Route::delete('/peralatan/{id}', [ApiPeralatanController::class, 'destroy']);
+
+        Route::put('/peralatan/{id}/metadata', [ApiPeralatanController::class, 'updateMetadata']);
+
+    });
+});
