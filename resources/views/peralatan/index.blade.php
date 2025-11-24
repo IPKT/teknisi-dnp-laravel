@@ -23,7 +23,7 @@
         <div id="map" style="height: 350px;" class="" class="border border-dark"></div>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Data Peralatan {{ isset($jenis) && $jenis !== 'All' ? $jenis : '' }}</h4>
+        <h4>{{ isset($jenis) && $jenis !== 'All' ? $jenis : 'Seluruh Aloptama' }}</h4>
         <div>
             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                 <a href="{{ route('peralatan.create') }}" class="btn btn-success my-1">

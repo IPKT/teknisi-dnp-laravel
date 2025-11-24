@@ -42,11 +42,15 @@ class PemeliharaanController extends Controller
     public function index(){
 
 
-        $jenis = 'Seluruh Peralatan';
+        $jenis = 'Seluruh Aloptama';
         $tahun_kemarin = Carbon::now()->subYear()->startOfYear()->format('Y-m-d');
         $date = Carbon::createFromFormat('Y-m-d', $tahun_kemarin);
         $tahun_awal_data = $date->format('Y');
-        $pemeliharaan = Pemeliharaan::where('tanggal', '>=', $tahun_kemarin)->latest()->get()->sortByDesc('tanggal');
+        $pemeliharaan = Pemeliharaan::whereHas('peralatan', function ($query) {
+                $query->where([
+                    'kelompok' => 'aloptama',
+                ]);
+            })->where('tanggal', '>=', $tahun_kemarin)->latest()->get()->sortByDesc('tanggal');
 
         return view('pemeliharaan.index', compact( 'pemeliharaan', 'tahun_awal_data', 'jenis'));
     }
@@ -112,6 +116,7 @@ class PemeliharaanController extends Controller
         }
 
         Pemeliharaan::create($data);
+        // return back()->with('success', 'Data pemeliharaan berhasil ditambahkan');
         return redirect()->route('pemeliharaan.index')->with('success', 'Data pemeliharaan berhasil ditambahkan.');
     }
 
@@ -170,6 +175,7 @@ class PemeliharaanController extends Controller
         }
 
         $pemeliharaan->update($data);
+        // return back()->with('success', "Data pemeliharaan $kode berhasil diperbarui.");
         return redirect()->route('pemeliharaan.show', $pemeliharaan->id )->with('success', "Data pemeliharaan $kode berhasil diperbarui.");
     }
 
