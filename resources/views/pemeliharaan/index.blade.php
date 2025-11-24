@@ -73,7 +73,11 @@
                                 <td>
                                     <textarea class="form-control textAreaMultiline text-wa" name="text_wa" rows="5" placeholder="" disabled><?= $p->text_wa ?></textarea>
                                 </td>
-                                <td>{{ $p->catatan_pemeliharaan }}</td>
+                                <td>
+                                    <?php
+                                    $catatan_pemeliharaan = str_replace("\r\n", '<br>', $p->catatan_pemeliharaan);
+                                    echo $catatan_pemeliharaan;
+                                    ?></td>
                                 {{-- <td>
                                     @if ($p->gambar)
                                         <img src="{{ asset('storage/'.$p->gambar) }}" width="60" class="rounded shadow">
