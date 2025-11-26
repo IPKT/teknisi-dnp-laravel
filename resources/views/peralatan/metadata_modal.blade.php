@@ -17,12 +17,12 @@
                         @if ($peralatan->metadata)
                             @foreach ($peralatan->metadata as $key => $value)
                                 <div class="row g-2 align-items-center mb-2 meta-row">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <input type="text" class="form-control" name="metadata_keys[]"
                                             value="{{ $key }}" placeholder="Key">
                                     </div>
                                     <div
-                                        class="{{ in_array(auth()->user()->role, ['admin', 'teknisi']) ? 'col-6' : 'col-7' }}">
+                                        class="{{ in_array(auth()->user()->role, ['admin', 'teknisi']) ? 'col-5' : 'col-6' }}">
                                         <input type="text" class="form-control" name="metadata_values[]"
                                             value="{{ $value }}" placeholder="Value">
                                     </div>
@@ -59,15 +59,15 @@
     function addMetadataRow(key = '', value = '') {
         let html = `
         <div class="row g-2 align-items-center mb-2 meta-row">
-            <div class="col-5">
+            <div class="col-6">
                 <input type="text" class="form-control" name="metadata_keys[]" value="${key}" placeholder="Key">
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <input type="text" class="form-control" name="metadata_values[]" value="${value}" placeholder="Value">
             </div>
             <div class="col-1">
-                <button type="button" class="btn btn-danger w-100"
-                        onclick="this.closest('.meta-row').remove()">x</button>
+                  <button type="button" class="btn btn-close bg-danger p-2"
+                                                onclick="confirm('anda yakin menghapus metadata') ? this.closest('.meta-row').remove() : null ">x</button>
             </div>
         </div>
     `;
