@@ -6,7 +6,9 @@
     <div class="card shadow-sm">
         <div class="card-body">
             {{-- DETAIL PERALATAN --}}
-            <h4 class="mb-4">Detail Pemeliharaan {{ $pemeliharaan->peralatan->kode }} tanggal
+            <h4 class="mb-4">Detail Pemeliharaan <a href="{{ route('peralatan.show', $pemeliharaan->peralatan->id) }}" class="">
+                                        {{ $pemeliharaan->peralatan->kode }}
+                                    </a> tanggal
                 {{ \Carbon\Carbon::parse($pemeliharaan->tanggal)->translatedFormat('d F Y') }}
                 @if (in_array(auth()->user()->role, ['admin', 'teknisi']) || $pemeliharaan->author == auth()->user()->id)
                     <a href="{{ route('pemeliharaan.edit', $pemeliharaan->id) }}"

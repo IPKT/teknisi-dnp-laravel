@@ -139,22 +139,40 @@ class PeralatanController extends Controller
     }
 
     public function updateMetadata(Request $request, Peralatan $peralatan)
-{
-    $metadata = [];
+    {
+        $metadata = [];
 
-    if ($request->has('metadata_keys')) {
-        foreach ($request->metadata_keys as $i => $key) {
-            if ($key) {
-                $metadata[$key] = $request->metadata_values[$i] ?? null;
+        if ($request->has('metadata_keys')) {
+            foreach ($request->metadata_keys as $i => $key) {
+                if ($key) {
+                    $metadata[$key] = $request->metadata_values[$i] ?? null;
+                }
             }
         }
+
+        $peralatan->metadata = $metadata;
+        $peralatan->save();
+
+        return back()->with('success', 'Metadata berhasil diupdate.');
     }
+    public function updateNetworkData(Request $request, Peralatan $peralatan)
+    {
+        $networkData = [];
 
-    $peralatan->metadata = $metadata;
-    $peralatan->save();
+        if ($request->has('networkData_keys')) {
+            foreach ($request->networkData_keys as $i => $key) {
+                if ($key) {
+                    $networkData[$key] = $request->networkData_values[$i] ?? null;
+                }
+            }
+        }
 
-    return back()->with('success', 'Metadata berhasil diupdate.');
-}
+        $peralatan->networkData = $networkData;
+        $peralatan->save();
+
+        return back()->with('success', 'Network Data berhasil diupdate.');
+    }
+    
 
     public function download($jenis)
 {

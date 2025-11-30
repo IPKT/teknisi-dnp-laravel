@@ -39,9 +39,11 @@ class Peralatan extends Model
         'kontak_pic',
         'catatan',
         'metadata',
+        'networkData',
     ];
 
     protected $casts = [
         'metadata' => 'array',
+        'networkData' => 'array',
     ];
 }

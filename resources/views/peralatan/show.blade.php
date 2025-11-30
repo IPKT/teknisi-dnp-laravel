@@ -12,7 +12,9 @@
     <div class="card shadow-sm">
         <div class="card-body">
             {{-- DETAIL PERALATAN --}}
-            <h4 class="mb-4">Detail Peralatan {{ $peralatan->jenis }} - {{ $peralatan->kode }}</h4>
+            <h4 class="mb-4">Detail Peralatan <a class="" href="{{ route('peralatan.aloptama', $peralatan->jenis) }}">
+                                        {{ $peralatan->jenis }}
+                                    </a> - {{ $peralatan->kode }}</h4>
             <div class="row g-2">
                 <div class="col-md-6">
                     {{-- 🗺️ Peta Lokasi --}}
@@ -74,10 +76,23 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#metadataModal">
+                    <div class="dropdown">
+                        <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Lainnya
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#metadataModal">Metadata</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#networkDataModal">Network</a></li>
+                            {{-- <li><a class="dropdown-item" href="#">Something else here</a></li> --}}
+                        </ul>
+                    </div>
+                    {{-- <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#metadataModal">
                         Metadata
-                    </button>
+                    </button> --}}
                     @include('peralatan.metadata_modal')
+                    @include('peralatan.network_data_modal')
 
                 </div>
             </div>
@@ -124,7 +139,8 @@
                                                 {{ $p->peralatan->kode }}
                                             </a>
                                         </td> --}}
-                                        <td class="text-nowrap"><a href="{{ route('pemeliharaan.show', $p->id) }}" class="">
+                                        <td class="text-nowrap"><a href="{{ route('pemeliharaan.show', $p->id) }}"
+                                                class="">
                                                 {{ $p->tanggal }}
                                             </a></td>
 
@@ -144,9 +160,9 @@
                                             <textarea class="form-control textAreaMultiline text-wa" name="text_wa" rows="5" placeholder="" disabled><?= $p->text_wa ?></textarea>
                                         </td>
                                         <td><?php
-                                            $catatan = str_replace("\r\n", '<br>', $p->catatan_pemeliharaan);
-                                            echo $catatan;
-                                            ?></td>
+                                        $catatan = str_replace("\r\n", '<br>', $p->catatan_pemeliharaan);
+                                        echo $catatan;
+                                        ?></td>
                                         <td>
                                             @if ($p->laporan)
                                                 <a href="{{ asset('storage/uploads/laporan_pemeliharaan/' . $p->laporan) }}"
@@ -298,7 +314,8 @@
                                         <td>{{ $d->tanggal_dokumen }}</td>
                                         <td>{{ $d->nama_dokumen }}</td>
                                         <td>{{ $d->keterangan_dokumen }}</td>
-                                        <td><a href="{{ asset('storage') }}/{{ $d->file_dokumen }}" target="_blank">Lihat
+                                        <td><a href="{{ asset('storage') }}/{{ $d->file_dokumen }}"
+                                                target="_blank">Lihat
                                                 Dokumen</a>
                                         </td>
                                         {{-- <td>
