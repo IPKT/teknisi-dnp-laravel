@@ -40,6 +40,7 @@
     {{-- Leaflet CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/mycostum_css.css">
+    {{-- styling table pemeliharaan --}}
     <style>
         @media (max-width: 768px) {
             th.text-wa,
