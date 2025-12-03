@@ -58,7 +58,7 @@
                             {{-- <th>Koordinat</th> --}}
                             <th>Lokasi</th>
                             <th>Pemeliharaan Terbaru</th>
-                            <th>2025</th>
+                            <th>{{ \Carbon\Carbon::now()->year }}</th>
                             <th class="rekomendasi-col" style="width: 30%">Rekomendasi</th>
                             <th>Kerusakan</th>
                             <th>PIC</th>
@@ -85,7 +85,7 @@
                                 <td>{{ $alat->lokasi }}</td>
                                 <td>{{ optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->tanggal }}
                                 </td>
-                                <td>{{ $alat->pemeliharaans()->where('tanggal', '>=', '2025-01-01')->count() }}</td>
+                                <td>{{ $alat->pemeliharaans()->where('tanggal', '>=', \Carbon\Carbon::now()->startOfYear())->count() }}</td>
                                 <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->rekomendasi) !!}
                                 </td>
                                 <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}

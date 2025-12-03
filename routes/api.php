@@ -14,6 +14,10 @@ Route::middleware('api_token')->group(function () {
         Route::get('/peralatan/get-by-kode/{kode}', [ApiPeralatanController::class, 'getByKode']);
         Route::put('/peralatan/update-kondisi/{kode}', [ApiPeralatanController::class, 'updateKondisi']);
         Route::put('/peralatan/update-kondisi-bulk', [ApiPeralatanController::class, 'updateKondisiBulk']);
+        Route::get('/peralatan/metadata/{kode}', [ApiPeralatanController::class, 'getMetadata']);
+        Route::get('/peralatan/networkdata/{kode}', [ApiPeralatanController::class, 'getNetworkData']);
+        Route::get('peralatan/pemeliharaan/{kode}', [ApiPeralatanController::class, 'getPemeliharaanByKode']);
+
 
         // Route::get('/peralatan/{id}', [ApiPeralatanController::class, 'show']);
         // Route::post('/peralatan', [ApiPeralatanController::class, 'store']);

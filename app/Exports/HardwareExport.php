@@ -50,6 +50,7 @@ class HardwareExport implements FromCollection, WithHeadings , WithStyles, WithC
                 'tanggal_keluar' => $item->tanggal_keluar,
                 'tanggal_dilepas' => $item->tanggal_dilepas,
                 'status' => $item->status,
+                'lokasi_pengiriman' => $item->lokasi_pengiriman,
                 'nomor_surat' => $item->nomor_surat,
                 'keterangan' => $item->keterangan,
             ]);
@@ -91,6 +92,7 @@ class HardwareExport implements FromCollection, WithHeadings , WithStyles, WithC
             'tanggal_pasang_kirim',
             'tanggal_dilepas',
             'status',
+            'lokasi_pengiriman',
             'nomor_surat',
             'keterangan',
         ];
@@ -139,6 +141,7 @@ class HardwareExport implements FromCollection, WithHeadings , WithStyles, WithC
             'N' => NumberFormat::FORMAT_TEXT,
             'O' => NumberFormat::FORMAT_TEXT,
             'P' => NumberFormat::FORMAT_TEXT,
+            'Q' => NumberFormat::FORMAT_TEXT,
         ];
     }
 
