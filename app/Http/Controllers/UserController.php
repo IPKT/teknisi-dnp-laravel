@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::select('id', 'nama_lengkap', 'username', 'nip', 'role')->get();
+        $users = User::select('id', 'nama_lengkap', 'username', 'nip', 'role')->orderBy('role', 'asc')->get();
         return view('auth.manage_user', compact('users'));
     }
 

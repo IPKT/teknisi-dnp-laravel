@@ -24,7 +24,27 @@
     </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>{{ isset($jenis) && $jenis !== 'All' ? $jenis : 'Seluruh Aloptama' }}</h4>
-        <div>
+        <div class="dropdown">
+            <a class="btn btn-primary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Action
+            </a>
+
+            <ul class="dropdown-menu">
+                <li>
+                    @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
+                        <a href="{{ route('peralatan.create') }}" class="dropdown-item">
+                            Tambah Peralatan
+                        </a>
+                    @endif
+                </li>
+                <li> <a href="{{ route('peralatan.download', $jenis ?? 'aloptama') }}" class="dropdown-item">
+                        Download Excel
+                    </a></li>
+                {{-- <li><a class="dropdown-item" href="#">Something else here</a></li> --}}
+            </ul>
+        </div>
+        {{-- <div>
             @if (in_array(auth()->user()->role, ['admin', 'teknisi']))
                 <a href="{{ route('peralatan.create') }}" class="btn btn-success my-1">
                     Tambah
@@ -34,7 +54,7 @@
             <a href="{{ route('peralatan.download', $jenis ?? 'aloptama') }}" class="btn btn-primary my-1">
                 Download
             </a>
-        </div>
+        </div> --}}
 
     </div>
 
@@ -85,7 +105,8 @@
                                 <td>{{ $alat->lokasi }}</td>
                                 <td>{{ optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->tanggal }}
                                 </td>
-                                <td>{{ $alat->pemeliharaans()->where('tanggal', '>=', \Carbon\Carbon::now()->startOfYear())->count() }}</td>
+                                <td>{{ $alat->pemeliharaans()->where('tanggal', '>=', \Carbon\Carbon::now()->startOfYear())->count() }}
+                                </td>
                                 <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->rekomendasi) !!}
                                 </td>
                                 <td>{!! str_replace("\r\n", '<br>', optional($alat->pemeliharaans()->orderByDesc('tanggal')->first())->kerusakan) !!}
