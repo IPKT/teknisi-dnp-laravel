@@ -24,6 +24,7 @@ class Hardware extends Model
         'lokasi_pemasangan',
         'lokasi_pengiriman',
         'nomor_surat',
+        'nomor_surat_keluar',
         'keterangan',
         'berkas',
         'gambar'

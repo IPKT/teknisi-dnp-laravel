@@ -62,8 +62,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('sparepart', SparepartController::class);
     Route::get('sparepart/list', [SparepartController::class, 'list'])->name('sparepart.list');
     Route::get('/hardware/status/{status}', [HardwareController::class, 'filterByStatus'])->name('hardware.status');
-    Route::get('/hardware/rekap-pengadaan/{tahun}', [HardwareController::class, 'rekapPengadaan'])->name('hardware.rekap_pengadaan');
-    Route::get('/hardware/detail-pengadaan/{tahun}', [HardwareController::class, 'detailPengadaan'])->name('hardware.detail_pengadaan');
+    Route::get('/hardware/rekap-pengadaan-dnp/{tahun}', [HardwareController::class, 'rekapPengadaan'])->name('hardware.rekap_pengadaan_dnp');
+     Route::get('/hardware/rekap-pengadaan/{tahun}', [HardwareController::class, 'rekapTahunPengadaan'])->name('hardware.rekap_pengadaan');
+    Route::get('/hardware/detail-pengadaan-dnp/{tahun}', [HardwareController::class, 'detailPengadaanDNP'])->name('hardware.detail_pengadaan_dnp');
+     Route::get('/hardware/detail-pengadaan/{tahun}', [HardwareController::class, 'detailPengadaan'])->name('hardware.detail_pengadaan');
     Route::post('/hardware/import', [HardwareController::class, 'import'])->name('hardware.import');
     // Route::get('hardware/download/{peralatanId}', [HardwareController::class, 'download'])->name('hardware.download');
     // Route::get('/hardware/download/{key}/{value}', [HardwareController::class, 'download'])->name('hardware.download');

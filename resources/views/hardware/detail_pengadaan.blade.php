@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Data Hardware Pengadaan DNP @if ($tahun != 'All')
+        <h4>{{$judul}} @if ($tahun != 'All')
                 {{ $tahun }}
             @endisset
     </h4>

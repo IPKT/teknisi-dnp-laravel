@@ -51,6 +51,7 @@ class HardwareImport implements ToCollection, WithHeadingRow
                     'lokasi_pemasangan' => $peralatan ? $peralatan->id : null,
                     'lokasi_pengiriman' => $row['lokasi_pengiriman'] ?? null,
                     'nomor_surat' => $row['nomor_surat'] ?? null,
+                    'nomor_surat_keluar' => $row['nomor_surat_keluar'] ?? null,
                     'keterangan' => $row['keterangan'] ?? null,
                 ]
             );

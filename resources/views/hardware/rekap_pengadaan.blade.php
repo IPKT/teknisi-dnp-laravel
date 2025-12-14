@@ -4,12 +4,18 @@
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Rekap Pengadaan DNP @if($tahun != 'All')
+        <h4>{{$judul}} @if($tahun != 'All')
                 Tahun {{ $tahun }}
             @endif
         </h4>
-            <a href="{{ route('hardware.detail_pengadaan', $tahun) }}" class="btn btn-success" id="btnTambahHardware">Lihat Detail Pengadaan
+        @if ($sumber_pengadaan == 'Pengadaan DNP')
+            <a href="{{ route('hardware.detail_pengadaan_dnp', $tahun) }}" class="btn btn-success">Lihat Detail Pengadaan
             </a>
+        @else
+            <a href="{{ route('hardware.detail_pengadaan', $tahun) }}" class="btn btn-success">Lihat Detail Pengadaan
+            </a>
+        @endif
+            
     </div>
 
     @if (session('success'))

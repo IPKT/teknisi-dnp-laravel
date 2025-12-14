@@ -20,7 +20,7 @@ class HardwareController extends Controller
      */
     public function index()
     {
-        $hardwares = Hardware::all();
+        $hardwares = Hardware::orderBy('tahun_masuk', 'asc')->get();
         $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
         $jenisHardwareList = Hardware::select('jenis_hardware')->distinct()->pluck('jenis_hardware');
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
@@ -47,18 +47,6 @@ class HardwareController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'id_peralatan' => 'required|exists:peralatans,id',
-        //     'jenis_hardware' => 'required|max:100',
-        //     'merk' => 'required|max:100',
-        //     'tipe' => 'required|max:100',
-        //     'status' => 'required|max:100',
-        // ]);
-
-        // Hardware::create($request->all());
-        // return redirect()->route('hardware.create')->with('success', 'Data Hardware berhasil ditambahkan.');
-
-
         $validated = $request->validate([
             'jenis_hardware' => 'required|string|max:100',
             'jenis_peralatan' => 'required|string|max:50',
@@ -114,12 +102,6 @@ class HardwareController extends Controller
      */
     public function show(Hardware $hardware)
     {
-        // return response()->json($hardware);
-        // return response()->json([
-        //     'hardware' => $hardware,
-        //     'peralatan' => $hardware->peralatan,
-        // ]);
-
         $hardware->load('peralatan'); // pastikan relasi dimuat
         $data = $hardware->toArray();
         $data['kode_lokasi_pemasangan'] = $hardware->peralatan?->kode;
@@ -252,9 +234,9 @@ class HardwareController extends Controller
     public function filterByStatus($status)
     {
         if ($status === 'All') {
-            $hardwares = Hardware::all();
+            $hardwares = Hardware::orderBy('tahun_masuk', 'asc')->get();
         } else {
-            $hardwares = Hardware::where('status', $status)->get();
+            $hardwares = Hardware::where('status', $status)->orderBy('tahun_masuk', 'asc')->get();
         }
 
         $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
@@ -295,33 +277,86 @@ class HardwareController extends Controller
 
             $rekap_peralatan[$jenis] = $rekap;
         }
-
-        return view('hardware.rekap_pengadaan', compact('rekap_peralatan', 'tahun'));
+        $judul = 'Rekap Pengadaan DNP';
+        $sumber_pengadaan = 'Pengadaan DNP';
+        return view('hardware.rekap_pengadaan', compact('rekap_peralatan', 'tahun', 'judul','sumber_pengadaan'));
     }
 
-    public function detailPengadaan($tahun)
-    {
-        $jenis_peralatan_yang_ada = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
+        public function rekapTahunPengadaan($tahun){
+        $jenis_peralatan = Hardware::select('jenis_peralatan')->distinct()->pluck('jenis_peralatan');
+
+        $rekap_peralatan = [];
+
+        foreach ($jenis_peralatan as $jenis) {
+            $rekap = Hardware::select(
+                'jenis_hardware',
+                DB::raw("SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) as ready"),
+                DB::raw("SUM(CASE WHEN status = 'terpasang' THEN 1 ELSE 0 END) as terpasang"),
+                DB::raw("SUM(CASE WHEN status = 'terkirim' THEN 1 ELSE 0 END) as terkirim"),
+                DB::raw("SUM(CASE WHEN status = 'dilepas' THEN 1 ELSE 0 END) as dilepas"),
+                DB::raw("COUNT(*) as total")
+            )
+            ->when($tahun !== 'All', function ($query) use ($tahun) {
                 return $query->where('tahun_masuk', $tahun);
             })
-            ->select('jenis_peralatan')
-            ->distinct()
-            ->pluck('jenis_peralatan');
+            ->where('jenis_peralatan', $jenis)
+            ->groupBy('jenis_hardware')
+            ->get();
+
+            if ($rekap->isEmpty()) {
+                continue;
+            }
+
+            $rekap_peralatan[$jenis] = $rekap;
+        }
+
+        $judul = 'Rekap Pengadaan';
+        $sumber_pengadaan = 'All';
+        return view('hardware.rekap_pengadaan', compact('rekap_peralatan', 'tahun', 'judul', 'sumber_pengadaan'));
+    }
+
+    public function detailPengadaanDNP($tahun){
+     
+        return $this->detailPengadaan($tahun, 'Pengadaan DNP');        
+    }
+
+
+    public function detailPengadaan($tahun, $sumber_pengadaan = 'All')
+    {
+           
+        $hardwares = [];
+
+        $jenis_peralatan_yang_ada = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
+            return $query->where('tahun_masuk', $tahun);
+        })
+        // Tambahkan filter sumber_pengadaan di query pertama
+        ->when($sumber_pengadaan !== 'All', function ($query) use ($sumber_pengadaan) {
+            return $query->where('sumber_pengadaan', $sumber_pengadaan);
+        })
+        ->select('jenis_peralatan')
+        ->distinct()
+        ->pluck('jenis_peralatan');
+        // ------------------------------------
 
         foreach ($jenis_peralatan_yang_ada as $jenis) {
+            // Query kedua sekarang lebih efisien karena jenisnya sudah terfilter.
+            // Walaupun logika di bawah ini sudah benar, query di atas harus diperbaiki
             $data = Hardware::when($tahun !== 'All', function ($query) use ($tahun) {
                 return $query->where('tahun_masuk', $tahun);
-            })
-            ->where('sumber_pengadaan', 'Pengadaan DNP')
-            ->where('jenis_peralatan', $jenis)
+            })->when($sumber_pengadaan !== 'All', function ($query) use ($sumber_pengadaan) {
+                return $query->where('sumber_pengadaan', $sumber_pengadaan);
+            })->where('jenis_peralatan', $jenis)
                 ->get();
 
+            // Dengan perbaikan di atas, isEmpty() seharusnya jarang terpanggil
+            // kecuali ada anomali data, tapi ini tetap aman.
             if($data->isEmpty()){
                 continue;
             }
             $hardwares[$jenis] = $data;
         }
 
+        // dd($hardwares);
 
         // $hardwares = Hardware::where('tahun_masuk', $tahun)->get();
         $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
@@ -329,11 +364,18 @@ class HardwareController extends Controller
         $sumberPengadaanList = Hardware::select('sumber_pengadaan')->distinct()->pluck('sumber_pengadaan');
         $lokasiPemasanganList = Peralatan::select('kode')->distinct()->pluck('kode');
         $statusHardwareList = Hardware::select('status')->distinct()->pluck('status');
+        if($sumber_pengadaan !== 'All'){
+            $judul = 'Detail Pengadaan DNP';
+        } else {
+            $judul = 'Detail Pengadaan';
+        }
+
+        // dd($hardwares);
         // $peralatans  = Peralatan::all();
         // dd($jenisPeralatan);
-        return view('hardware.detail_pengadaan', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'tahun', 'statusHardwareList'));
+        return view('hardware.detail_pengadaan', compact('hardwares', 'jenis_peralatan', 'jenisHardwareList', 'sumberPengadaanList', 'lokasiPemasanganList', 'tahun', 'statusHardwareList','judul'));
         // return view('hardware.index', compact('hardwares'));
-    }
+    }   
 
     public function import(Request $request)
     {
@@ -349,32 +391,7 @@ class HardwareController extends Controller
     }
 
 
-    // public function download($peralatanId)
-    // {
-    //     $peralatan = Peralatan::find($peralatanId);
-
-    //     if (!$peralatan) {
-    //         return redirect()->back()->with('error', 'Peralatan tidak ditemukan!');
-    //     }
-
-    //     $fileName = 'hardware_' . $peralatan->kode . '.xlsx';
-
-    //     return Excel::download(new HardwareExport($peralatanId), $fileName);
-    // }
-    // public function download($key, $value)
-    // {
-    //     // $peralatan = Peralatan::find($value);
-
-    //     // if (!$peralatan) {
-    //     //     return redirect()->back()->with('error', 'Peralatan tidak ditemukan!');
-    //     // }
-
-    //     $fileName = 'hardware_' . $key . '_' . $value . '.xlsx';
-    //     $where_query = [$key => $value];
-
-    //     return Excel::download(new HardwareExport($where_query), $fileName);
-    // }
-
+   
     public function download(Request $request)
 {
     //  dd('Route works!', $request->all());

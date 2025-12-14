@@ -162,7 +162,7 @@ class ApiPeralatanController extends Controller
     return response()->json([
         'kode' => $peralatan->kode,
         'lokasi' => $peralatan->lokasi,
-        'pemeliharaan_' . \Carbon\Carbon::now()->year => $pemeliharaan_tahun_ini,
+        'pemeliharaan_tahun_ini' => $pemeliharaan_tahun_ini,
         'pemeliharaan_terbaru' => $pemeliharaans,
     ]);
 }

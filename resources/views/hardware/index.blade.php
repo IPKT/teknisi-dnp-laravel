@@ -520,7 +520,7 @@
         $(document).ready(function() {
             $('#hardware-table').DataTable({
                 info: false,
-                lengthChange: false,
+                lengthChange: true,
                 pageLength: 15
             });
         });

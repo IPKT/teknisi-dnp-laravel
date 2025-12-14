@@ -43,6 +43,7 @@
     {{-- styling table pemeliharaan --}}
     <style>
         @media (max-width: 768px) {
+
             th.text-wa,
             td.text-wa {
                 min-width: 200px;
@@ -207,11 +208,11 @@
                                     href="{{ route('hardware.status', 'terpasang') }}">Terpasang</a></li>
                             <li class="pc-item"><a class="pc-link"
                                     href="{{ route('hardware.status', 'terkirim') }}">Terkirim</a></li>
-                            <li class="pc-item pc-hasmenu"><a class="pc-link pc-hasmenu" href="#!">Rekap
-                                    Pengadaan DNP</a>
+                            <li class="pc-item pc-hasmenu"><a class="pc-link pc-hasmenu" href="#!">Tahun
+                                    Pengadaan</a>
                                 <ul class="pc-submenu">
-                                    <li class="pc-item"><a class="pc-link"
-                                            href="{{ route('hardware.rekap_pengadaan', 'All') }}">All</a></li>
+                                    {{-- <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan', 'All') }}">All</a></li> --}}
                                     <li class="pc-item"><a class="pc-link"
                                             href="{{ route('hardware.rekap_pengadaan', '2023') }}">2023</a></li>
                                     <li class="pc-item"><a class="pc-link"
@@ -220,6 +221,20 @@
                                             href="{{ route('hardware.rekap_pengadaan', '2025') }}">2025</a></li>
                                 </ul>
                             </li>
+                            <li class="pc-item pc-hasmenu"><a class="pc-link pc-hasmenu" href="#!">Rekap
+                                    Pengadaan DNP</a>
+                                <ul class="pc-submenu">
+                                    <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan_dnp', 'All') }}">All</a></li>
+                                    <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan_dnp', '2023') }}">2023</a></li>
+                                    <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan_dnp', '2024') }}">2024</a></li>
+                                    <li class="pc-item"><a class="pc-link"
+                                            href="{{ route('hardware.rekap_pengadaan_dnp', '2025') }}">2025</a></li>
+                                </ul>
+                            </li>
+
 
                         </ul>
                     </li>
