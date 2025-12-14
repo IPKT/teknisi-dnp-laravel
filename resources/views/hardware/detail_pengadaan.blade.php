@@ -252,7 +252,7 @@
                         const data = JSON.parse(text);
                         if (data.success) {
                             location.reload();
-
+                            alert('Hardware berhasil ditambahkan');
                             form.reset();
                             const modal = bootstrap.Modal.getInstance(document.getElementById(
                                 'modalHardware'));
@@ -431,7 +431,7 @@
                                 const data = JSON.parse(text);
                                 if (data.success) {
                                     location.reload();
-
+                                    alert('Hardware berhasil diedit');
                                     form.reset();
                                     const modal = bootstrap.Modal.getInstance(document
                                         .getElementById(

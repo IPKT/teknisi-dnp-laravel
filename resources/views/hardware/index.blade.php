@@ -272,12 +272,14 @@
                         try {
                             const data = JSON.parse(text);
                             if (data.success) {
-                                location.reload();
+
 
                                 form.reset();
                                 const modal = bootstrap.Modal.getInstance(document.getElementById(
                                     'modalHardware'));
                                 modal.hide();
+                                alert('Hardware berhasil ditambahkan');
+                                location.reload();
                             } else {
                                 console.warn('Respon sukses tapi flag success = false:', data);
                                 alert('Gagal menyimpan data: ' + JSON.stringify(data));
@@ -457,12 +459,13 @@
                                     const data = JSON.parse(text);
                                     if (data.success) {
                                         location.reload();
-
+                                        alert('Hardware berhasil diedit');
                                         form.reset();
                                         const modal = bootstrap.Modal.getInstance(document
                                             .getElementById(
                                                 'modalHardware'));
                                         modal.hide();
+
                                     } else {
                                         console.warn(
                                             'Respon sukses tapi flag success = false:',
