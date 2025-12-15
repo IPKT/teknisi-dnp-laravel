@@ -426,6 +426,10 @@
                                                 <i class="ti ti-user"></i>
                                                 <span>Manage Users</span>
                                             </a>
+                                             <a href="{{ route('user.activity.recap') }}" class="dropdown-item">
+                                                <i class="ti ti-user"></i>
+                                                <span>User Activity Recap</span>
+                                            </a>
                                         @endif
                                         {{-- <a href="#!" class="dropdown-item">
               <i class="ti ti-lock"></i>

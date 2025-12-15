@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\LoginActivity;
 
 class AuthController extends Controller
 {
@@ -26,6 +27,15 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // \Log::info('login berhasil:', ['user' => Auth::user()]);
             $request->session()->regenerate(); // penting!
+
+            // === MULAI LOGGING ===
+            LoginActivity::create([
+                'user_id' => Auth::id(),
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(), // Info browser & OS
+            ]);
+            // === SELESAI LOGGING ===
+
             return redirect()->intended(route('home'));
         }
 

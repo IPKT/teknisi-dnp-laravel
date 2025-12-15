@@ -102,6 +102,8 @@ Route::middleware(['auth'])->group(function () {
         // update metadata peralatan
         Route::put('/peralatan/{peralatan}/metadata', [PeralatanController::class, 'updateMetadata'])->name('peralatan.updateMetadata');
         Route::put('/peralatan/{peralatan}/network-data', [PeralatanController::class, 'updateNetworkData'])->name('peralatan.updateNetworkData');
+
+        Route::get('/user-activity-recap', [UserController::class, 'userActivityRecap'])->name('user.activity.recap');
     });
 });
 
