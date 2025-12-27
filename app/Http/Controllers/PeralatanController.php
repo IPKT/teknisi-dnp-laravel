@@ -46,6 +46,9 @@ class PeralatanController extends Controller
 
     public function create()
     {
+        if(!old('previous_url')) {
+            session(['url_asal' => url()->previous()]);
+        }
         return view('peralatan.create');
     }
 
@@ -62,7 +65,7 @@ class PeralatanController extends Controller
 
         Peralatan::create($request->all());
 
-        return redirect()->route('peralatan.index')
+        return redirect($request->previous_url ?? route('peralatan.index'))
             ->with('success', 'Data peralatan berhasil ditambahkan.');
     }
 
@@ -73,7 +76,11 @@ class PeralatanController extends Controller
             return redirect()->route('peralatan.index');
         }
 
-           $jenisPeralatan = Peralatan::select('jenis')->distinct()->orderBy('jenis')->get();
+        if(!old('previous_url')) {
+            session(['url_asal' => url()->previous()]);
+        }
+
+        $jenisPeralatan = Peralatan::select('jenis')->distinct()->orderBy('jenis')->get();
         return view('peralatan.edit', compact('peralatan', 'jenisPeralatan'));
     }
 
@@ -89,7 +96,7 @@ class PeralatanController extends Controller
 
         $peralatan->update($request->all());
 
-        return redirect()->route('peralatan.index')
+        return redirect($request->previous_url ?? route('peralatan.index'))
             ->with('success', 'Data peralatan berhasil diperbarui.');
     }
 
@@ -172,7 +179,7 @@ class PeralatanController extends Controller
 
         return back()->with('success', 'Network Data berhasil diupdate.');
     }
-    
+
 
     public function download($jenis)
 {

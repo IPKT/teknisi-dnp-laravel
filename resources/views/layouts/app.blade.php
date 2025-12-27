@@ -40,6 +40,10 @@
     {{-- Leaflet CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/css/mycostum_css.css">
+
+     {{-- Alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     {{-- styling table pemeliharaan --}}
     <style>
         @media (max-width: 768px) {
@@ -507,6 +511,8 @@
     <!-- Data Table -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+
 
     <script>
         layout_change('light');

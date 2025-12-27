@@ -9,6 +9,7 @@
             <form action="{{ route('peralatan.update', $peralatan->id) }}" method="POST">
                 @csrf
                 @method('PUT')
+                <input type="hidden" name="previous_url" value="{{ old('previous_url', session('url_asal')) }}">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">Kode<span class="text-danger">*</span></label>
