@@ -6,9 +6,10 @@
     <div class="card shadow-sm">
         <div class="card-body">
             {{-- DETAIL PERALATAN --}}
-            <h4 class="mb-4">Detail Pemeliharaan <a href="{{ route('peralatan.show', $pemeliharaan->peralatan->id) }}" class="">
-                                        {{ $pemeliharaan->peralatan->kode }}
-                                    </a> tanggal
+            <h4 class="mb-4">Detail Pemeliharaan <a href="{{ route('peralatan.show', $pemeliharaan->peralatan->id) }}"
+                    class="">
+                    {{ $pemeliharaan->peralatan->kode }}
+                </a> tanggal
                 {{ \Carbon\Carbon::parse($pemeliharaan->tanggal)->translatedFormat('d F Y') }}
                 @if (in_array(auth()->user()->role, ['admin', 'teknisi']) || $pemeliharaan->author == auth()->user()->id)
                     <a href="{{ route('pemeliharaan.edit', $pemeliharaan->id) }}"
@@ -20,8 +21,8 @@
                     {{-- 🗺️ Peta Lokasi --}}
                     {{-- <div id="map" style="height: 350px;"></div> --}}
                     @if ($pemeliharaan->gambar)
-                        <img src="{{ asset('storage/uploads/gambar_pemeliharaan/' . $pemeliharaan->gambar) }}" alt=""
-                            class="img-fluid">
+                        <img src="{{ asset('storage/uploads/gambar_pemeliharaan/' . $pemeliharaan->gambar) }}"
+                            alt="" class="img-fluid">
                     @else
                         <img src="{{ asset('assets/images/dummy_pm.png') }}" alt="" class="img-fluid">
                     @endif
@@ -120,5 +121,15 @@
 
 
 
-
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
+    @endif
 @endsection

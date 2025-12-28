@@ -55,13 +55,15 @@ class PeralatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode' => 'required|max:50',
+            'kode' => 'required|max:50|unique:peralatans,kode',
             'koordinat' => 'required|max:50',
             'lokasi' => 'required|max:50',
             'kondisi_terkini' => 'required',
             'kelompok' => 'required',
             'jenis' => 'required|max:100',
         ]);
+
+        // dd('test');
 
         Peralatan::create($request->all());
 
@@ -87,7 +89,7 @@ class PeralatanController extends Controller
     public function update(Request $request, Peralatan $peralatan)
     {
         $request->validate([
-            'kode' => 'required|max:50',
+            'kode' => 'required|max:50|unique:peralatans,kode,' . $peralatan->id,
             'koordinat' => 'required|max:50',
             'lokasi' => 'required|max:50',
             'kondisi_terkini' => 'required',
@@ -97,7 +99,7 @@ class PeralatanController extends Controller
         $peralatan->update($request->all());
 
         return redirect($request->previous_url ?? route('peralatan.index'))
-            ->with('success', 'Data peralatan berhasil diperbarui.');
+            ->with('success', "Data peralatan $peralatan->kode berhasil diperbarui.");
     }
 
     public function destroy(Peralatan $peralatan)

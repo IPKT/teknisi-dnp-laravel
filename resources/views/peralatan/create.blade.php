@@ -12,12 +12,16 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">Kode<span class="text-danger">*</span></label>
-                        <input type="text" name="kode" class="form-control" required>
+                        <input type="text" name="kode" class="form-control" value="{{ old('kode') }}" required>
+                        @error('kode')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
+
 
                     <div class="col-md-4">
                         <label class="form-label">Jenis<span class="text-danger">*</span></label>
-                        <input type="text" id="jenis" name="jenis" list="jenisList" class="form-control" required>
+                        <input type="text" id="jenis" name="jenis" list="jenisList" value="{{ old('jenis') }}" class="form-control" required>
                         <datalist id="jenisList">
                             @foreach ($jenisAloptamaMenu as $s)
                                 <option value="{{ $s->jenis }}">
@@ -53,11 +57,11 @@
 
                     <div class="col-md-3">
                         <label class="form-label">Lokasi<span class="text-danger">*</span></label>
-                        <input type="text" name="lokasi" class="form-control" required>
+                        <input type="text" name="lokasi" class="form-control" value="{{ old('lokasi') }}" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Detail Lokasi</label>
-                        <input type="text" name="detail_lokasi" class="form-control">
+                        <input type="text" name="detail_lokasi" class="form-control" value="{{ old('detail_lokasi') }}">
                     </div>
                     {{-- <div class="col-md-4">
                     <label class="form-label">Tipe</label>

@@ -20,7 +20,7 @@
 
 @section('content')
     <div class="card shadow p-0 mb-4" style="display: none" id="divMap">
-        <div id="map" style="height: 350px;" class="" class="border border-dark"></div>
+        <div id="map" style="height: 450px;" class="" class="border border-dark"></div>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>{{ isset($jenis) && $jenis !== 'All' ? $jenis : 'Seluruh Aloptama' }}</h4>
@@ -58,12 +58,12 @@
 
     </div>
 
-    @if (session('success'))
+    {{-- @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    @endif --}}
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -163,16 +163,17 @@
 
         </div>
     </div>
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            title: 'Berhasil!',
-            text: "{{ session('success') }}",
-            icon: 'success',
-            confirmButtonText: 'Oke'
-        });
-    </script>
-@endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
+    @endif
 @endsection
 
 @section('scripts')
@@ -197,15 +198,6 @@
             const blackIcon = createTriangleIcon('black');
 
             const map = L.map('map').setView([-8.4095, 115.1889], 9); // Center Bali
-
-            // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            //     attribution: '© OpenStreetMap contributors'
-            // }).addTo(map);
-
-            // L.tileLayer('https://{s}.satellite-provider.com/{z}/{x}/{y}.png', {
-            //     attribution: '© Satellite Provider'
-            // }).addTo(map);
-
 
             // Base layers
             const baseLayers = {
@@ -348,4 +340,3 @@
 
     {{-- DATA TABLE --}}
 @endsection
-

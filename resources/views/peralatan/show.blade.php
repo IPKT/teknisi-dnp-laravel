@@ -596,6 +596,17 @@
     {{-- END MODAN EDIT Dokumen --}}
 
     @include('hardware.modal_show')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
+    @endif
 @endsection
 
 @section('scripts')

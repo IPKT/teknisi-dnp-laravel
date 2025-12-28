@@ -74,7 +74,13 @@ class PemeliharaanController extends Controller
     {
         // $peralatans = Peralatan::all();
         $jenis_peralatan = Peralatan::select('jenis')->distinct()->pluck('jenis');
+
+        if(!old('previous_url')) {
+            session(['url_asal' => url()->previous()]);
+        }
+
         return view('pemeliharaan.create', compact('jenis_peralatan'));
+
     }
 
  public function store(Request $request)
@@ -117,13 +123,19 @@ class PemeliharaanController extends Controller
 
         Pemeliharaan::create($data);
         // return back()->with('success', 'Data pemeliharaan berhasil ditambahkan');
-        return redirect()->route('pemeliharaan.index')->with('success', 'Data pemeliharaan berhasil ditambahkan.');
+        return redirect($request->previous_url ?? route('pemeliharaan.index'))
+            ->with('success', 'Data pemeliharaan berhasil diperbarui.');
+        // return redirect()->route('pemeliharaan.index')->with('success', 'Data pemeliharaan berhasil ditambahkan.');
     }
 
     public function edit(Pemeliharaan $pemeliharaan)
     {
         if ($pemeliharaan->author != Auth::user()->id and Auth::user()->role != 'teknisi' and Auth::user()->role != 'admin' ) {
             return redirect()->route('pemeliharaan.index');
+        }
+
+           if(!old('previous_url')) {
+            session(['url_asal' => url()->previous()]);
         }
         $peralatans = Peralatan::all();
         return view('pemeliharaan.edit', compact('pemeliharaan', 'peralatans'));
@@ -138,6 +150,8 @@ class PemeliharaanController extends Controller
             'laporan' => 'nullable|mimes:pdf|max:4096',
             'laporan2' => 'nullable|mimes:pdf|max:4096',
         ]);
+
+        
 
         $data = $request->all();
         $peralatan = Peralatan::where('id', $request['id_peralatan'])->first();
@@ -176,7 +190,9 @@ class PemeliharaanController extends Controller
 
         $pemeliharaan->update($data);
         // return back()->with('success', "Data pemeliharaan $kode berhasil diperbarui.");
-        return redirect()->route('pemeliharaan.show', $pemeliharaan->id )->with('success', "Data pemeliharaan $kode berhasil diperbarui.");
+        return redirect($request->previous_url ?? route('pemeliharaan.index'))
+            ->with('success', "Data pemeliharaan $kode berhasil diperbarui.");
+        // return redirect()->route('pemeliharaan.show', $pemeliharaan->id )->with('success', "Data pemeliharaan $kode berhasil diperbarui.");
     }
 
     public function destroy(Pemeliharaan $pemeliharaan)

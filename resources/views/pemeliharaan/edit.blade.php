@@ -10,6 +10,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="previous_url" value="{{ old('previous_url', session('url_asal')) }}">
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label>Peralatan</label>
@@ -113,6 +114,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('scripts')

@@ -8,6 +8,7 @@
             <div class="card-body">
                 <form action="{{ route('pemeliharaan.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                        <input type="hidden" name="previous_url" value="{{ old('previous_url', session('url_asal')) }}">
                     <div class="row g-3">
                         {{-- <div class="col-md-4">
                         <label>Jenis</label>

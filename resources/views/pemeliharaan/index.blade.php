@@ -12,12 +12,12 @@
         <a href="{{ route('pemeliharaan.create') }}" class="btn btn-success"> Tambah</a>
     </div>
 
-    @if (session('success'))
+    {{-- @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    @endif
+    @endif --}}
     {{-- <h4 class="mt-4">{{ $jenis }}</h4> --}}
     <div class="card shadow-sm my-2">
         <div class="card-body">
@@ -133,6 +133,17 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
+    @endif
 @endsection
 
 @section('scripts')
